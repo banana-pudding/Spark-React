@@ -1,0 +1,35 @@
+#imagebg {
+    display: block;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -999;
+    opacity: 0.17;
+    background-color: #ffffff;
+    background-image: url("./spark.png");
+    background-attachment: fixed;
+}
+
+body {
+    min-height: 100vh;
+    position: relative;
+}
+
+.navbar {
+    background-color: #00853e;
+}
+
+#footerComponent {
+    .spark-footer {
+        background-color: #00853e;
+        bottom: 0;
+        width: 100%;
+        position: absolute;
+    }
+}
+
+#loginComponent {
+    margin-bottom: 100px;
+}

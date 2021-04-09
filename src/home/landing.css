@@ -1,0 +1,16 @@
+.container {
+    padding-bottom: 80px;
+}
+
+.img-container {
+    height: 200px;
+    overflow: hidden;
+}
+
+.image-col {
+    background-image: url("./printer.png");
+    background-origin: content-box;
+    background-clip: content-box;
+    background-position: center;
+    background-size: cover;
+}

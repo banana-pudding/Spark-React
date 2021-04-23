@@ -11,17 +11,12 @@ function LoginPage() {
         password: "",
     };
 
-    useEffect(() => {
-        console.log("effected");
-        console.log(state);
-    });
+    useEffect(() => {});
 
     const handleSubmit = () => {
-        console.log(formValues);
         axios
-            .post("/react-login", formValues)
+            .post("/users/login", formValues)
             .then((res) => {
-                console.log(res.data);
                 dispatch({ type: "LOGIN", payload: res.data });
             })
             .catch((error) => {

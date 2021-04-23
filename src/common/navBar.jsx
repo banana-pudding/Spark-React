@@ -24,7 +24,7 @@ function guestItems() {
     );
 }
 
-function loggedInItems() {
+function loggedInItems(state, dispatch) {
     return (
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -54,6 +54,16 @@ function loggedInItems() {
                     Analytics
                 </Link>
             </li>
+
+            <li class="nav-item ">
+                <a
+                    className="nav-link"
+                    onClick={() => {
+                        dispatch({ type: "LOGOUT", payload: null });
+                    }}>
+                    Logout
+                </a>
+            </li>
         </ul>
     );
 }
@@ -61,9 +71,7 @@ function loggedInItems() {
 function NavBar() {
     const [state, dispatch] = React.useContext(Context);
 
-    console.log(state);
-
-    let navItems = state.user ? loggedInItems() : guestItems();
+    let navItems = state.user ? loggedInItems(state, dispatch) : guestItems();
 
     return (
         <nav class="navbar navbar-expand-lg navbar-dark shadow">

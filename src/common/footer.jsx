@@ -4,7 +4,7 @@ import { Component } from "react";
 class Footer extends Component {
     render() {
         return (
-            <footer class="navbar navbar-dark spark-footer" id="footerComponent">
+            <footer class="navbar navbar-dark spark-footer mt-auto" id="footerComponent">
                 <div class="container pb-1">
                     <div class="row w-100 px-5 pt-3 pb-1">
                         <div class="col-3 px-5 ">

@@ -17,12 +17,37 @@ class SingleSubmission extends React.Component {
             backgroundColor: "transparent",
         };
 
-        const copyDisplay = (num, offset) => {
-            content = [];
-            for (var i = 0; i < num; i++) {
-                content.push(<span>{i + offset}</span>);
+        const submittedRow = () => {
+            return (
+                <tr>
+                    <td class="pl-0 text-muted">Submitted</td>
+                    <td>{new Date(this.state.item.timestampSubmitted).toLocaleDateString()}</td>
+                </tr>
+            );
+        };
+        const reviewedRow = () => {
+            if (this.state.printPage != "new") {
+                return (
+                    <tr>
+                        <td class="pl-0 text-muted">Reviewed</td>
+                        <td>{new Date(this.state.item.timestampPaymentRequested).toLocaleDateString()}</td>
+                    </tr>
+                );
+            } else {
+                return null;
             }
-            return conent;
+        };
+        const paidRow = () => {
+            if (this.state.printPage != "new" && this.state.printPage != "pendPay") {
+                return (
+                    <tr>
+                        <td class="pl-0 text-muted">Paid</td>
+                        <td>{new Date(this.state.item.timestampPaid).toLocaleDateString()}</td>
+                    </tr>
+                );
+            } else {
+                return null;
+            }
         };
 
         return (
@@ -44,27 +69,11 @@ class SingleSubmission extends React.Component {
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-2">
+                        <div class="col-auto">
                             <table class="table table-borderless table-sm">
-                                <tr>
-                                    <td class="pl-0 text-muted">Submitted</td>
-                                    <td>{new Date(this.state.item.timestampSubmitted).toLocaleDateString()}</td>
-                                </tr>
-                                {this.state.printPage != "newSub" && (
-                                    <tr>
-                                        <td class="pl-0 text-muted">Reviewed</td>
-                                        <td>
-                                            {new Date(this.state.item.timestampPaymentRequested).toLocaleDateString()}
-                                        </td>
-                                    </tr>
-                                )}
-
-                                {this.state.printPage != "newSub" && this.state.printPage != "pendpay" && (
-                                    <tr>
-                                        <td class="pl-0 text-muted">Paid</td>
-                                        <td>{new Date(this.state.item.timestampPaid).toLocaleDateString()}</td>
-                                    </tr>
-                                )}
+                                {submittedRow()}
+                                {reviewedRow()}
+                                {paidRow()}
                             </table>
                             {this.state.printPage == "newSub" && !this.state.item.allFilesReviewed && (
                                 <button>no</button>
@@ -78,11 +87,8 @@ class SingleSubmission extends React.Component {
                                 <thead>
                                     <tr>
                                         <th>Filename</th>
-                                        <th>Unprinted</th>
-                                        <th>Printing</th>
-                                        <th>In Transit</th>
-                                        <th>Completed</th>
-                                        <th>Picked Up</th>
+                                        <th>Status</th>
+                                        <th>Pickup Location</th>
                                         <th>More</th>
                                     </tr>
                                 </thead>
@@ -92,11 +98,9 @@ class SingleSubmission extends React.Component {
                                             <tr>
                                                 <td>
                                                     <a class="no font-weight-bold" href={"/files/" + file._id}>
-                                                        {file.realFileName}
+                                                        {file.fileName}
                                                     </a>
                                                 </td>
-                                                <td></td>
-                                                <td></td>
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>

@@ -1,0 +1,17 @@
+.container-xl {
+    margin-bottom: 100px;
+}
+
+.top {
+    border-bottom-left-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+}
+
+.inner {
+    border-radius: 0px;
+}
+
+.bottom {
+    border-top-left-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+}

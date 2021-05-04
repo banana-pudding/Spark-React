@@ -12,9 +12,8 @@
     background-attachment: fixed;
 }
 
-body {
-    min-height: 100vh;
-    position: relative;
+.root-container {
+    height: 100vh;
 }
 
 .navbar {

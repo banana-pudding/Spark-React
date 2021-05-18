@@ -1,5 +1,8 @@
 import React from "react";
 import "./submit.css";
+import SingleFile from "./singleFile";
+import axios from "../common/axiosConfig";
+import { withRouter } from "react-router-dom";
 class SubmissionPage extends React.Component {
     constructor(props) {
         super(props);
@@ -16,11 +19,74 @@ class SubmissionPage extends React.Component {
             department: "",
             project: "",
             numFiles: 1,
-            files: [],
+            files: [
+                {
+                    file: null,
+                    fileName: "",
+                    material: "Any Material",
+                    color: "Any Color",
+                    copies: "1",
+                    infill: "12.5%",
+                    notes: "",
+                    pickupLocation: "Willis Library",
+                },
+            ],
         };
     }
 
-    onSubmit() {}
+    onSubmit() {
+        const data = new FormData();
+        data.append("jsonData", JSON.stringify(this.state));
+        for (var thisFile of this.state.files) {
+            console.log(thisFile);
+            if (thisFile) {
+                data.append("files", thisFile.file);
+            }
+        }
+        axios
+            .post("/submit", data)
+            .then((res) => {
+                console.log("done");
+                this.props.history.push("/");
+            })
+            .catch((err) => {
+                console.log("error", err);
+            });
+    }
+
+    updateSubFile(newState) {
+        var tempFiles = this.state.files;
+
+        tempFiles[newState.index] = {
+            file: newState.file,
+            fileName: newState.fileName,
+            material: newState.material,
+            color: newState.color,
+            copies: newState.copies,
+            infill: newState.infill,
+            notes: newState.notes,
+            pickupLocation: newState.pickupLocation,
+        };
+
+        this.setState({
+            files: tempFiles,
+        });
+    }
+
+    deleteFile(index) {
+        console.log(index);
+        if (index != 0) {
+            var newFiles = [];
+            for (var i = 0; i < this.state.files.length; i++) {
+                if (i != index) {
+                    newFiles.push(this.state.files[i]);
+                }
+            }
+            this.setState({
+                files: newFiles,
+            });
+        }
+    }
 
     render() {
         return (
@@ -36,87 +102,123 @@ class SubmissionPage extends React.Component {
                                 action="/submitprint"
                                 method="POST"
                                 enctype="multipart/form-data">
-                                <div class="form-group no-margin">
-                                    <h3>Contact Informtion</h3>
-                                    <p>
-                                        Please provide your contact information below. The email you enter will be used
-                                        for automated email notifications, as well as for further communication if our
-                                        staff needs more information to complete your request.
-                                    </p>
-                                    <div class="input-group">
-                                        <input
-                                            type="text"
-                                            class="form-control top border-bottom-0"
-                                            name="first"
-                                            placeholder="First name"
-                                            value={this.state.fname}
-                                            onChange={(e) => {
-                                                this.setState({
-                                                    fname: e.target.value,
-                                                });
-                                            }}
-                                            required
-                                        />
-                                        <input
-                                            type="text"
-                                            class="form-control top border-bottom-0"
-                                            name="last"
-                                            placeholder="Last name"
-                                            value={this.state.lname}
-                                            onChange={(e) => {
-                                                this.setState({
-                                                    lname: e.target.value,
-                                                });
-                                            }}
-                                            required
-                                        />
-                                    </div>
-                                </div>
-                                <div class="form-group no-margin">
+                                <h3>Contact Informtion</h3>
+                                <p>
+                                    Please provide your contact information below. The email you enter will be used for
+                                    automated email notifications, as well as for further communication if our staff
+                                    needs more information to complete your request.
+                                </p>
+                                <div class="input-group">
                                     <input
-                                        type="email"
-                                        class="form-control inner border-bottom-0"
-                                        name="email"
-                                        placeholder="Email"
-                                        value={this.state.email}
+                                        type="text"
+                                        class="form-control top border-bottom-0"
+                                        name="first"
+                                        placeholder="First name"
+                                        value={this.state.fname}
                                         onChange={(e) => {
                                             this.setState({
-                                                email: e.target.value,
+                                                fname: e.target.value,
+                                            });
+                                        }}
+                                        required
+                                    />
+                                    <input
+                                        type="text"
+                                        class="form-control top border-bottom-0"
+                                        name="last"
+                                        placeholder="Last name"
+                                        value={this.state.lname}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                lname: e.target.value,
                                             });
                                         }}
                                         required
                                     />
                                 </div>
-                                <div class="form-group no-margin">
-                                    <input
-                                        type="text"
-                                        class="form-control euid inner border-bottom-0"
-                                        name="euid"
-                                        placeholder="EUID (students only, not required)"
-                                        value={this.state.euid}
-                                        onChange={(e) => {
+                                <input
+                                    type="email"
+                                    class="form-control inner border-bottom-0"
+                                    name="email"
+                                    placeholder="Email"
+                                    value={this.state.email}
+                                    onChange={(e) => {
+                                        this.setState({
+                                            email: e.target.value,
+                                        });
+                                    }}
+                                    required
+                                />
+                                <input
+                                    type="text"
+                                    class="form-control euid inner border-bottom-0"
+                                    name="euid"
+                                    placeholder="EUID (students only, not required)"
+                                    value={this.state.euid}
+                                    onChange={(e) => {
+                                        this.setState({
+                                            euid: e.target.value,
+                                        });
+                                    }}
+                                />
+                                <input
+                                    type="tel"
+                                    class="form-control bottom"
+                                    name="phone"
+                                    placeholder="Phone Number"
+                                    value={this.state.phone}
+                                    onChange={(e) => {
+                                        this.setState({
+                                            phone: e.target.value,
+                                        });
+                                    }}
+                                />
+
+                                <hr />
+
+                                <h3>Print Files</h3>
+                                <p>
+                                    Please upload the files you would like printed here. These files must be in stl
+                                    format. Use the extra fields to request specific print settings, or leave them
+                                    unchanged for our default settings.
+                                </p>
+                                {this.state.files.map((thisFile, index) => {
+                                    return (
+                                        <SingleFile
+                                            {...thisFile}
+                                            index={index}
+                                            lastIndex={this.state.files.length - 1}
+                                            updateSubFile={this.updateSubFile.bind(this)}
+                                            deleteFile={this.deleteFile.bind(this)}
+                                        />
+                                    );
+                                })}
+                                <div className="d-flex justify-content-center mb-4">
+                                    <button
+                                        type="button"
+                                        className="btn btn-success"
+                                        onClick={() => {
                                             this.setState({
-                                                euid: e.target.value,
+                                                files: [
+                                                    ...this.state.files,
+                                                    {
+                                                        fileName: "",
+                                                        material: "Any Material",
+                                                        color: "Any Color",
+                                                        copies: "1",
+                                                        infill: "12.5%",
+                                                        notes: "",
+                                                        pickupLocation: "Willis Library",
+                                                    },
+                                                ],
                                             });
-                                        }}
-                                    />
-                                </div>
-                                <div class="form-group">
-                                    <input
-                                        type="tel"
-                                        class="form-control bottom"
-                                        name="phone"
-                                        placeholder="Phone Number"
-                                        value={this.state.phone}
-                                        onChange={(e) => {
-                                            this.setState({
-                                                phone: e.target.value,
-                                            });
-                                        }}
-                                    />
+                                        }}>
+                                        Add Another
+                                    </button>
                                 </div>
 
                                 <hr />
+
                                 <h3>Submission Information</h3>
                                 <p>
                                     Please specify whether your submission is for a class or other educational purpose,
@@ -139,6 +241,11 @@ class SubmissionPage extends React.Component {
                                             onClick={() => {
                                                 this.setState({
                                                     submissionType: "personal",
+                                                    classCode: "",
+                                                    professor: "",
+                                                    assignment: "",
+                                                    department: "",
+                                                    project: "",
                                                 });
                                             }}>
                                             Personal
@@ -159,6 +266,8 @@ class SubmissionPage extends React.Component {
                                             onClick={() => {
                                                 this.setState({
                                                     submissionType: "class",
+                                                    department: "",
+                                                    project: "",
                                                 });
                                             }}>
                                             Class
@@ -179,6 +288,9 @@ class SubmissionPage extends React.Component {
                                             onClick={() => {
                                                 this.setState({
                                                     submissionType: "internal",
+                                                    classCode: "",
+                                                    professor: "",
+                                                    assignment: "",
                                                 });
                                             }}>
                                             Internal
@@ -338,19 +450,13 @@ class SubmissionPage extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-
-                                <div class="print-only form-group">
-                                    <hr />
-                                    <h3>Print Files</h3>
-                                    <p>
-                                        Please upload the files you would like printed here. These files must be in stl
-                                        format. Use the extra fields to request specific print settings, or leave them
-                                        unchanged for our default settings.
-                                    </p>
-                                    {}
-                                </div>
-
-                                <button type="submit" class="btn btn-lg btn-primary btn-block submit-form">
+                                <button
+                                    type="submit"
+                                    class="btn btn-primary float-end"
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        this.onSubmit();
+                                    }}>
                                     Submit
                                 </button>
                             </form>
@@ -367,4 +473,4 @@ class SubmissionPage extends React.Component {
     }
 }
 
-export default SubmissionPage;
+export default withRouter(SubmissionPage);

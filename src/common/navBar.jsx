@@ -25,7 +25,7 @@ class NavBar extends Component {
                         </Link>
                     </li>
                     <li class="nav-item ">
-                        <Link to="/prints/new" className="nav-link">
+                        <Link to="/prints" className="nav-link">
                             Prints
                         </Link>
                     </li>

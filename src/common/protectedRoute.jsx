@@ -1,13 +1,8 @@
-import React from "react";
-import { Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
-class ProtectedRoute extends React.Component {
-    render() {
-        const Component = this.props.component;
-        const isAuthenticated = localStorage.getItem("jwtToken");
-
-        return isAuthenticated ? <Component /> : <Redirect to={{ pathname: "/login" }} />;
-    }
+function PrivateRoute({ children, ...rest }) {
+    console.log(rest);
+    return <Route {...rest} render={({ location }) => (rest.user ? children : <Redirect to="/login" />)} />;
 }
 
-export default ProtectedRoute;
+export default PrivateRoute;

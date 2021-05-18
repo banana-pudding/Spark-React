@@ -1,0 +1,13 @@
+#gcodeFile::before {
+    content: "GCODE file";
+    position: absolute;
+    z-index: 2;
+    display: block;
+    background-color: #eee;
+    width: 85px;
+    transition: background-color 0.15s ease-in-out;
+}
+
+#gcodeFile:hover::before {
+    background-color: #dde0e3;
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import jwt_decode from "jwt-decode";
-import axios from "axios";
+import axios from "./common/axiosConfig";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 
 import ProtectedRoute from "./common/protectedRoute";
@@ -23,7 +23,6 @@ class App extends React.Component {
     }
 
     updateLogin(data) {
-        console.log(data);
         if (data == null) {
             localStorage.removeItem("jwtToken");
             axios.defaults.headers.common["Authorization"] = null;
@@ -36,7 +35,6 @@ class App extends React.Component {
             this.setState({
                 user: jwt_decode(data),
             });
-            console.log("update");
         }
     }
 
@@ -47,7 +45,10 @@ class App extends React.Component {
                     <NavBar user={this.state.user} updateLogin={this.updateLogin.bind(this)} />
                     <Switch>
                         <Route path="/" exact={true} component={Landing} />
-                        {/* <Route path="/login" exact={true} component={Login} /> */}
+                        <Route exact path="/submit">
+                            <Submit />
+                        </Route>
+
                         <Route exact path="/login">
                             {this.state.user ? (
                                 <Redirect to="/profile" />
@@ -55,10 +56,16 @@ class App extends React.Component {
                                 <Login updateLogin={this.updateLogin.bind(this)} />
                             )}
                         </Route>
-                        <ProtectedRoute path="/profile" exact={true} component={Profile} />
-                        <ProtectedRoute path="/submit" exact={true} component={Submit} />
-                        <ProtectedRoute path="/prints" component={SubmissionList} />
-                        <ProtectedRoute path="/files" component={FilePreview} />
+                        <ProtectedRoute exact path="/profile" user={this.state.user}>
+                            <Profile user={this.state.user} />
+                        </ProtectedRoute>
+
+                        <ProtectedRoute exact path="/prints" user={this.state.user}>
+                            <SubmissionList user={this.state.user} />
+                        </ProtectedRoute>
+                        <ProtectedRoute path="/files" user={this.state.user}>
+                            <FilePreview user={this.state.user} />
+                        </ProtectedRoute>
                     </Switch>
                     <Footer />
                 </div>

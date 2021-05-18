@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import axios from "../common/axiosConfig";
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);

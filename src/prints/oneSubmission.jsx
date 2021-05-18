@@ -1,6 +1,7 @@
 import React from "react";
 
 import { ReactComponent as DownloadIcon } from "../common/download.svg";
+import Dropdown from "./fileDropdown";
 
 class SingleSubmission extends React.Component {
     constructor(props) {
@@ -51,7 +52,7 @@ class SingleSubmission extends React.Component {
         };
 
         return (
-            <div className="card shadow mb-3">
+            <div className="card shadow mb-3" key={this.props.index}>
                 <div className="card-header">
                     <h5 className="mb-0">
                         {this.state.item.patron.fname + " " + this.state.item.patron.lname}
@@ -71,9 +72,11 @@ class SingleSubmission extends React.Component {
                     <div class="row">
                         <div class="col-auto">
                             <table class="table table-borderless table-sm">
-                                {submittedRow()}
-                                {reviewedRow()}
-                                {paidRow()}
+                                <tbody>
+                                    {submittedRow()}
+                                    {reviewedRow()}
+                                    {paidRow()}
+                                </tbody>
                             </table>
                             {this.state.printPage == "newSub" && !this.state.item.allFilesReviewed && (
                                 <button>no</button>
@@ -98,12 +101,14 @@ class SingleSubmission extends React.Component {
                                             <tr>
                                                 <td>
                                                     <a class="no font-weight-bold" href={"/files/" + file._id}>
-                                                        {file.fileName}
+                                                        {file.originalFileName}
                                                     </a>
                                                 </td>
+                                                <td>{file.status}</td>
                                                 <td></td>
-                                                <td></td>
-                                                <td></td>
+                                                <td>
+                                                    <Dropdown file={file} />
+                                                </td>
                                             </tr>
                                         );
                                     })}

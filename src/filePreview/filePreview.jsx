@@ -2,6 +2,7 @@ import React from "react";
 import axios from "../common/axiosConfig";
 import Model from "./modelPreview";
 import GcodePreview from "./gcodePreview";
+import ModelDisplay from "./modelFileViewer";
 import Patron from "./patron";
 import RequestAndReview from "./requestAndReview";
 import InternalNotes from "./internalNotes";
@@ -36,8 +37,8 @@ class FilePreview extends React.Component {
                     <div className="row mb-3">
                         <div className="col-4">
                             <Patron submission={this.state.submission} />
-
-                            <div className="card mb-3 shadow">
+                            <ModelDisplay fileID={window.location.pathname.split("/files/")[1]} />
+                            {/* <div className="card mb-3 shadow">
                                 <div className="card-header">
                                     <ul className="nav nav-tabs card-header-tabs" role="tablist">
                                         <li className="nav-item" role="presentation">
@@ -78,7 +79,7 @@ class FilePreview extends React.Component {
                                 <div ref={(ref) => (this.gcode = ref)}>
                                     <GcodePreview fileID={window.location.pathname.split("/files/")[1]} />
                                 </div>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="col-4">
                             <RequestAndReview submission={this.state.submission} file={this.state.file} />

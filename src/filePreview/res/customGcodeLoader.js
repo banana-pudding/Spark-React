@@ -1,30 +1,13 @@
 import {
-    AddEquation,
     BufferGeometry,
-    CustomBlending,
-    DstColorFactor,
     Euler,
     FileLoader,
     Float32BufferAttribute,
     Group,
-    LineBasicMaterial,
     LineSegments,
     Loader,
-    Mesh,
     MeshBasicMaterial,
-    MultiplyBlending,
-    MultiplyOperation,
-    OneFactor,
-    OneMinusDstAlphaFactor,
-    OneMinusDstColorFactor,
-    OneMinusSrcAlphaFactor,
-    OneMinusSrcColorFactor,
-    SrcColorFactor,
-    SubtractEquation,
-    ZeroFactor,
 } from "three";
-
-import { BufferGeometryUtils } from "three/examples/jsm/utils/BufferGeometryUtils.js";
 
 /**
  * GCodeLoader is used to load gcode files usually used for 3D printing or CNC applications.
@@ -105,8 +88,8 @@ class GCodeLoader extends Loader {
                 currentLayer.vertex.push(p1.x, p1.y, p1.z);
                 currentLayer.vertex.push(p2.x, p2.y, p2.z);
             } else {
-                currentLayer.pathVertex.push(p1.x, p1.y, p1.z);
-                currentLayer.pathVertex.push(p2.x, p2.y, p2.z);
+                //currentLayer.pathVertex.push(p1.x, p1.y, p1.z);
+                //currentLayer.pathVertex.push(p2.x, p2.y, p2.z);
             }
         }
 
@@ -179,11 +162,13 @@ class GCodeLoader extends Loader {
         }
 
         function addObject(vertex, extruding, i) {
-            const geometry = new BufferGeometry();
-            geometry.setAttribute("position", new Float32BufferAttribute(vertex, 3));
-            const segments = new LineSegments(geometry, extruding ? extrudingMaterial : pathMaterial);
-            segments.name = "layer" + i;
-            object.add(segments);
+            if (extruding) {
+                const geometry = new BufferGeometry();
+                geometry.setAttribute("position", new Float32BufferAttribute(vertex, 3));
+                const segments = new LineSegments(geometry, extrudingMaterial);
+                segments.name = "layer" + i;
+                object.add(segments);
+            }
         }
 
         const object = new Group();
@@ -193,28 +178,20 @@ class GCodeLoader extends Loader {
             for (let i = 0; i < layers.length; i++) {
                 const layer = layers[i];
                 addObject(layer.vertex, true, i);
-                addObject(layer.pathVertex, false, i);
             }
         } else {
-            const vertex = [],
-                pathVertex = [];
+            const vertex = [];
 
             for (let i = 0; i < layers.length; i++) {
                 const layer = layers[i];
                 const layerVertex = layer.vertex;
-                const layerPathVertex = layer.pathVertex;
 
                 for (let j = 0; j < layerVertex.length; j++) {
                     vertex.push(layerVertex[j]);
                 }
-
-                for (let j = 0; j < layerPathVertex.length; j++) {
-                    pathVertex.push(layerPathVertex[j]);
-                }
             }
 
             addObject(vertex, true, layers.length);
-            //addObject(pathVertex, false, layers.length);
         }
 
         object.quaternion.setFromEuler(new Euler(-Math.PI / 2, 0, 0));

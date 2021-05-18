@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "../common/axiosConfig";
-import { parseGcode } from "./gcodeAnalyzer";
+import { parseGcode } from "./res/gcodeAnalyzer";
 import "./css/review.css";
 
 class ReviewForm extends React.Component {

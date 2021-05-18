@@ -1,9 +1,7 @@
-#modelview,
-#gcodeView {
+#canvas-wrapper {
     overflow: hidden;
 }
 
-#modelview canvas,
-#gcodeView canvas {
+#canvas-wrapper canvas {
     border-radius: 0.275rem;
 }

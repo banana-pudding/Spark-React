@@ -1,0 +1,82 @@
+#canvas-wrapper {
+    overflow: hidden;
+
+    canvas {
+        border-radius: 0.275rem;
+    }
+}
+
+#model-controls {
+    position: absolute;
+    bottom: 0px;
+
+    .dg {
+        color: unset !important;
+        //font: unset !important;
+        font-family: unset !important;
+        text-shadow: unset !important;
+    }
+
+    li {
+        background-color: rgba(255, 255, 255, 0.5);
+        border: none !important;
+    }
+
+    input {
+        line-height: initial !important;
+    }
+
+    .slider {
+        background-color: rgba(0, 0, 0, 0.1);
+
+        .slider-fg {
+            background: #00853e;
+        }
+    }
+
+    .number {
+        input {
+            background-color: transparent;
+        }
+    }
+}
+
+#model-controls-NONE {
+    background-color: transparent;
+
+    .dg {
+        width: 100% !important;
+        color: unset !important;
+        font: unset !important;
+        text-shadow: unset !important;
+    }
+
+    .close-button {
+        display: none;
+    }
+
+    ul {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        li {
+            background-color: transparent;
+            border: none;
+            flex-grow: 1;
+
+            div:not(.c) {
+                display: flex;
+                flex-direction: row-reverse;
+
+                .property-name {
+                    flex-grow: 1;
+                }
+
+                .c {
+                    flex-basis: 0;
+                    padding-right: 0.5rem;
+                }
+            }
+        }
+    }
+}

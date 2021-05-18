@@ -10,7 +10,7 @@ import Login from "./login/login";
 import Profile from "./profile/profile";
 import Submit from "./submit/submit";
 import SubmissionList from "./prints/submissionList";
-import FilePreview from "./filePreview/filePreview";
+import FilePreview from "./singleFileView/filePreview";
 import Footer from "./common/footer";
 
 class App extends React.Component {

@@ -8,7 +8,19 @@ class Dropdown extends React.Component {
 
     handleDelete() {
         axios
-            .post("/prints/delete/file/" + this.props.file._id)
+            .post("/submissions/delete/file/" + this.props.file._id)
+            .then((res) => {
+                console.log("done");
+                window.location.reload();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+    }
+
+    handleRequestPayment() {
+        axios
+            .post("/submissions/requestpayment/" + this.props.submission._id)
             .then((res) => {
                 console.log("done");
                 window.location.reload();
@@ -37,6 +49,15 @@ class Dropdown extends React.Component {
                                 this.handleDelete();
                             }}>
                             Delete
+                        </a>
+                    </li>
+                    <li>
+                        <a
+                            className="dropdown-item"
+                            onClick={() => {
+                                this.handleRequestPayment();
+                            }}>
+                            Request Payment
                         </a>
                     </li>
                 </ul>

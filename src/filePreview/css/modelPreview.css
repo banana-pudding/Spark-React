@@ -1,7 +1,0 @@
-#canvas-wrapper {
-    overflow: hidden;
-}
-
-#canvas-wrapper canvas {
-    border-radius: 0.275rem;
-}

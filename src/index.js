@@ -2,9 +2,9 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 //global css
-import "bootstrap/dist/css/bootstrap.min.css";
-import "bootstrap/dist/js/bootstrap.min.js";
 import "./common/global.scss";
+import "bootstrap/scss/bootstrap.scss";
+import "bootstrap/dist/js/bootstrap.min.js";
 
 //components
 import App from "./router.js";

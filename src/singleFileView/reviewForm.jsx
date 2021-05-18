@@ -16,13 +16,13 @@ class ReviewForm extends React.Component {
             slicedMaterial: props.file.review.slicedMaterial || "",
             patronNotes: props.file.review.patronNotes || "",
             internalNotes: "",
-            reviewedBy: props.file.review.reviewedBy || "",
             timestampReviewed: props.file.review.timestampReviewed || null,
             parseResults: null,
         };
 
         this.handleDescisionChange = this.handleDescisionChange.bind(this);
         this.handleGcodeUpload = this.handleGcodeUpload.bind(this);
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleDescisionChange(e) {
@@ -55,6 +55,34 @@ class ReviewForm extends React.Component {
         fileReader.readAsText(file);
     }
 
+    handleSubmit() {
+        let now = new Date();
+        const data = new FormData();
+        let jsonObject = {
+            review: {
+                descision: this.state.descision,
+                timestampReviewed: now,
+                patronNotes: this.state.patronNotes,
+                slicedHours: this.state.slicedHours,
+                slicedMinutes: this.state.slicedMinutes,
+                slicedGrams: this.state.slicedGrams,
+                slicedPrinter: this.state.slicedPrinter,
+                slicedMaterial: this.state.slicedMaterial,
+            },
+            newInternalNote: {
+                dateAdded: now,
+                notes: this.state.internalNotes,
+            },
+        };
+        data.append("jsonData", JSON.stringify(jsonObject));
+        data.append("files", this.state.gcode);
+
+        axios.post("/submissions/review/" + this.props.file._id, data).then((res) => {
+            console.log("done");
+            window.location.reload();
+        });
+    }
+
     render() {
         const acceptedControls = () => {
             if (this.state.descision == "Accepted") {
@@ -70,6 +98,7 @@ class ReviewForm extends React.Component {
                                 className="form-control"
                                 type="file"
                                 id="gcodeFile"
+                                required
                                 onChange={this.handleGcodeUpload}
                             />
                         </div>
@@ -79,6 +108,7 @@ class ReviewForm extends React.Component {
                                 <input
                                     type="number"
                                     className="form-control"
+                                    required
                                     value={this.state.slicedHours}
                                     onChange={(e) => {
                                         this.setState({
@@ -92,6 +122,7 @@ class ReviewForm extends React.Component {
                                 <input
                                     type="number"
                                     className="form-control"
+                                    required
                                     value={this.state.slicedMinutes}
                                     onChange={(e) => {
                                         this.setState({
@@ -105,6 +136,7 @@ class ReviewForm extends React.Component {
                                 <input
                                     type="number"
                                     className="form-control"
+                                    required
                                     value={this.state.slicedGrams}
                                     onChange={(e) => {
                                         this.setState({
@@ -113,6 +145,37 @@ class ReviewForm extends React.Component {
                                     }}
                                 />
                                 <label className="small">Weight</label>
+                            </div>
+                        </div>
+
+                        <div className="row">
+                            <div className="col">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    required
+                                    value={this.state.slicedPrinter}
+                                    onChange={(e) => {
+                                        this.setState({
+                                            slicedPrinter: e.target.value,
+                                        });
+                                    }}
+                                />
+                                <label className="small">Printer</label>
+                            </div>
+                            <div className="col">
+                                <input
+                                    type="text"
+                                    className="form-control"
+                                    required
+                                    value={this.state.slicedMaterial}
+                                    onChange={(e) => {
+                                        this.setState({
+                                            slicedMaterial: e.target.value,
+                                        });
+                                    }}
+                                />
+                                <label className="small">Material</label>
                             </div>
                         </div>
 
@@ -132,6 +195,7 @@ class ReviewForm extends React.Component {
                             <h5>Review Decision</h5>
                             <select
                                 className="form-select"
+                                required
                                 value={this.state.descision}
                                 onChange={this.handleDescisionChange}>
                                 <option value="Accepted">Accepted</option>
@@ -147,6 +211,7 @@ class ReviewForm extends React.Component {
                             <h5>Notes To Patron</h5>
                             <textarea
                                 value={this.state.patronNotes}
+                                required
                                 className="form-control"
                                 rows="3"
                                 onChange={(e) => {
@@ -160,6 +225,7 @@ class ReviewForm extends React.Component {
                             <h5>Internal Technician Notes</h5>
                             <textarea
                                 value={this.state.internalNotes}
+                                required
                                 className="form-control"
                                 rows="3"
                                 onChange={(e) => {
@@ -168,6 +234,16 @@ class ReviewForm extends React.Component {
                                     });
                                 }}></textarea>
                         </div>
+
+                        <button
+                            className="btn btn-primary float-end"
+                            type="submit"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                this.handleSubmit();
+                            }}>
+                            Submit Review
+                        </button>
                     </form>
                 </div>
             </div>

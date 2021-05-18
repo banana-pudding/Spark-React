@@ -1,12 +1,18 @@
 import React from "react";
-import "./css/requestAndReview.css";
+import "./css/requestAndReview.scss";
 import StlImage from "./res/block.svg";
 import GcodeImage from "./res/sd.svg";
 import { formatDate } from "../common/utils";
+import axios from "../common/axiosConfig";
+import fileDownload from "js-file-download";
 
 class RequestAndReview extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            stlBlob: null,
+            gcodeBlob: null,
+        };
     }
 
     render() {
@@ -21,6 +27,26 @@ class RequestAndReview extends React.Component {
             }
         };
 
+        const downloadSTL = () => {
+            axios
+                .get("/download/stl/" + this.props.file._id, {
+                    responseType: "blob",
+                })
+                .then((res) => {
+                    fileDownload(res.data, this.props.file.originalFileName);
+                });
+        };
+
+        const downloadGCODE = () => {
+            axios
+                .get("/download/gcode/" + this.props.file._id, {
+                    responseType: "blob",
+                })
+                .then((res) => {
+                    fileDownload(res.data, this.props.file.review.originalGcodeName);
+                });
+        };
+
         return (
             <div className="card shadow mb-3">
                 <div className="card-body">
@@ -28,9 +54,22 @@ class RequestAndReview extends React.Component {
                         <small className="text-muted">{formatDate(submission.timestampSubmitted)}</small>
                         <div className="grey-bubble">
                             <div className="d-flex flex-row align-items-center">
-                                <img className="stl-image" src={StlImage} />
+                                <img
+                                    className="stl-image link-primary"
+                                    src={StlImage}
+                                    onClick={() => {
+                                        downloadSTL();
+                                    }}
+                                />
+
                                 <div>
-                                    <div className="h4 mb-2 mt-1">{file.originalFileName}</div>
+                                    <div
+                                        className="h4 mb-2 mt-1 link-primary"
+                                        onClick={() => {
+                                            downloadSTL();
+                                        }}>
+                                        {file.originalFileName}
+                                    </div>
                                     <div className="row">
                                         <div className="col-auto">
                                             <h5 className="mb-0 nowrap">{file.request.color}</h5>
@@ -58,7 +97,7 @@ class RequestAndReview extends React.Component {
                             </div>
                         </div>
                         <small className={"text-muted text-end " + reviewStyle()}>
-                            {formatDate(submission.timestampPaymentRequested)}
+                            {formatDate(file.review.timestampReviewed)}
                         </small>
                         <div className={"color-bubble " + reviewStyle()}>
                             {file.review.patronNotes || "Technician left no response."}
@@ -66,9 +105,19 @@ class RequestAndReview extends React.Component {
                         </div>
                         <div className={"color-bubble " + reviewStyle()}>
                             <div className="d-flex flex-row align-items-center">
-                                <img className="stl-image" src={GcodeImage} />
+                                <img
+                                    className="stl-image link-primary"
+                                    src={GcodeImage}
+                                    onClick={() => {
+                                        downloadSTL();
+                                    }}
+                                />
                                 <div>
-                                    <div className="mb-2 mt-1 h4">
+                                    <div
+                                        className="mb-2 mt-1 h4 link-primary"
+                                        onClick={() => {
+                                            downloadSTL();
+                                        }}>
                                         {file.review.originalGcodeName || file.review.gcodeName}
                                     </div>
                                     <div className="row">

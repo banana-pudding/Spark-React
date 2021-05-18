@@ -107,7 +107,7 @@ class SingleSubmission extends React.Component {
                                                 <td>{file.status}</td>
                                                 <td></td>
                                                 <td>
-                                                    <Dropdown file={file} />
+                                                    <Dropdown file={file} submission={this.state.item} />
                                                 </td>
                                             </tr>
                                         );

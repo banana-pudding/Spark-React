@@ -1,12 +1,11 @@
 import React from "react";
 import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
+import { GCodeLoader } from "./res/customGcodeLoader";
 
-import * as dat from "dat.gui";
-import "./css/modelPreview.css";
+import "./css/modelPreview.scss";
 
-class Model extends React.Component {
+class Gcode extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -100,52 +99,27 @@ class Model extends React.Component {
         scene.add(light);
 
         /* -------------------------------------------------------------------------- */
-        /*                                     GUI                                    */
-        /* -------------------------------------------------------------------------- */
-
-        var params = {
-            color: 0xc1aaee,
-            specular: 0x4c4c4c,
-            shininess: 40,
-        };
-
-        /* -------------------------------------------------------------------------- */
         /*                                  STL Mesh                                  */
         /* -------------------------------------------------------------------------- */
 
-        new STLLoader().load("/download/stl/" + this.state.fileID, function (geometry) {
-            //-----------MATERIAL-------------//
-            var material = new THREE.MeshPhongMaterial(params);
-
-            //-------------MESH---------------//
-            var mesh = new THREE.Mesh(geometry, material);
-            mesh.rotation.x = -Math.PI / 2;
-            scene.add(mesh);
-
-            //----------POSITIONING-----------//
-            var middle = new THREE.Vector3();
-            geometry.computeBoundingBox();
-
-            geometry.boundingBox.getCenter(middle);
-            mesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(-middle.x, -middle.y, 0));
+        new GCodeLoader().load("/download/gcode/" + this.state.fileID, function (object) {
+            var boundingBox = new THREE.Box3().setFromObject(object);
+            var size = boundingBox.getSize();
+            object.position.set(-(size.x / 2), 0, size.z / 2);
+            scene.add(object);
 
             //-------------CAMERA-------------//
 
-            const boundingBox = new THREE.Box3();
-
-            // get bounding box of object - this will be used to setup controls and camera
-            boundingBox.setFromObject(mesh);
-
+            boundingBox = new THREE.Box3().setFromObject(object);
+            size = boundingBox.getSize();
             const center = boundingBox.getCenter();
-
-            const size = boundingBox.getSize();
 
             // get the max side of the bounding box (fits to width OR height as needed )
             const maxDim = Math.max(size.x, size.y, size.z);
             //const fov = camera.fov * (Math.PI / 180);
             //let cameraZ = Math.abs((maxDim / 4) * Math.tan(fov * 2));
-            camera.position.z = maxDim + 80;
-            camera.position.y = maxDim + 100;
+            camera.position.z = maxDim;
+            camera.position.y = maxDim;
 
             controls.target = center;
 
@@ -222,13 +196,15 @@ class Model extends React.Component {
             label.scale.y = canvas.height * labelBaseScale;
 
             scene.add(root);
+
+            renderer.domElement.style.display = "none";
+
             return root;
         }
     }
-
     render() {
-        return <div id="modelview" ref={this.mount} />;
+        return <div id="gcodeView" ref={this.mount}></div>;
     }
 }
 
-export default Model;
+export default Gcode;

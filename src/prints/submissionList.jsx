@@ -28,7 +28,7 @@ class SubmissionList extends React.Component {
         });
 
         axios
-            .post("/prints", {
+            .post("/submissions", {
                 status: status,
                 printingLocation: printingLocation,
                 pickupLocation: pickupLocation,

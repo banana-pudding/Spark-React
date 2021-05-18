@@ -66,7 +66,7 @@ class GCodeLoader extends Loader {
         pathMaterial.name = "path";
 
         const extrudingMaterial = new MeshBasicMaterial({
-            color: 0xf035c1,
+            color: 0xff00a8,
             transparent: true,
             opacity: 0.02,
             depthTest: false,

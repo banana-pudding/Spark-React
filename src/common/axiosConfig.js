@@ -20,6 +20,7 @@ instance.interceptors.response.use(
         if (error.response.status == 401) {
             localStorage.removeItem("jwtToken");
             axios.defaults.headers.common["Authorization"] = null;
+            window.location.replace("/");
         }
 
         return Promise.reject(error);

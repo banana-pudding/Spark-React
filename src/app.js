@@ -9,8 +9,9 @@ import Landing from "./home/landing";
 import Login from "./login/login";
 import Profile from "./profile/profile";
 import Submit from "./submit/submit";
-import SubmissionList from "./prints/submissionList";
+import SubmissionList from "./multiFileList/submissionList";
 import FilePreview from "./singleFileView/filePreview";
+import AllPrinters from "./allPrinters/viewPrinters";
 import Footer from "./common/footer";
 
 class App extends React.Component {
@@ -65,6 +66,9 @@ class App extends React.Component {
                         </ProtectedRoute>
                         <ProtectedRoute path="/files" user={this.state.user}>
                             <FilePreview user={this.state.user} />
+                        </ProtectedRoute>
+                        <ProtectedRoute path="/printers" user={this.state.user}>
+                            <AllPrinters user={this.state.user} />
                         </ProtectedRoute>
                     </Switch>
                     <Footer />

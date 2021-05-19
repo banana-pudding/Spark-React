@@ -29,20 +29,28 @@ class FilePreview extends React.Component {
     }
 
     render() {
+        const reviewForm = () => {
+            if (this.state.file.status == "UNREVIEWED" || this.state.file.status == "REVIEWED") {
+                return <ReviewForm submission={this.state.submission} file={this.state.file} />;
+            } else {
+                return null;
+            }
+        };
+
         if (this.state.submission && this.state.file) {
             return (
                 <div className="container-fluid px-5 mt-5">
                     <div className="row mb-3">
                         <div className="col-4">
-                            <Patron submission={this.state.submission} />
+                            {/* <Patron submission={this.state.submission} /> */}
                             <ModelDisplay fileID={window.location.pathname.split("/files/")[1]} />
                         </div>
                         <div className="col-4">
                             <RequestAndReview submission={this.state.submission} file={this.state.file} />
-                            <InternalNotes submission={this.state.submission} file={this.state.file} />
                         </div>
                         <div className="col-4">
-                            <ReviewForm submission={this.state.submission} file={this.state.file} />
+                            <InternalNotes submission={this.state.submission} file={this.state.file} />
+                            {reviewForm()}
                         </div>
                     </div>
                     <div className="row"></div>

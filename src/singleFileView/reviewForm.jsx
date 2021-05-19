@@ -8,15 +8,15 @@ class ReviewForm extends React.Component {
         super(props);
         this.state = {
             descision: props.file.review.decision || "Accepted",
-            gcode: props.file.review.originalGcodeName || null,
-            slicedHours: props.file.review.slicedHours || 0,
-            slicedMinutes: props.file.review.slicedMinutes || 0,
-            slicedGrams: props.file.review.slicedGrams || 0,
-            slicedPrinter: props.file.review.slicedPrinter || "",
-            slicedMaterial: props.file.review.slicedMaterial || "",
-            patronNotes: props.file.review.patronNotes || "",
+            gcode: null,
+            slicedHours: 0,
+            slicedMinutes: 0,
+            slicedGrams: 0,
+            slicedPrinter: "",
+            slicedMaterial: "",
+            patronNotes: "",
             internalNotes: "",
-            timestampReviewed: props.file.review.timestampReviewed || null,
+            timestampReviewed: null,
             parseResults: null,
         };
 

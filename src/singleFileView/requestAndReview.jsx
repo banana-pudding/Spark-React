@@ -33,7 +33,7 @@ class RequestAndReview extends React.Component {
                     responseType: "blob",
                 })
                 .then((res) => {
-                    fileDownload(res.data, this.props.file.originalFileName);
+                    fileDownload(res.data, this.props.file.fileName);
                 });
         };
 
@@ -43,12 +43,21 @@ class RequestAndReview extends React.Component {
                     responseType: "blob",
                 })
                 .then((res) => {
-                    fileDownload(res.data, this.props.file.review.originalGcodeName);
+                    fileDownload(res.data, this.props.file.review.gcodeName);
                 });
         };
 
         return (
             <div className="card shadow mb-3">
+                <div className="card-header bg-transparent border-b">
+                    <h5 className="mb-0">
+                        {submission.patron.fname} {submission.patron.lname}
+                    </h5>
+                    <p className="text-muted small mb-2">
+                        {submission.patron.email} - {submission.patron.phone} - {submission.patron.euid}
+                    </p>
+                    <p className="text-center mb-0 fw-bold">{formatDate(submission.timestampSubmitted)}</p>
+                </div>
                 <div className="card-body">
                     <div className="d-flex flex-column">
                         <small className="text-muted">{formatDate(submission.timestampSubmitted)}</small>
@@ -64,11 +73,11 @@ class RequestAndReview extends React.Component {
 
                                 <div>
                                     <div
-                                        className="h4 mb-2 mt-1 link-primary"
+                                        className="h4 mb-2 mt-1 link-primary text-break"
                                         onClick={() => {
                                             downloadSTL();
                                         }}>
-                                        {file.originalFileName}
+                                        {file.fileName}
                                     </div>
                                     <div className="row">
                                         <div className="col-auto">
@@ -109,16 +118,16 @@ class RequestAndReview extends React.Component {
                                     className="stl-image link-primary"
                                     src={GcodeImage}
                                     onClick={() => {
-                                        downloadSTL();
+                                        downloadGCODE();
                                     }}
                                 />
                                 <div>
                                     <div
-                                        className="mb-2 mt-1 h4 link-primary"
+                                        className="mb-2 mt-1 h4 link-primary text-break"
                                         onClick={() => {
-                                            downloadSTL();
+                                            downloadGCODE();
                                         }}>
-                                        {file.review.originalGcodeName || file.review.gcodeName}
+                                        {file.review.gcodeName}
                                     </div>
                                     <div className="row">
                                         <div className="col-auto">

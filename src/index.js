@@ -7,7 +7,7 @@ import "bootstrap/scss/bootstrap.scss";
 import "bootstrap/dist/js/bootstrap.min.js";
 
 //components
-import App from "./router.js";
+import App from "./app.js";
 
 function Base() {
     return (

@@ -101,7 +101,7 @@ class SingleSubmission extends React.Component {
                                             <tr>
                                                 <td>
                                                     <a class="no font-weight-bold" href={"/files/" + file._id}>
-                                                        {file.originalFileName}
+                                                        {file.fileName}
                                                     </a>
                                                 </td>
                                                 <td>{file.status}</td>

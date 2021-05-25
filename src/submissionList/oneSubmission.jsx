@@ -53,8 +53,8 @@ class SingleSubmission extends React.Component {
 
         return (
             <div className="card shadow mb-3" key={this.props.index}>
-                <div className="card-header">
-                    <h5 className="mb-0">
+                <div className="card-body">
+                    <h5 className="card-title">
                         {this.state.item.patron.fname + " " + this.state.item.patron.lname}
                         <button
                             type="button"
@@ -67,8 +67,13 @@ class SingleSubmission extends React.Component {
                             <DownloadIcon />
                         </button>
                     </h5>
-                </div>
-                <div className="card-body">
+                    <h6 className="card-subtitle mb-2 text-muted">
+                        {this.state.item.isForClass
+                            ? "Class Submission"
+                            : this.state.item.isForDepartment
+                            ? "Departmental Submission"
+                            : "Personal Submission"}
+                    </h6>
                     <div className="row">
                         <div className="col-auto">
                             <table className="table table-borderless table-sm">
@@ -98,7 +103,7 @@ class SingleSubmission extends React.Component {
                                 <tbody>
                                     {this.state.item.files.map((file, index) => {
                                         return (
-                                            <tr>
+                                            <tr key={index}>
                                                 <td>
                                                     <a className="no font-weight-bold" href={"/files/" + file._id}>
                                                         {file.fileName}

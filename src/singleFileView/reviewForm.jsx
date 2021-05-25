@@ -1,28 +1,44 @@
 import React from "react";
 import axios from "../common/axiosConfig";
 import { parseGcode } from "./res/gcodeAnalyzer";
-import "./css/review.css";
+import ParseModal from "./gcodeParseModal";
+import UploadModal from "./submitReviewModal";
+import "./css/review.scss";
+import { Modal } from "bootstrap";
 
 class ReviewForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             descision: props.file.review.decision || "Accepted",
+            autoParse: true,
+            show: false,
             gcode: null,
             slicedHours: 0,
             slicedMinutes: 0,
             slicedGrams: 0,
-            slicedPrinter: "",
-            slicedMaterial: "",
-            patronNotes: "",
-            internalNotes: "",
+            slicedPrinter: null,
+            slicedMaterial: null,
+            patronNotes: null,
+            internalNotes: null,
             timestampReviewed: null,
             parseResults: null,
         };
-
+        this.parseModal = React.createRef();
+        this.uploadModal = React.createRef();
         this.handleDescisionChange = this.handleDescisionChange.bind(this);
         this.handleGcodeUpload = this.handleGcodeUpload.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        this.parseModalBS = new Modal(this.parseModal.current);
+        this.uploadModalBS = new Modal(this.uploadModal.current);
+    }
+
+    componentDidUpdate() {
+        this.parseModalBS = new Modal(this.parseModal.current);
+        this.uploadModalBS = new Modal(this.uploadModal.current);
     }
 
     handleDescisionChange(e) {
@@ -36,23 +52,34 @@ class ReviewForm extends React.Component {
         this.setState({
             gcode: file,
         });
+        if (this.state.autoParse) {
+            let inst = Modal.getInstance(this.parseModal.current);
+            this.parseModal.current.addEventListener("shown.bs.modal", (e) => {
+                var fileReader = new FileReader();
+                fileReader.onloadend = () => {
+                    var content = fileReader.result;
+                    parseGcode(content).then((output) => {
+                        inst.hide();
+                        var results = output;
+                        var printSeconds = results.printTime;
+                        var hours = Math.floor(printSeconds / 3600);
+                        printSeconds %= 3600;
+                        var minutes = Math.floor(printSeconds / 60);
 
-        var fileReader = new FileReader();
-        fileReader.onloadend = () => {
-            var content = fileReader.result;
-            var results = parseGcode(content);
-            var printSeconds = results.printTime;
-            var hours = Math.floor(printSeconds / 3600);
-            printSeconds %= 3600;
-            var minutes = Math.floor(printSeconds / 60);
-            this.setState({
-                parseResults: results,
-                slicedGrams: Math.round(results.plaWeight),
-                slicedHours: hours,
-                slicedMinutes: minutes,
+                        this.setState({
+                            parseResults: results,
+                            slicedGrams: Math.round(results.plaWeight),
+                            slicedHours: hours,
+                            slicedMinutes: minutes,
+                            slicedPrinter: results.extractedPrinter,
+                            slicedMaterial: results.extractedFilament,
+                        });
+                    });
+                };
+                fileReader.readAsText(file);
             });
-        };
-        fileReader.readAsText(file);
+            inst.show();
+        }
     }
 
     handleSubmit() {
@@ -85,7 +112,7 @@ class ReviewForm extends React.Component {
 
     render() {
         const acceptedControls = () => {
-            if (this.state.descision == "Accepted") {
+            if (this.state.descision === "Accepted") {
                 return (
                     <div>
                         <h5>Slicing Details</h5>
@@ -94,88 +121,117 @@ class ReviewForm extends React.Component {
                             be calulated automatically.
                         </p>
                         <div className="mb-3">
-                            <input
-                                className="form-control"
-                                type="file"
-                                id="gcodeFile"
-                                required
-                                onChange={this.handleGcodeUpload}
-                            />
-                        </div>
-
-                        <div className="row mb-3">
-                            <div className="col">
+                            <div className="input-group">
                                 <input
-                                    type="number"
                                     className="form-control"
+                                    type="file"
+                                    id="gcodeFile"
                                     required
-                                    value={this.state.slicedHours}
-                                    onChange={(e) => {
-                                        this.setState({
-                                            slicedHours: e.target.value,
-                                        });
+                                    onInput={(e) => {
+                                        this.handleGcodeUpload(e);
                                     }}
                                 />
-                                <label className="small">Hours</label>
-                            </div>
-                            <div className="col">
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    required
-                                    value={this.state.slicedMinutes}
-                                    onChange={(e) => {
-                                        this.setState({
-                                            slicedMinutes: e.target.value,
-                                        });
-                                    }}
-                                />
-                                <label className="small">Minutes</label>
-                            </div>
-                            <div className="col">
-                                <input
-                                    type="number"
-                                    className="form-control"
-                                    required
-                                    value={this.state.slicedGrams}
-                                    onChange={(e) => {
-                                        this.setState({
-                                            slicedGrams: e.target.value,
-                                        });
-                                    }}
-                                />
-                                <label className="small">Weight</label>
+                                <span className="input-group-text">
+                                    <input
+                                        className="form-check-input mt-0"
+                                        type="checkbox"
+                                        checked={this.state.autoParse}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                autoParse: !this.state.autoParse,
+                                            });
+                                        }}
+                                    />
+                                    <label className="form-check-label ms-2">Auto Parse</label>
+                                </span>
                             </div>
                         </div>
 
+                        <div className="row mb-1">
+                            <div className="col">
+                                <div className="form-floating mb-3">
+                                    <input
+                                        type="number"
+                                        required
+                                        value={this.state.slicedHours}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                slicedHours: e.target.value,
+                                            });
+                                        }}
+                                        className="form-control"
+                                        placeholder="0"
+                                    />
+                                    <label>Hours</label>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-floating mb-3">
+                                    <input
+                                        type="number"
+                                        required
+                                        value={this.state.slicedMinutes}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                slicedMinutes: e.target.value,
+                                            });
+                                        }}
+                                        className="form-control"
+                                        placeholder="0"
+                                    />
+                                    <label>Minutes</label>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="form-floating mb-3">
+                                    <input
+                                        type="number"
+                                        required
+                                        value={this.state.slicedGrams}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                slicedGrams: e.target.value,
+                                            });
+                                        }}
+                                        className="form-control"
+                                        placeholder="0"
+                                    />
+                                    <label>Weight</label>
+                                </div>
+                            </div>
+                        </div>
                         <div className="row">
                             <div className="col">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    required
-                                    value={this.state.slicedPrinter}
-                                    onChange={(e) => {
-                                        this.setState({
-                                            slicedPrinter: e.target.value,
-                                        });
-                                    }}
-                                />
-                                <label className="small">Printer</label>
+                                <div className="form-floating mb-3">
+                                    <input
+                                        type="text"
+                                        required
+                                        value={this.state.slicedPrinter}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                slicedPrinter: e.target.value,
+                                            });
+                                        }}
+                                        className="form-control"
+                                    />
+                                    <label>Printer</label>
+                                </div>
                             </div>
                             <div className="col">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    required
-                                    value={this.state.slicedMaterial}
-                                    onChange={(e) => {
-                                        this.setState({
-                                            slicedMaterial: e.target.value,
-                                        });
-                                    }}
-                                />
-                                <label className="small">Material</label>
+                                <div className="form-floating mb-3">
+                                    <input
+                                        type="text"
+                                        required
+                                        value={this.state.slicedMaterial}
+                                        onChange={(e) => {
+                                            this.setState({
+                                                slicedMaterial: e.target.value,
+                                            });
+                                        }}
+                                        className="form-control"
+                                    />
+                                    <label>Material</label>
+                                </div>
                             </div>
                         </div>
 
@@ -207,32 +263,30 @@ class ReviewForm extends React.Component {
 
                         {acceptedControls()}
 
-                        <div className="mb-3">
-                            <h5>Notes To Patron</h5>
+                        <div className="form-floating mb-3">
                             <textarea
+                                className="form-control floating-textarea"
                                 value={this.state.patronNotes}
                                 required
-                                className="form-control"
-                                rows="3"
                                 onChange={(e) => {
                                     this.setState({
                                         patronNotes: e.target.value,
                                     });
                                 }}></textarea>
+                            <label>Notes to Patron</label>
                         </div>
 
-                        <div className="mb-3">
-                            <h5>Internal Technician Notes</h5>
+                        <div className="form-floating mb-3">
                             <textarea
+                                className="form-control floating-textarea"
                                 value={this.state.internalNotes}
                                 required
-                                className="form-control"
-                                rows="3"
                                 onChange={(e) => {
                                     this.setState({
                                         internalNotes: e.target.value,
                                     });
                                 }}></textarea>
+                            <label>Internal Notes</label>
                         </div>
 
                         <button
@@ -246,6 +300,9 @@ class ReviewForm extends React.Component {
                         </button>
                     </form>
                 </div>
+
+                <ParseModal ref={this.parseModal} />
+                <UploadModal ref={this.uploadModal} />
             </div>
         );
     }

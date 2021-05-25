@@ -58,17 +58,17 @@ class GCodeLoader extends Loader {
         let currentLayer = undefined;
 
         const pathMaterial = new MeshBasicMaterial({
-            color: 0xff0000,
+            color: 0x00aaff,
             transparent: true,
-            opacity: 1,
+            opacity: 0.05,
             depthTest: false,
         });
         pathMaterial.name = "path";
 
         const extrudingMaterial = new MeshBasicMaterial({
-            color: 0xff00a8,
+            color: 0xc026ff,
             transparent: true,
-            opacity: 0.02,
+            opacity: 0.1,
             depthTest: false,
         });
         extrudingMaterial.name = "extruded";
@@ -88,8 +88,8 @@ class GCodeLoader extends Loader {
                 currentLayer.vertex.push(p1.x, p1.y, p1.z);
                 currentLayer.vertex.push(p2.x, p2.y, p2.z);
             } else {
-                //currentLayer.pathVertex.push(p1.x, p1.y, p1.z);
-                //currentLayer.pathVertex.push(p2.x, p2.y, p2.z);
+                currentLayer.pathVertex.push(p1.x, p1.y, p1.z);
+                currentLayer.pathVertex.push(p2.x, p2.y, p2.z);
             }
         }
 
@@ -162,13 +162,11 @@ class GCodeLoader extends Loader {
         }
 
         function addObject(vertex, extruding, i) {
-            if (extruding) {
-                const geometry = new BufferGeometry();
-                geometry.setAttribute("position", new Float32BufferAttribute(vertex, 3));
-                const segments = new LineSegments(geometry, extrudingMaterial);
-                segments.name = "layer" + i;
-                object.add(segments);
-            }
+            const geometry = new BufferGeometry();
+            geometry.setAttribute("position", new Float32BufferAttribute(vertex, 3));
+            const segments = new LineSegments(geometry, extruding ? extrudingMaterial : pathMaterial);
+            segments.name = "layer" + i;
+            object.add(segments);
         }
 
         const object = new Group();
@@ -181,17 +179,24 @@ class GCodeLoader extends Loader {
             }
         } else {
             const vertex = [];
+            const pathVertex = [];
 
             for (let i = 0; i < layers.length; i++) {
                 const layer = layers[i];
                 const layerVertex = layer.vertex;
+                const layerPathVertex = layer.pathVertex;
 
                 for (let j = 0; j < layerVertex.length; j++) {
                     vertex.push(layerVertex[j]);
                 }
+
+                for (let j = 0; j < layerPathVertex.length; j++) {
+                    pathVertex.push(layerPathVertex[j]);
+                }
             }
 
             addObject(vertex, true, layers.length);
+            addObject(pathVertex, false, layers.length);
         }
 
         object.quaternion.setFromEuler(new Euler(-Math.PI / 2, 0, 0));

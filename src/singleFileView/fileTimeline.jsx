@@ -7,7 +7,7 @@ function FilePreview(props) {
     console.log(file);
     console.log(patron);
     return (
-        <div class="col">
+        <div className="col">
             <ul className="list-group list-group-horizontal shadow">
                 <li className="list-group-item flex-fill">
                     <div>

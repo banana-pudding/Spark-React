@@ -32,3 +32,8 @@
 #loginComponent {
     margin-bottom: 100px;
 }
+
+.table > :not(:last-child) > :last-child > * {
+    border-bottom-color: #dee2e6 !important;
+    border-bottom-width: 2px !important;
+}

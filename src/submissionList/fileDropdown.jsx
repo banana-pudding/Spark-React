@@ -53,6 +53,7 @@ class Dropdown extends React.Component {
                     <li>
                         <a
                             className="dropdown-item"
+                            href=""
                             onClick={() => {
                                 this.handleDelete();
                             }}>
@@ -62,6 +63,7 @@ class Dropdown extends React.Component {
                     <li>
                         <a
                             className="dropdown-item"
+                            href=""
                             onClick={() => {
                                 this.handleRequestPayment();
                             }}>
@@ -71,6 +73,7 @@ class Dropdown extends React.Component {
                     <li>
                         <a
                             className="dropdown-item"
+                            href=""
                             onClick={() => {
                                 this.handleWaive();
                             }}>

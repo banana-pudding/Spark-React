@@ -3,22 +3,18 @@ import "./landing.css";
 import React from "react";
 
 class Landing extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         return (
-            <div class="container mt-5 px-5">
-                <div class="row">
-                    <div class="col">
-                        <div class="card shadow mb-4">
-                            <div class="row g-0">
-                                <div class="col-md-5 image-col"></div>
-                                <div class="col-md-7">
-                                    <div class="card-body">
-                                        <h4 class="card-title">3D Printing</h4>
-                                        <p class="card-text">
+            <div className="container mt-5 px-5">
+                <div className="row">
+                    <div className="col">
+                        <div className="card shadow mb-4">
+                            <div className="row g-0">
+                                <div className="col-md-5 image-col"></div>
+                                <div className="col-md-7">
+                                    <div className="card-body">
+                                        <h4 className="card-title">3D Printing</h4>
+                                        <p className="card-text">
                                             Welcome to The Spark Makerspace 3D printing services! This queue is for full
                                             service print submissions. Full service within The Spark generally costs
                                             $1.00 per print hour and includes:
@@ -37,7 +33,7 @@ class Landing extends React.Component {
                                                 </ul>
                                             </li>
                                         </ul>
-                                        <p class="card-text">
+                                        <p className="card-text">
                                             Please visit
                                             <a href="https://guides.library.unt.edu/spark">The Spark</a>
                                             website for more information about the 3D printers we have in our
@@ -49,11 +45,11 @@ class Landing extends React.Component {
                         </div>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col">
-                        <div class="card shadow mb-4">
-                            <div class="card-body">
-                                <h4 class="card-title">Submission Process</h4>
+                <div className="row">
+                    <div className="col">
+                        <div className="card shadow mb-4">
+                            <div className="card-body">
+                                <h4 className="card-title">Submission Process</h4>
                                 <ul>
                                     <li>
                                         Complete Contact information- All communication is via email, please confirm
@@ -87,8 +83,8 @@ class Landing extends React.Component {
                                 </ul>
                             </div>
                         </div>
-                        <div class="card shadow">
-                            <div class="card-body">
+                        <div className="card shadow">
+                            <div className="card-body">
                                 <p>
                                     The Spark is not allowed to make changes to submitted files, so please verify the
                                     print files meet your desired expectations before submitting. 3D prints often
@@ -105,10 +101,10 @@ class Landing extends React.Component {
                             </div>
                         </div>
                     </div>
-                    <div class="col">
-                        <div class="card mb-4 shadow">
-                            <div class="card-body">
-                                <h4 class="card-title">Expectations:</h4>
+                    <div className="col">
+                        <div className="card mb-4 shadow">
+                            <div className="card-body">
+                                <h4 className="card-title">Expectations:</h4>
                                 <ul>
                                     <li>Timeline</li>
                                     <ul>
@@ -139,13 +135,15 @@ class Landing extends React.Component {
                                 </ul>
                             </div>
                         </div>
-                        <div class="card shadow">
-                            <div class="card-body">
-                                <p class="card-text">
+                        <div className="card shadow">
+                            <div className="card-body">
+                                <p className="card-text">
                                     *Please let us know if you are not receiving communications within the standard
                                     timelines above
                                 </p>
-                                <p class="card-text">**Approval email will include the link to the payment portal</p>
+                                <p className="card-text">
+                                    **Approval email will include the link to the payment portal
+                                </p>
                             </div>
                         </div>
                     </div>

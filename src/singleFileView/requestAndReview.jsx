@@ -49,7 +49,7 @@ class RequestAndReview extends React.Component {
 
         return (
             <div className="card shadow mb-3">
-                <div className="card-header bg-transparent border-b">
+                <div className="card-header bg-transparent">
                     <h5 className="mb-0">
                         {submission.patron.fname} {submission.patron.lname}
                     </h5>
@@ -66,6 +66,7 @@ class RequestAndReview extends React.Component {
                                 <img
                                     className="stl-image link-primary"
                                     src={StlImage}
+                                    alt="Download STL"
                                     onClick={() => {
                                         downloadSTL();
                                     }}
@@ -117,6 +118,7 @@ class RequestAndReview extends React.Component {
                                 <img
                                     className="stl-image link-primary"
                                     src={GcodeImage}
+                                    alt="Download GCODE"
                                     onClick={() => {
                                         downloadGCODE();
                                     }}

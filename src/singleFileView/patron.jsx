@@ -2,10 +2,6 @@ import React from "react";
 import { formatDate } from "../common/utils";
 
 class Patron extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     render() {
         let submission = this.props.submission;
 

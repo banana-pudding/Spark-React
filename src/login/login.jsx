@@ -1,5 +1,4 @@
-import { Link } from "react-router-dom";
-import React, { useState, useEffect } from "react";
+import React from "react";
 import axios from "../common/axiosConfig";
 class LoginPage extends React.Component {
     constructor(props) {
@@ -23,12 +22,12 @@ class LoginPage extends React.Component {
 
     render() {
         return (
-            <div class="container mt-5 custom col-sm-6 offset-sm-3" id="loginComponent">
-                <div class="shadow card">
-                    <div class="card-body">
+            <div className="container mt-5 custom col-sm-6 offset-sm-3" id="loginComponent">
+                <div className="shadow card">
+                    <div className="card-body">
                         <h1>
                             <svg
-                                class="bi bi-person"
+                                className="bi bi-person"
                                 width="1em"
                                 height="1em"
                                 viewBox="0 0 16 16"
@@ -46,11 +45,11 @@ class LoginPage extends React.Component {
                         <hr />
 
                         <form>
-                            <div class="mb-3">
-                                <label class="sr-only">EUID</label>
+                            <div className="mb-3">
+                                <label className="sr-only">EUID</label>
                                 <input
                                     type="text"
-                                    class="form-control"
+                                    className="form-control"
                                     name="username"
                                     placeholder="EUID"
                                     value={this.state.username}
@@ -61,11 +60,11 @@ class LoginPage extends React.Component {
                                     }}
                                 />
                             </div>
-                            <div class="mb-3">
-                                <label class="sr-only">Password</label>
+                            <div className="mb-3">
+                                <label className="sr-only">Password</label>
                                 <input
                                     type="password"
-                                    class="form-control"
+                                    className="form-control"
                                     name="password"
                                     placeholder="Password"
                                     value={this.state.password}
@@ -77,7 +76,7 @@ class LoginPage extends React.Component {
                                 />
                             </div>
                         </form>
-                        <button class="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit.bind(this)}>
+                        <button className="btn btn-lg btn-primary btn-block" onClick={this.handleSubmit.bind(this)}>
                             Login
                         </button>
                     </div>

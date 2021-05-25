@@ -3,7 +3,10 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { GCodeLoader } from "./res/customGcodeLoader";
-import { GUI } from "three/examples/jsm/libs/dat.gui.module";
+import { HexColorPicker, RgbaColorPicker } from "react-colorful";
+//import { GUI } from "three/examples/jsm/libs/dat.gui.module";
+
+import { GUI } from "dat.gui";
 import "./css/modelPreview.scss";
 
 class ModelDisplay extends React.Component {
@@ -11,9 +14,18 @@ class ModelDisplay extends React.Component {
         super(props);
         this.state = {
             fileID: props.fileID,
+            showSTL: true,
+            stlColor: { r: 255, g: 115, b: 222, a: 1 },
+            showGCODE: false,
+            showGCODETravel: false,
+            extrudeColor: { a: 0.04, b: 255, g: 38, r: 192 },
+            travelColor: { r: 0, g: 170, b: 255, a: 0.02 },
         };
         this.mount = React.createRef();
         this.controls = React.createRef();
+        this.gcodeControls = React.createRef();
+        this.gcodeModel = null;
+        this.stlModel = null;
     }
 
     updateDimensions = (renderer, camera) => {
@@ -183,6 +195,9 @@ class ModelDisplay extends React.Component {
                             color: 0xff73de,
                             specular: 0x4c4c4c,
                             shininess: 40,
+                            transparent: true,
+                            opacity: 1,
+                            depthTest: true,
                         });
 
                         /* ------------------- Mesh from geometry and add to scene ------------------ */
@@ -225,7 +240,6 @@ class ModelDisplay extends React.Component {
                     "/download/gcode/" + this.state.fileID,
                     function (object) {
                         const boundingBox = new THREE.Box3().setFromObject(object);
-                        const size = boundingBox.getSize();
                         const middle = boundingBox.getCenter();
 
                         object.translateX(-middle.x);
@@ -246,59 +260,154 @@ class ModelDisplay extends React.Component {
         const stlPromise = loadSTLFile();
         const gcodePromise = loadGCODEFile();
 
-        var controller = new (function () {
-            this.modelColor = 0xff73de;
-            this.gcodeColor = 0xff00a8;
-            this.gcodeOpacity = 0.03;
-        })();
-
-        function dec2hex(i) {
-            var result = "0x000000";
-            if (i >= 0 && i <= 15) {
-                result = "0x00000" + i.toString(16);
-            } else if (i >= 16 && i <= 255) {
-                result = "0x0000" + i.toString(16);
-            } else if (i >= 256 && i <= 4095) {
-                result = "0x000" + i.toString(16);
-            } else if (i >= 4096 && i <= 65535) {
-                result = "0x00" + i.toString(16);
-            } else if (i >= 65535 && i <= 1048575) {
-                result = "0x0" + i.toString(16);
-            } else if (i >= 1048575) {
-                result = "0x" + i.toString(16);
-            }
-            if (result.length == 8) {
-                return result;
-            }
-        }
-
         stlPromise.then((stlModel) => {
-            var gui = new GUI({ autoPlace: false });
-            this.controls.current.appendChild(gui.domElement);
-            gui.add(stlModel, "visible").name("Show STL File");
-            gui.addColor(controller, "modelColor", color).onChange(function () {
-                stlModel.material.color.setHex(dec2hex(controller.modelColor));
-            });
+            this.stlModel = stlModel;
+        });
 
-            gcodePromise.then((gcodeModel) => {
-                gcodeModel.visible = false;
-                console.log(gcodeModel);
-                gui.add(gcodeModel, "visible").name("Show GCODE File");
-                gui.addColor(controller, "gcodeColor").onChange(function () {
-                    gcodeModel.children[0].material.color.setHex(dec2hex(controller.gcodeColor));
-                });
-                gui.add(controller, "gcodeOpacity", 0, 1).onChange(function () {
-                    gcodeModel.children[0].material.opacity = controller.gcodeOpacity;
-                });
-            });
+        gcodePromise.then((gcodeModel) => {
+            this.gcodeModel = gcodeModel;
+            gcodeModel.children[0].visible = false;
+            gcodeModel.children[1].visible = false;
         });
     }
+
+    rgba2hexAndAlpha = (rgba) => {
+        let r = rgba.r.toString(16);
+        let g = rgba.g.toString(16);
+        let b = rgba.b.toString(16);
+
+        if (r.length == 1) r = "0" + r;
+        if (g.length == 1) g = "0" + g;
+        if (b.length == 1) b = "0" + b;
+
+        return {
+            hex: "0x" + r + g + b,
+            alpha: rgba.a,
+        };
+    };
 
     render() {
         return (
             <div className="card shadow mb-3">
-                <div id="model-controls" ref={this.controls}></div>
                 <div id="canvas-wrapper" ref={this.mount} />
+                <div className="card-body border-top">
+                    <div className="row">
+                        <div className="col">
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="flexCheckDefault"
+                                    checked={this.state.showSTL}
+                                    onChange={() => {
+                                        this.setState(
+                                            {
+                                                showSTL: !this.state.showSTL,
+                                            },
+                                            () => {
+                                                this.stlModel.visible = this.state.showSTL;
+                                            }
+                                        );
+                                    }}
+                                />
+                                <label className="form-check-label">STL File</label>
+                            </div>
+                            <RgbaColorPicker
+                                color={this.state.stlColor}
+                                onChange={(newColor) => {
+                                    this.setState(
+                                        {
+                                            stlColor: newColor,
+                                        },
+                                        () => {
+                                            let hexAlpha = this.rgba2hexAndAlpha(newColor);
+                                            this.stlModel.material.color.setHex(hexAlpha.hex);
+                                            this.stlModel.material.opacity = hexAlpha.alpha;
+
+                                            if (hexAlpha.alpha < 1) {
+                                                this.stlModel.material.depthTest = false;
+                                            } else {
+                                                this.stlModel.material.depthTest = true;
+                                            }
+                                        }
+                                    );
+                                }}
+                            />
+                        </div>
+                        <div className="col">
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="flexCheckDefault"
+                                    checked={this.state.showGCODE}
+                                    onChange={() => {
+                                        this.setState(
+                                            {
+                                                showGCODE: !this.state.showGCODE,
+                                            },
+                                            () => {
+                                                this.gcodeModel.children[0].visible = this.state.showGCODE;
+                                            }
+                                        );
+                                    }}
+                                />
+                                <label className="form-check-label">GCODE File</label>
+                            </div>
+                            <RgbaColorPicker
+                                color={this.state.extrudeColor}
+                                onChange={(newColor) => {
+                                    this.setState(
+                                        {
+                                            extrudeColor: newColor,
+                                        },
+                                        () => {
+                                            let hexAlpha = this.rgba2hexAndAlpha(newColor);
+                                            this.gcodeModel.children[0].material.color.setHex(hexAlpha.hex);
+                                            this.gcodeModel.children[0].material.opacity = hexAlpha.alpha;
+                                        }
+                                    );
+                                }}
+                            />
+                        </div>
+                        <div className="col">
+                            <div className="form-check">
+                                <input
+                                    className="form-check-input"
+                                    type="checkbox"
+                                    id="flexCheckDefault"
+                                    checked={this.state.showGCODETravel}
+                                    onChange={() => {
+                                        this.setState(
+                                            {
+                                                showGCODETravel: !this.state.showGCODETravel,
+                                            },
+                                            () => {
+                                                this.gcodeModel.children[1].visible = this.state.showGCODETravel;
+                                            }
+                                        );
+                                    }}
+                                />
+                                <label className="form-check-label">GCODE Travels</label>
+                            </div>
+                            <RgbaColorPicker
+                                color={this.state.travelColor}
+                                onChange={(newColor) => {
+                                    this.setState(
+                                        {
+                                            travelColor: newColor,
+                                        },
+                                        () => {
+                                            let hexAlpha = this.rgba2hexAndAlpha(newColor);
+                                            this.gcodeModel.children[1].material.color.setHex(hexAlpha.hex);
+                                            this.gcodeModel.children[1].material.opacity = hexAlpha.alpha;
+                                        }
+                                    );
+                                }}
+                            />
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

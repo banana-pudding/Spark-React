@@ -75,10 +75,10 @@ class SubmissionPage extends React.Component {
 
     deleteFile(index) {
         console.log(index);
-        if (index != 0) {
+        if (index !== 0) {
             var newFiles = [];
             for (var i = 0; i < this.state.files.length; i++) {
-                if (i != index) {
+                if (i !== index) {
                     newFiles.push(this.state.files[i]);
                 }
             }
@@ -90,13 +90,13 @@ class SubmissionPage extends React.Component {
 
     render() {
         return (
-            <div class="container-xl mt-5">
-                <div class="col-8 offset-2">
-                    <div class="shadow card">
-                        <div class="card-header">
+            <div className="container-xl mt-5">
+                <div className="col-8 offset-2">
+                    <div className="shadow card">
+                        <div className="card-header">
                             <h1>New Submission</h1>
                         </div>
-                        <div class="card-body">
+                        <div className="card-body">
                             <form
                                 id="submission-form"
                                 action="/submitprint"
@@ -108,10 +108,10 @@ class SubmissionPage extends React.Component {
                                     automated email notifications, as well as for further communication if our staff
                                     needs more information to complete your request.
                                 </p>
-                                <div class="input-group">
+                                <div className="input-group">
                                     <input
                                         type="text"
-                                        class="form-control top border-bottom-0"
+                                        className="form-control top border-bottom-0"
                                         name="first"
                                         placeholder="First name"
                                         value={this.state.fname}
@@ -124,7 +124,7 @@ class SubmissionPage extends React.Component {
                                     />
                                     <input
                                         type="text"
-                                        class="form-control top border-bottom-0"
+                                        className="form-control top border-bottom-0"
                                         name="last"
                                         placeholder="Last name"
                                         value={this.state.lname}
@@ -138,7 +138,7 @@ class SubmissionPage extends React.Component {
                                 </div>
                                 <input
                                     type="email"
-                                    class="form-control inner border-bottom-0"
+                                    className="form-control inner border-bottom-0"
                                     name="email"
                                     placeholder="Email"
                                     value={this.state.email}
@@ -151,7 +151,7 @@ class SubmissionPage extends React.Component {
                                 />
                                 <input
                                     type="text"
-                                    class="form-control euid inner border-bottom-0"
+                                    className="form-control euid inner border-bottom-0"
                                     name="euid"
                                     placeholder="EUID (students only, not required)"
                                     value={this.state.euid}
@@ -163,7 +163,7 @@ class SubmissionPage extends React.Component {
                                 />
                                 <input
                                     type="tel"
-                                    class="form-control bottom"
+                                    className="form-control bottom"
                                     name="phone"
                                     placeholder="Phone Number"
                                     value={this.state.phone}
@@ -225,11 +225,11 @@ class SubmissionPage extends React.Component {
                                     for an internal library project, or for personal use. More details for each of these
                                     can be found below.
                                 </p>
-                                <ul class="nav nav-tabs nav-justified mb-3" id="myTab" role="tablist">
-                                    <li class="nav-item" role="presentation">
+                                <ul className="nav nav-tabs nav-justified mb-3" id="myTab" role="tablist">
+                                    <li className="nav-item" role="presentation">
                                         <button
                                             className={
-                                                (this.state.submissionType == "personal" ? "active " : "") + "nav-link"
+                                                (this.state.submissionType === "personal" ? "active " : "") + "nav-link"
                                             }
                                             id="personal-tab"
                                             data-bs-toggle="tab"
@@ -237,7 +237,7 @@ class SubmissionPage extends React.Component {
                                             type="button"
                                             role="tab"
                                             aria-controls="personal"
-                                            aria-selected={this.state.submissionType == "personal" ? "true" : "false"}
+                                            aria-selected={this.state.submissionType === "personal" ? "true" : "false"}
                                             onClick={() => {
                                                 this.setState({
                                                     submissionType: "personal",
@@ -251,10 +251,10 @@ class SubmissionPage extends React.Component {
                                             Personal
                                         </button>
                                     </li>
-                                    <li class="nav-item" role="presentation">
+                                    <li className="nav-item" role="presentation">
                                         <button
                                             className={
-                                                (this.state.submissionType == "class" ? "active " : "") + "nav-link"
+                                                (this.state.submissionType === "class" ? "active " : "") + "nav-link"
                                             }
                                             id="class-tab"
                                             data-bs-toggle="tab"
@@ -262,7 +262,7 @@ class SubmissionPage extends React.Component {
                                             type="button"
                                             role="tab"
                                             aria-controls="class"
-                                            aria-selected={this.state.submissionType == "class" ? "true" : "false"}
+                                            aria-selected={this.state.submissionType === "class" ? "true" : "false"}
                                             onClick={() => {
                                                 this.setState({
                                                     submissionType: "class",
@@ -273,10 +273,10 @@ class SubmissionPage extends React.Component {
                                             Class
                                         </button>
                                     </li>
-                                    <li class="nav-item" role="presentation">
+                                    <li className="nav-item" role="presentation">
                                         <button
                                             className={
-                                                (this.state.submissionType == "internal" ? "active " : "") + "nav-link"
+                                                (this.state.submissionType === "internal" ? "active " : "") + "nav-link"
                                             }
                                             id="internal-tab"
                                             data-bs-toggle="tab"
@@ -284,7 +284,7 @@ class SubmissionPage extends React.Component {
                                             type="button"
                                             role="tab"
                                             aria-controls="internal"
-                                            aria-selected={this.state.submissionType == "internal" ? "true" : "false"}
+                                            aria-selected={this.state.submissionType === "internal" ? "true" : "false"}
                                             onClick={() => {
                                                 this.setState({
                                                     submissionType: "internal",
@@ -297,10 +297,10 @@ class SubmissionPage extends React.Component {
                                         </button>
                                     </li>
                                 </ul>
-                                <div class="tab-content" id="myTabContent">
+                                <div className="tab-content" id="myTabContent">
                                     <div
                                         className={
-                                            this.state.submissionType == "personal"
+                                            this.state.submissionType === "personal"
                                                 ? "show active "
                                                 : "" + "tab-pane fade"
                                         }
@@ -322,8 +322,8 @@ class SubmissionPage extends React.Component {
                                         id="class"
                                         role="tabpanel"
                                         aria-labelledby="class-tab">
-                                        <div class="row">
-                                            <div class="col">
+                                        <div className="row">
+                                            <div className="col">
                                                 <p>
                                                     If your submission is for a class assignment or other education
                                                     related purpose, please fill in the following details. If your
@@ -338,12 +338,12 @@ class SubmissionPage extends React.Component {
                                                     status.
                                                 </p>
                                             </div>
-                                            <div class="col">
-                                                <div class="form-group">
+                                            <div className="col">
+                                                <div className="form-group">
                                                     <label for="className">Class Code</label>
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="className"
                                                         name="classCode"
                                                         placeholder="ABCD 1234 (or 'other' for special cases)"
@@ -355,11 +355,11 @@ class SubmissionPage extends React.Component {
                                                         }}
                                                     />
                                                 </div>
-                                                <div class="form-group">
+                                                <div className="form-group">
                                                     <label for="professor">Professor</label>
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="professor"
                                                         name="professor"
                                                         placeholder="Firstname Lastname"
@@ -371,11 +371,11 @@ class SubmissionPage extends React.Component {
                                                         }}
                                                     />
                                                 </div>
-                                                <div class="form-group">
+                                                <div className="form-group">
                                                     <label for="professor">Project Type</label>
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="projectType"
                                                         name="projectType"
                                                         placeholder="class assignment, research project, etc."
@@ -399,8 +399,8 @@ class SubmissionPage extends React.Component {
                                         id="internal"
                                         role="tabpanel"
                                         aria-labelledby="internal-tab">
-                                        <div class="row">
-                                            <div class="col">
+                                        <div className="row">
+                                            <div className="col">
                                                 <p>
                                                     If your submission is for a library department, please specify the
                                                     department and the project your submission is for in the following
@@ -413,12 +413,12 @@ class SubmissionPage extends React.Component {
                                                     status.
                                                 </p>
                                             </div>
-                                            <div class="col">
-                                                <div class="form-group">
+                                            <div className="col">
+                                                <div className="form-group">
                                                     <label for="professor">Library Department</label>
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="department"
                                                         name="department"
                                                         placeholder="Media Library, External Relations, etc."
@@ -430,11 +430,11 @@ class SubmissionPage extends React.Component {
                                                         }}
                                                     />
                                                 </div>
-                                                <div class="form-group">
+                                                <div className="form-group">
                                                     <label for="professor">Project</label>
                                                     <input
                                                         type="text"
-                                                        class="form-control"
+                                                        className="form-control"
                                                         id="departmentProject"
                                                         name="project"
                                                         placeholder="What are you making?"
@@ -452,7 +452,7 @@ class SubmissionPage extends React.Component {
                                 </div>
                                 <button
                                     type="submit"
-                                    class="btn btn-primary float-end"
+                                    className="btn btn-primary float-end"
                                     onClick={(e) => {
                                         e.preventDefault();
                                         this.onSubmit();
@@ -461,7 +461,7 @@ class SubmissionPage extends React.Component {
                                 </button>
                             </form>
                         </div>
-                        <div class="card-footer">
+                        <div className="card-footer">
                             <p>
                                 Go <a href="/">home</a>?
                             </p>

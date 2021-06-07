@@ -1,8 +1,8 @@
 import React from "react";
-import "./css/requestAndReview.scss";
+import "./scss/requestAndReview.scss";
 import StlImage from "./res/block.svg";
 import GcodeImage from "./res/sd.svg";
-import { formatDate } from "../common/utils";
+import FormattedDate from "../common/formattedDate";
 import axios from "../common/axiosConfig";
 import fileDownload from "js-file-download";
 
@@ -19,11 +19,11 @@ class RequestAndReview extends React.Component {
         let file = this.props.file;
         let submission = this.props.submission;
 
-        const reviewStyle = () => {
-            if (new Date(file.review.timestampReviewed) > new Date("1980")) {
-                return "";
+        const unsentWarning = () => {
+            if (file.status == "REVIEWED") {
+                return " border border-2 border-yellow";
             } else {
-                return "d-none";
+                return null;
             }
         };
 
@@ -47,6 +47,22 @@ class RequestAndReview extends React.Component {
                 });
         };
 
+        const lastReviewTime = () => {
+            if (file.status == "UNREVIEWED") {
+                return "Not Reviewed Yet";
+            } else {
+                return <FormattedDate date={file.review.timestampReviewed} />;
+            }
+        };
+
+        const paymentRequestedTime = () => {
+            if (file.status == "REVIEWED" || file.status == "UNREVIEWED") {
+                return "Not Requested Yet";
+            } else {
+                return <FormattedDate date={submission.timestampPaymentRequested} />;
+            }
+        };
+
         return (
             <div className="card shadow mb-3">
                 <div className="card-header bg-transparent">
@@ -56,12 +72,34 @@ class RequestAndReview extends React.Component {
                     <p className="text-muted small mb-2">
                         {submission.patron.email} - {submission.patron.phone} - {submission.patron.euid}
                     </p>
-                    <p className="text-center mb-0 fw-bold">{formatDate(submission.timestampSubmitted)}</p>
+                </div>
+                <div className="card-header">
+                    <div className="row text-center">
+                        <div className="col">
+                            Submitted
+                            <br />
+                            <strong>
+                                <FormattedDate date={submission.timestampSubmitted} />
+                            </strong>
+                        </div>
+                        <div className="col">
+                            Last Review
+                            <br />
+                            <strong>{lastReviewTime()}</strong>
+                        </div>
+                        <div className="col">
+                            Payment Requested
+                            <br />
+                            <strong>{paymentRequestedTime()}</strong>
+                        </div>
+                    </div>
                 </div>
                 <div className="card-body">
                     <div className="d-flex flex-column">
-                        <small className="text-muted">{formatDate(submission.timestampSubmitted)}</small>
-                        <div className="grey-bubble">
+                        <small className="text-muted">
+                            <FormattedDate date={submission.timestampSubmitted} />
+                        </small>
+                        <div className="grey-bubble mb-2">
                             <div className="d-flex flex-row align-items-center">
                                 <img
                                     className="stl-image link-primary"
@@ -74,7 +112,7 @@ class RequestAndReview extends React.Component {
 
                                 <div>
                                     <div
-                                        className="h4 mb-2 mt-1 link-primary text-break"
+                                        className="h4 mb-2 mt-1 link-lightblue text-break"
                                         onClick={() => {
                                             downloadSTL();
                                         }}>
@@ -100,63 +138,91 @@ class RequestAndReview extends React.Component {
                                 {submission.patron.fname} {submission.patron.lname}
                             </div>
                         </div>
-                        <div className="grey-bubble">
+                        <div className="grey-bubble mb-2">
                             {file.request.notes || "No additional notes."}
                             <div className="small text-muted pt-1">
                                 {submission.patron.fname} {submission.patron.lname}
                             </div>
                         </div>
-                        <small className={"text-muted text-end " + reviewStyle()}>
-                            {formatDate(file.review.timestampReviewed)}
-                        </small>
-                        <div className={"color-bubble " + reviewStyle()}>
-                            {file.review.patronNotes || "Technician left no response."}
-                            <div className="small text-end text-muted pt-1">{file.review.reviewedBy}</div>
-                        </div>
-                        <div className={"color-bubble " + reviewStyle()}>
-                            <div className="d-flex flex-row align-items-center">
-                                <img
-                                    className="stl-image link-primary"
-                                    src={GcodeImage}
-                                    alt="Download GCODE"
-                                    onClick={() => {
-                                        downloadGCODE();
-                                    }}
-                                />
-                                <div>
-                                    <div
-                                        className="mb-2 mt-1 h4 link-primary text-break"
-                                        onClick={() => {
-                                            downloadGCODE();
-                                        }}>
-                                        {file.review.gcodeName}
+
+                        {file.status !== "UNREVIEWED" && (
+                            <React.Fragment>
+                                <small className={"text-muted text-end "}>
+                                    <FormattedDate date={file.review.timestampReviewed} />
+                                </small>
+                                <div className="d-flex flex-row justify-content-end align-items-center mb-2">
+                                    <div>
+                                        {file.status == "REVIEWED" && (
+                                            <span>
+                                                <i className="bi bi-exclamation-triangle-fill text-yellow h1 mb-0 me-4"></i>
+                                            </span>
+                                        )}
                                     </div>
-                                    <div className="row">
-                                        <div className="col-auto">
-                                            <h5 className="mb-0 nowrap">{file.review.slicedPrinter}</h5>
-                                            <small className="text-muted">Printer</small>
-                                        </div>
-                                        <div className="col-auto">
-                                            <h5 className="mb-0 nowrap">{file.review.slicedMaterial}</h5>
-                                            <small className="text-muted">Material</small>
-                                        </div>
-                                        <div className="col-auto">
-                                            <h5 className="mb-0 nowrap">{file.review.slicedGrams}g</h5>
-                                            <small className="text-muted">Est. Weight</small>
-                                        </div>
-                                        <div className="col-auto">
-                                            <h5 className="mb-0 nowrap">
-                                                {file.review.slicedHours}h {file.review.slicedMinutes}m
-                                            </h5>
-                                            <small className="text-muted">Est. Time</small>
-                                        </div>
+                                    <div className={"color-bubble " + unsentWarning()}>
+                                        {file.review.patronNotes || "Technician left no response."}
+                                        <div className="small text-end text-muted pt-1">{file.review.reviewedBy}</div>
                                     </div>
                                 </div>
-                            </div>
-                            <div className={"small text-end text-muted pt-1 " + reviewStyle()}>
-                                {file.review.reviewedBy}
-                            </div>
-                        </div>
+
+                                {file.review.descision == "Accepted" && (
+                                    <div className="d-flex flex-row justify-content-between align-items-center mb-2">
+                                        <div>
+                                            {file.status == "REVIEWED" && (
+                                                <span>
+                                                    <i className="bi bi-exclamation-triangle-fill text-yellow h1 mb-0"></i>
+                                                </span>
+                                            )}
+                                        </div>
+                                        <div className={"color-bubble " + unsentWarning()}>
+                                            <div className="d-flex flex-row align-items-center">
+                                                <img
+                                                    className="stl-image link-primary"
+                                                    src={GcodeImage}
+                                                    alt="Download GCODE"
+                                                    onClick={() => {
+                                                        downloadGCODE();
+                                                    }}
+                                                />
+                                                <div>
+                                                    <div
+                                                        className="mb-2 mt-1 h4 link-lightblue text-break"
+                                                        onClick={() => {
+                                                            downloadGCODE();
+                                                        }}>
+                                                        {file.review.gcodeName}
+                                                    </div>
+                                                    <div className="row">
+                                                        <div className="col-auto">
+                                                            <h5 className="mb-0 nowrap">{file.review.slicedPrinter}</h5>
+                                                            <small className="text-muted">Printer</small>
+                                                        </div>
+                                                        <div className="col-auto">
+                                                            <h5 className="mb-0 nowrap">
+                                                                {file.review.slicedMaterial}
+                                                            </h5>
+                                                            <small className="text-muted">Material</small>
+                                                        </div>
+                                                        <div className="col-auto">
+                                                            <h5 className="mb-0 nowrap">{file.review.slicedGrams}g</h5>
+                                                            <small className="text-muted">Est. Weight</small>
+                                                        </div>
+                                                        <div className="col-auto">
+                                                            <h5 className="mb-0 nowrap">
+                                                                {file.review.slicedHours}h {file.review.slicedMinutes}m
+                                                            </h5>
+                                                            <small className="text-muted">Est. Time</small>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className={"small text-end text-muted pt-1 "}>
+                                                {file.review.reviewedBy}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </React.Fragment>
+                        )}
                     </div>
                 </div>
             </div>

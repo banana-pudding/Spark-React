@@ -1,8 +1,9 @@
 import React from "react";
-import { formatDate } from "../common/utils";
+import FormattedDate from "../common/formattedDate";
 import axios from "../common/axiosConfig";
 import "bootstrap-icons/font/bootstrap-icons.css";
-import "./css/internalNotes.scss";
+import "./scss/internalNotes.scss";
+import { withRouter } from "react-router-dom";
 
 class InternalNotes extends React.Component {
     constructor(props) {
@@ -14,7 +15,7 @@ class InternalNotes extends React.Component {
 
     appendNote = () => {
         axios.post("/submissions/addnote/" + this.props.file._id, this.state).then((res) => {
-            window.location.reload();
+            this.props.history.go(0);
         });
     };
 
@@ -49,10 +50,10 @@ class InternalNotes extends React.Component {
                         {noNotes()}
                         {techNotes.map((note) => {
                             return (
-                                <div className={this.bubbleColor(note.techEUID)}>
+                                <div className={this.bubbleColor(note.techEUID) + " mb-2"}>
                                     <div>{note.notes}</div>
                                     <small className="text-muted">
-                                        {note.techName} ({note.techEUID}) - {formatDate(note.dateAdded)}
+                                        {note.techName} ({note.techEUID}) - <FormattedDate date={note.dateAdded} />
                                     </small>
                                 </div>
                             );
@@ -75,7 +76,7 @@ class InternalNotes extends React.Component {
                             onClick={() => {
                                 this.appendNote();
                             }}>
-                            <i class="bi bi-cursor-fill"></i>
+                            <i className="bi bi-cursor-fill"></i>
                         </button>
                     </div>
                 </div>
@@ -84,4 +85,4 @@ class InternalNotes extends React.Component {
     }
 }
 
-export default InternalNotes;
+export default withRouter(InternalNotes);

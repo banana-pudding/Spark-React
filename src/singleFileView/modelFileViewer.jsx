@@ -3,16 +3,16 @@ import * as THREE from "three";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { GCodeLoader } from "./res/customGcodeLoader";
-import { HexColorPicker, RgbaColorPicker } from "react-colorful";
-//import { GUI } from "three/examples/jsm/libs/dat.gui.module";
+import { RgbaColorPicker } from "react-colorful";
 
-import { GUI } from "dat.gui";
-import "./css/modelPreview.scss";
+import "./scss/modelPreview.scss";
 
 class ModelDisplay extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            hasSTL: false,
+            hasGCODE: false,
             fileID: props.fileID,
             showSTL: true,
             stlColor: { r: 255, g: 115, b: 222, a: 1 },
@@ -29,9 +29,10 @@ class ModelDisplay extends React.Component {
     }
 
     updateDimensions = (renderer, camera) => {
-        if (this.mount) {
-            renderer.setSize(this.mount.current.clientWidth, this.mount.current.clientWidth);
-            camera.aspect = this.mount.current.clientWidth / this.mount.current.clientWidth;
+        if (this.mount.current) {
+            let dim = this.mount.current.clientWidth;
+            renderer.setSize(dim, dim);
+            camera.aspect = 1;
             camera.updateProjectionMatrix();
         }
     };
@@ -261,10 +262,16 @@ class ModelDisplay extends React.Component {
         const gcodePromise = loadGCODEFile();
 
         stlPromise.then((stlModel) => {
+            this.setState({
+                hasSTL: true,
+            });
             this.stlModel = stlModel;
         });
 
         gcodePromise.then((gcodeModel) => {
+            this.setState({
+                hasGCODE: true,
+            });
             this.gcodeModel = gcodeModel;
             gcodeModel.children[0].visible = false;
             gcodeModel.children[1].visible = false;
@@ -334,78 +341,83 @@ class ModelDisplay extends React.Component {
                                 }}
                             />
                         </div>
-                        <div className="col">
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="flexCheckDefault"
-                                    checked={this.state.showGCODE}
-                                    onChange={() => {
-                                        this.setState(
-                                            {
-                                                showGCODE: !this.state.showGCODE,
-                                            },
-                                            () => {
-                                                this.gcodeModel.children[0].visible = this.state.showGCODE;
-                                            }
-                                        );
-                                    }}
-                                />
-                                <label className="form-check-label">GCODE File</label>
-                            </div>
-                            <RgbaColorPicker
-                                color={this.state.extrudeColor}
-                                onChange={(newColor) => {
-                                    this.setState(
-                                        {
-                                            extrudeColor: newColor,
-                                        },
-                                        () => {
-                                            let hexAlpha = this.rgba2hexAndAlpha(newColor);
-                                            this.gcodeModel.children[0].material.color.setHex(hexAlpha.hex);
-                                            this.gcodeModel.children[0].material.opacity = hexAlpha.alpha;
-                                        }
-                                    );
-                                }}
-                            />
-                        </div>
-                        <div className="col">
-                            <div className="form-check">
-                                <input
-                                    className="form-check-input"
-                                    type="checkbox"
-                                    id="flexCheckDefault"
-                                    checked={this.state.showGCODETravel}
-                                    onChange={() => {
-                                        this.setState(
-                                            {
-                                                showGCODETravel: !this.state.showGCODETravel,
-                                            },
-                                            () => {
-                                                this.gcodeModel.children[1].visible = this.state.showGCODETravel;
-                                            }
-                                        );
-                                    }}
-                                />
-                                <label className="form-check-label">GCODE Travels</label>
-                            </div>
-                            <RgbaColorPicker
-                                color={this.state.travelColor}
-                                onChange={(newColor) => {
-                                    this.setState(
-                                        {
-                                            travelColor: newColor,
-                                        },
-                                        () => {
-                                            let hexAlpha = this.rgba2hexAndAlpha(newColor);
-                                            this.gcodeModel.children[1].material.color.setHex(hexAlpha.hex);
-                                            this.gcodeModel.children[1].material.opacity = hexAlpha.alpha;
-                                        }
-                                    );
-                                }}
-                            />
-                        </div>
+                        {this.state.hasGCODE && (
+                            <React.Fragment>
+                                <div className="col">
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            id="flexCheckDefault"
+                                            checked={this.state.showGCODE}
+                                            onChange={() => {
+                                                this.setState(
+                                                    {
+                                                        showGCODE: !this.state.showGCODE,
+                                                    },
+                                                    () => {
+                                                        this.gcodeModel.children[0].visible = this.state.showGCODE;
+                                                    }
+                                                );
+                                            }}
+                                        />
+                                        <label className="form-check-label">GCODE File</label>
+                                    </div>
+                                    <RgbaColorPicker
+                                        color={this.state.extrudeColor}
+                                        onChange={(newColor) => {
+                                            this.setState(
+                                                {
+                                                    extrudeColor: newColor,
+                                                },
+                                                () => {
+                                                    let hexAlpha = this.rgba2hexAndAlpha(newColor);
+                                                    this.gcodeModel.children[0].material.color.setHex(hexAlpha.hex);
+                                                    this.gcodeModel.children[0].material.opacity = hexAlpha.alpha;
+                                                }
+                                            );
+                                        }}
+                                    />
+                                </div>
+                                <div className="col">
+                                    <div className="form-check">
+                                        <input
+                                            className="form-check-input"
+                                            type="checkbox"
+                                            id="flexCheckDefault"
+                                            checked={this.state.showGCODETravel}
+                                            onChange={() => {
+                                                this.setState(
+                                                    {
+                                                        showGCODETravel: !this.state.showGCODETravel,
+                                                    },
+                                                    () => {
+                                                        this.gcodeModel.children[1].visible =
+                                                            this.state.showGCODETravel;
+                                                    }
+                                                );
+                                            }}
+                                        />
+                                        <label className="form-check-label">GCODE Travels</label>
+                                    </div>
+                                    <RgbaColorPicker
+                                        color={this.state.travelColor}
+                                        onChange={(newColor) => {
+                                            this.setState(
+                                                {
+                                                    travelColor: newColor,
+                                                },
+                                                () => {
+                                                    let hexAlpha = this.rgba2hexAndAlpha(newColor);
+                                                    this.gcodeModel.children[1].material.color.setHex(hexAlpha.hex);
+                                                    this.gcodeModel.children[1].material.opacity = hexAlpha.alpha;
+                                                }
+                                            );
+                                        }}
+                                    />
+                                </div>
+                            </React.Fragment>
+                        )}
                     </div>
                 </div>
             </div>

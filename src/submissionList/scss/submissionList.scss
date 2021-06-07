@@ -1,0 +1,59 @@
+.submission-container {
+    .form-check-input {
+        border-radius: 50%;
+    }
+}
+
+.react-date-picker__wrapper {
+    border: none !important;
+}
+
+.patron-name {
+    width: 12rem;
+    overflow: hidden;
+}
+
+.hover-white:hover {
+    color: white;
+}
+
+@media (min-width: 576px) {
+    table.top-table {
+        border-top-width: 0px !important;
+    }
+
+    table.bottom-table {
+        border-bottom-width: 0px !important;
+    }
+
+    table.bottom-table.no-top-table {
+        border-top-width: 0px !important;
+    }
+}
+
+@media (min-width: 1400px) {
+    .col-xxl-custom-left {
+        width: 16rem;
+    }
+
+    .col-xxl-custom-right {
+        width: calc(100% - 16rem);
+    }
+
+    table.top-table {
+        border-top-width: 1px !important;
+    }
+
+    table.bottom-table {
+        border-bottom-width: 1px !important;
+    }
+
+    table.bottom-table.no-top-table {
+        border-top-width: 1px !important;
+    }
+}
+
+// .bi {
+//     font-size: 1.25rem;
+//     line-height: 0px;
+// }

@@ -1,5 +1,5 @@
 import React from "react";
-import spinner from "../common/loading.gif";
+import spinner from "../common/images/loading.gif";
 
 const ParseModal = React.forwardRef((props, ref) => (
     <div className="modal fade" id="gcodeParseModal" tabindex="-1" ref={ref}>

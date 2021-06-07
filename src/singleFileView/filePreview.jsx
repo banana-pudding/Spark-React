@@ -4,6 +4,7 @@ import ModelDisplay from "./modelFileViewer";
 import RequestAndReview from "./requestAndReview";
 import InternalNotes from "./internalNotes";
 import ReviewForm from "./reviewForm";
+import FileStatus from "./fileStatus";
 
 class FilePreview extends React.Component {
     constructor(props) {
@@ -40,13 +41,19 @@ class FilePreview extends React.Component {
             return (
                 <div className="container-fluid px-5 mt-5 single-file-view">
                     <div className="row mb-3">
-                        <div className="col-4">
-                            {/* <Patron submission={this.state.submission} /> */}
+                        <div className="col-lg-6 col-xl-4">
+                            {this.state.file.status == "REVIEWED" && (
+                                <InternalNotes
+                                    submission={this.state.submission}
+                                    file={this.state.file}
+                                    user={this.props.user}
+                                />
+                            )}
                             <ModelDisplay fileID={window.location.pathname.split("/files/")[1]} />
                         </div>
-                        <div className="col-4">
+                        <div className="col-lg-6 col-xl-4">
                             <RequestAndReview submission={this.state.submission} file={this.state.file} />
-                            {(this.state.file.status === "UNREVIEWED" || this.state.file.status === "REVIEWED") && (
+                            {this.state.file.status == "UNREVIEWED" && (
                                 <InternalNotes
                                     submission={this.state.submission}
                                     file={this.state.file}
@@ -54,13 +61,20 @@ class FilePreview extends React.Component {
                                 />
                             )}
                         </div>
-                        <div className="col-4">
-                            {this.state.file.status !== "UNREVIEWED" && this.state.file.status !== "REVIEWED" && (
-                                <InternalNotes
-                                    submission={this.state.submission}
-                                    file={this.state.file}
-                                    user={this.props.user}
-                                />
+                        <div className="col-xl-4">
+                            {this.state.file.status != "UNREVIEWED" && this.state.file.status != "REVIEWED" && (
+                                <React.Fragment>
+                                    <FileStatus
+                                        submission={this.state.submission}
+                                        file={this.state.file}
+                                        user={this.props.user}
+                                    />
+                                    <InternalNotes
+                                        submission={this.state.submission}
+                                        file={this.state.file}
+                                        user={this.props.user}
+                                    />
+                                </React.Fragment>
                             )}
                             {reviewForm()}
                         </div>

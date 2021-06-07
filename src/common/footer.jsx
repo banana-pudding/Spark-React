@@ -1,18 +1,18 @@
-import logo from "./unt-logo-stacked-green.svg";
+import logo from "./images/unt-logo-stacked-green.svg";
 import { Component } from "react";
 
 class Footer extends Component {
     render() {
         return (
-            <footer className="navbar navbar-dark spark-footer mt-auto" id="footerComponent">
-                <div className="container pb-1">
-                    <div className="row w-100 px-5 pt-3 pb-1">
-                        <div className="col-3 px-5 ">
-                            <img className="footer-logo" src={logo} alt="UNT Logo" />
+            <footer className="bg-primary text-light spark-footer mt-auto" id="footerComponent">
+                <div className="container pt-5 pb-3">
+                    <div className="row">
+                        <div className="col-6 col-lg-3 px-5">
+                            <img className="footer-logo mb-5" src={logo} alt="UNT Logo" />
                         </div>
-                        <div className="col-3">
+                        <div className="col-6 col-lg-3">
                             <span className="navbar-text">
-                                <h5 className="text-light">Location</h5>
+                                <h5>Location</h5>
                                 <p className="small">
                                     University of North Texas Libraries <br />
                                     1115 Union Circle #305190 <br />
@@ -21,11 +21,13 @@ class Footer extends Component {
                                 </p>
                             </span>
                         </div>
-                        <div className="col-3">
+                        <div className="col-6 col-lg-3">
                             <span className="navbar-text">
-                                <h5 className="text-light">Contact</h5>
+                                <h5>Contact</h5>
                                 <p className="small">
-                                    <a href="mailto:thespark@unt.edu">TheSpark@unt.edu</a>
+                                    <a href="mailto:thespark@unt.edu" className="link-light">
+                                        TheSpark@unt.edu
+                                    </a>
                                     <br />
                                     (940) 369-5259
                                     <br />
@@ -34,11 +36,14 @@ class Footer extends Component {
                                 </p>
                             </span>
                         </div>
-                        <div className="col-3 text-end">
+                        <div className="col-3 col-lg-3 ">
                             <span className="navbar-text">
-                                <h5 className="text-light">Bug Report</h5>
+                                <h5>Bug Report</h5>
                                 <p className="small">
-                                    Fill out the <a href="/bugreport">form</a>
+                                    Fill out the{" "}
+                                    <a href="/bugreport" className="link-light">
+                                        form
+                                    </a>
                                 </p>
                             </span>
                         </div>

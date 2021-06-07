@@ -30,7 +30,7 @@ class SingleFile extends React.Component {
                     <div className="row">
                         <div className="col">
                             <input
-                                className="form-control mb-3"
+                                className={"form-control mb-3 " + (this.state.file ? "is-valid" : "is-invalid")}
                                 type="file"
                                 onChange={(e) => {
                                     var tempState = this.state;
@@ -54,8 +54,8 @@ class SingleFile extends React.Component {
                     <div className="row">
                         <div className="col col-sm-2">
                             <input type="text" readonly className="form-control-plaintext" value="Material" />
-                            <input type="text" readonly className="form-control-plaintext" value="Infill" />
                             <input type="text" readonly className="form-control-plaintext" value="Color" />
+                            <input type="text" readonly className="form-control-plaintext" value="Infill (%)" />
                             <input type="text" readonly className="form-control-plaintext" value="Copies" />
                             <input type="text" readonly className="form-control-plaintext" value="Notes" />
                         </div>
@@ -69,7 +69,7 @@ class SingleFile extends React.Component {
                                     tempState.material = e.target.value;
                                     this.props.updateSubFile(tempState);
                                 }}
-                            />{" "}
+                            />
                             <input
                                 className="form-control rounded-0 border-bottom-0"
                                 type="text"
@@ -82,7 +82,9 @@ class SingleFile extends React.Component {
                             />
                             <input
                                 className="form-control rounded-0 border-bottom-0"
-                                type="text"
+                                type="number"
+                                min="5"
+                                max="50"
                                 value={this.state.infill}
                                 onChange={(e) => {
                                     var tempState = this.state;
@@ -94,6 +96,8 @@ class SingleFile extends React.Component {
                                 className="form-control rounded-0 border-bottom-0"
                                 type="number"
                                 value={this.state.copies}
+                                min="1"
+                                max="10"
                                 onChange={(e) => {
                                     var tempState = this.state;
                                     tempState.copies = e.target.value;
@@ -103,6 +107,7 @@ class SingleFile extends React.Component {
                             <input
                                 className="form-control rounded-0 rounded-bottom"
                                 type="text"
+                                placeholder="Add any extra details you want us to know here!"
                                 value={this.state.notes}
                                 onChange={(e) => {
                                     var tempState = this.state;

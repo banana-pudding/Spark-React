@@ -1,0 +1,58 @@
+@import "bootstrap/scss/functions";
+//@import "./vaporvar.scss";
+$primary: #00853e;
+$secondary: #b9dcd2;
+$success: #00853e;
+//$info: #00a9e0;
+$warning: #c4d600;
+//$danger: #ef4b81;
+
+// $box-shadow: none;
+//$box-shadow: 0 .5rem 1rem rgba($black, .15);
+
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/mixins";
+
+// $custom-colors: (
+//     "lightblue": hsl(199, 100%, 45%),
+//     "teal": hsl(183, 76%, 43%),
+//     "green": hsl(156, 73%, 45%),
+//     "lime": hsl(83, 56%, 52%),
+//     "yellow": hsl(35, 100%, 65%),
+//     "orange": hsl(5, 100%, 69%),
+//     "pink": hsl(343, 100%, 65%),
+//     "magenta": hsl(320, 45%, 50%),
+//     "purple": hsl(267, 77%, 58%),
+//     "blue": hsl(222, 79%, 55%),
+//     "grey": #cccccc,
+//     "lightgrey": #eeeeee,
+//     "midgrey": #888888,
+//     "lightpink": #ffb1bb,
+//     "highlightgreen": hsl(127, 100%, 97%),
+// );
+
+$custom-colors: (
+    "lightblue": hsl(199, 100%, 45%),
+    "teal": hsl(183, 76%, 41%),
+    "green": hsl(140, 73%, 45%),
+    "lime": hsl(83, 56%, 48%),
+    "red": hsl(5, 90%, 60%),
+    "orange": hsl(42, 100%, 45%),
+    "pink": hsl(343, 100%, 65%),
+    "magenta": hsl(320, 45%, 50%),
+    "purple": hsl(267, 77%, 58%),
+    "blue": hsl(222, 79%, 55%),
+    "grey": #cccccc,
+    "lightgrey": #eeeeee,
+    "midgrey": #888888,
+    "lightpink": #ffb1bb,
+    "highlightgreen": hsl(127, 100%, 97%),
+);
+
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+$min-contrast-ratio: 2.2;
+
+@import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap");
+@import "bootstrap/scss/bootstrap";
+//@import "./vaporswatch.scss";

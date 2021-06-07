@@ -1,10 +1,11 @@
 import React from "react";
 import ReactDOM from "react-dom";
-
+// import "@popperjs/core/dist/cjs/popper";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 //global css
-import "./common/global.scss";
-import "bootstrap/scss/bootstrap.scss";
-import "bootstrap/dist/js/bootstrap.min.js";
+import "./common/scss/global.scss";
+import "./common/scss/customBootstrap.scss";
+//import "bootstrap/scss/bootstrap.scss";
 
 //components
 import App from "./app.js";
@@ -12,6 +13,7 @@ import App from "./app.js";
 function Base() {
     return (
         <React.StrictMode>
+            <div id="tint"></div>
             <div id="imagebg"> </div>
             <App />
         </React.StrictMode>

@@ -1,13 +1,19 @@
 import React from "react";
 import axios from "../common/axiosConfig";
+import { Dropdown } from "bootstrap/dist/js/bootstrap";
+import { withRouter } from "react-router-dom";
 
-class Dropdown extends React.Component {
+class FileDropdown extends React.Component {
+    constructor(props) {
+        super(props);
+        this.dropper = React.createRef();
+    }
+
     handleDelete() {
         axios
             .post("/submissions/delete/file/" + this.props.file._id)
             .then((res) => {
-                console.log("done");
-                window.location.reload();
+                this.props.history.go(0);
             })
             .catch((err) => {
                 console.log(err);
@@ -18,8 +24,7 @@ class Dropdown extends React.Component {
         axios
             .post("/submissions/requestpayment/" + this.props.submission._id)
             .then((res) => {
-                console.log("done");
-                window.location.reload();
+                this.props.history.go(0);
             })
             .catch((err) => {
                 console.log(err);
@@ -30,12 +35,15 @@ class Dropdown extends React.Component {
         axios
             .post("/submissions/waive/" + this.props.submission._id)
             .then((res) => {
-                console.log("done");
-                window.location.reload();
+                this.props.history.go(0);
             })
             .catch((err) => {
                 console.log(err);
             });
+    }
+
+    componentDidMount() {
+        var dropdown = new Dropdown(this.dropper.current);
     }
 
     render() {
@@ -44,10 +52,10 @@ class Dropdown extends React.Component {
                 <button
                     className="btn btn-secondary dropdown-toggle"
                     type="button"
-                    id="dropdownMenuButton1"
+                    ref={this.dropper}
                     data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    Dropdown button
+                    More
                 </button>
                 <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                     <li>
@@ -86,4 +94,4 @@ class Dropdown extends React.Component {
     }
 }
 
-export default Dropdown;
+export default withRouter(FileDropdown);

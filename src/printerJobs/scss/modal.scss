@@ -1,0 +1,25 @@
+.custom-modal {
+    position: fixed;
+    visibility: hidden;
+    z-index: -999999;
+
+    .modal-dialog {
+        margin-top: 0rem;
+        transition: margin-top 0.5s cubic-bezier(0, 1, 0.5, 1);
+    }
+}
+
+.custom-modal.modal-show {
+    visibility: visible;
+    z-index: 999999;
+    left: 0px;
+    top: 0px;
+    bottom: 0px;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    .modal-dialog {
+        margin-top: 10rem;
+        max-width: 50%;
+    }
+}

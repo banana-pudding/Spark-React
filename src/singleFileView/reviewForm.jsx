@@ -3,8 +3,9 @@ import axios from "../common/axiosConfig";
 import { parseGcode } from "./res/gcodeAnalyzer";
 import ParseModal from "./gcodeParseModal";
 import UploadModal from "./submitReviewModal";
-import "./css/review.scss";
+import "./scss/review.scss";
 import { Modal } from "bootstrap";
+import { withRouter } from "react-router-dom";
 
 class ReviewForm extends React.Component {
     constructor(props) {
@@ -104,9 +105,10 @@ class ReviewForm extends React.Component {
         data.append("jsonData", JSON.stringify(jsonObject));
         data.append("files", this.state.gcode);
 
+        let history = useHistory();
         axios.post("/submissions/review/" + this.props.file._id, data).then((res) => {
             console.log("done");
-            window.location.reload();
+            this.props.history.go(0);
         });
     }
 
@@ -308,4 +310,4 @@ class ReviewForm extends React.Component {
     }
 }
 
-export default ReviewForm;
+export default withRouter(ReviewForm);

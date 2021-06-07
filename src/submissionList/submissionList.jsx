@@ -3,24 +3,34 @@ import axios from "../common/axiosConfig";
 import SingleSubmission from "./oneSubmission";
 import DatePicker from "react-date-picker";
 import { statusList, dateList, defaultState, queueFilters } from "./statics/reference";
-import "./css/submissionList.scss";
+import "./scss/submissionList.scss";
+import { withRouter } from "react-router-dom";
 
 class SubmissionList extends React.Component {
     constructor(props) {
         super(props);
-        this.setQueue(queueFilters[0]);
+        this.state = defaultState;
     }
 
-    statusList = statusList;
-    dateList = dateList;
-    queueFilters = queueFilters;
-    state = defaultState;
-
-    fetchPrints = () => {
-        this.setState({
-            submissions: [],
+    componentDidMount() {
+        console.log("mount");
+        this.props.history.listen((location, action) => {
+            console.log("listen history");
+            if (action === "POP") {
+                console.log("history pop");
+                this.setStateFromQuery();
+            }
         });
 
+        if (this.props.location.search) {
+            this.setStateFromQuery();
+        } else {
+            this.setQueue(queueFilters[0]);
+        }
+    }
+
+    fetchPrints = () => {
+        this.setState({ submissions: [] });
         axios
             .post("/submissions/filter", this.state.filters)
             .then((res) => {
@@ -33,7 +43,39 @@ class SubmissionList extends React.Component {
             });
     };
 
+    setStateFromQuery = () => {
+        console.log("statefromwyuet");
+        let parseFilter = {
+            selectedQueue: defaultState.selectedQueue,
+            filters: defaultState.filters,
+        };
+        try {
+            parseFilter = JSON.parse(decodeURIComponent(this.props.location.search.slice(1)));
+        } catch (err) {
+            console.log(err);
+        } finally {
+            this.setState(
+                {
+                    submissions: [],
+                    selectedQueue: parseFilter.selectedQueue,
+                    filters: parseFilter.filters,
+                },
+                () => {
+                    this.fetchPrints();
+                }
+            );
+        }
+    };
+
+    updatePrintsCustom = () => {
+        console.log("update custom");
+        this.setState({ selectedQueue: null }, () => {
+            this.updateHistory();
+        });
+    };
+
     toggleStatus = (statusID) => {
+        console.log("toggle status");
         let tempFilters = this.state.filters;
         let tempStatusFilters = this.state.filters.status;
 
@@ -60,6 +102,7 @@ class SubmissionList extends React.Component {
     };
 
     setQueue = (queueItem) => {
+        console.log("setqueue");
         let tempState = defaultState;
         let tempFilters = tempState.filters;
 
@@ -68,8 +111,25 @@ class SubmissionList extends React.Component {
         tempFilters.pickupLocation = queueItem.pickupLocation;
 
         tempState.filters = tempFilters;
+        tempState.selectedQueue = queueItem.name;
 
-        this.setState(tempState);
+        this.setState(tempState, () => {
+            this.updateHistory();
+        });
+    };
+
+    updateHistory = () => {
+        console.log("updatehistory");
+        let query = {
+            selectedQueue: this.state.selectedQueue,
+            filters: this.state.filters,
+        };
+
+        this.props.history.push({
+            pathname: "/prints",
+            search: "?" + encodeURIComponent(JSON.stringify(query)),
+        });
+
         this.fetchPrints();
     };
 
@@ -77,7 +137,7 @@ class SubmissionList extends React.Component {
         return (
             <div className="container-fluid mt-4 px-5 submission-container">
                 <div className="row">
-                    <div className="col-3">
+                    <div className=" col-lg-3">
                         <form>
                             <div className="accordion shadow mb-3" id="filter-accordian">
                                 <div className="accordion-item">
@@ -96,11 +156,14 @@ class SubmissionList extends React.Component {
                                         id="queue-collapse"
                                         className="accordion-collapse collapse show"
                                         data-bs-parent="#filter-accordian">
-                                        <ul className="list-group list-group-flush mb-3">
-                                            {this.queueFilters.map((queueItem, index) => {
+                                        <ul className="list-group list-group-flush mb-0">
+                                            {queueFilters.map((queueItem, index) => {
                                                 return (
                                                     <button
-                                                        className="list-group-item list-group-item-action"
+                                                        className={
+                                                            "list-group-item list-group-item-action " +
+                                                            (queueItem.name == this.state.selectedQueue ? "active" : "")
+                                                        }
                                                         type="button"
                                                         onClick={(e) => {
                                                             this.setQueue(queueItem);
@@ -130,22 +193,26 @@ class SubmissionList extends React.Component {
                                         className="accordion-collapse collapse"
                                         data-bs-parent="#filter-accordian">
                                         <div className="accordion-body">
-                                            <button
-                                                className="btn btn-primary"
-                                                type="button"
-                                                onClick={() => {
-                                                    this.fetchPrints();
-                                                }}>
-                                                Update Results
-                                            </button>
+                                            <div className="d-grid">
+                                                <button
+                                                    className="btn btn-primary"
+                                                    type="button"
+                                                    onClick={() => {
+                                                        this.updatePrintsCustom();
+                                                    }}>
+                                                    Update Results
+                                                </button>
+                                            </div>
                                         </div>
-                                        <ul className="list-group list-group-flush mb-3">
-                                            {this.statusList.map((status, index) => {
+                                        <ul className="list-group list-group-flush mb-3 border-top border-bottom">
+                                            {statusList.map((status, index) => {
                                                 return (
-                                                    <li className="list-group-item" key={index}>
-                                                        <li className="form-check mb-0">
+                                                    <li className="list-group-item p-0" key={index}>
+                                                        <label
+                                                            className="form-check-label w-100 py-2 px-3"
+                                                            htmlFor={status.name}>
                                                             <input
-                                                                className="form-check-input"
+                                                                className="form-check-input me-2"
                                                                 type="checkbox"
                                                                 value=""
                                                                 checked={this.state.filters.status.includes(
@@ -156,62 +223,54 @@ class SubmissionList extends React.Component {
                                                                 }}
                                                                 id={status.name}
                                                             />
-                                                            <label
-                                                                className="form-check-label w-100"
-                                                                for="flexCheckDefault">
-                                                                {status.label}
-                                                            </label>
-                                                        </li>
+                                                            <span>{status.label}</span>
+                                                        </label>
                                                     </li>
                                                 );
                                             })}
                                         </ul>
 
-                                        <div className="accordion-body">
-                                            {this.dateList.map((dateType, index) => {
-                                                const divider = () => {
-                                                    if (index != 0) {
-                                                        return <hr />;
-                                                    }
-                                                };
+                                        <ul className="list-group list-group-flush border-top">
+                                            {dateList.map((dateType, index) => {
                                                 return (
-                                                    <div>
-                                                        {divider()}
-                                                        <h6 className="mb-2">{`Date ${dateType.label}`}</h6>
-                                                        <div className="row">
-                                                            <div className="col">
-                                                                <DatePicker
-                                                                    className="form-control"
-                                                                    value={this.state.filters[dateType.after]}
-                                                                    onChange={(value) => {
-                                                                        this.setDateFilter(dateType.after, value);
-                                                                    }}
-                                                                />
-                                                                <small className="text-muted">On or after</small>
-                                                            </div>
-                                                            <div className="col">
-                                                                <DatePicker
-                                                                    className="form-control"
-                                                                    value={this.state.filters[dateType.before]}
-                                                                    onChange={(value) => {
-                                                                        this.setDateFilter(dateType.before, value);
-                                                                    }}
-                                                                />
-                                                                <small className="text-muted">Before or on</small>
-                                                            </div>
+                                                    <li className="list-group-item py-3" key={index}>
+                                                        <h6 className="mb-2">{`Date ${dateType.label}:`}</h6>
+                                                        <div className="input-group">
+                                                            <DatePicker
+                                                                clearIcon={null}
+                                                                calendarIcon={null}
+                                                                className="form-control"
+                                                                value={this.state.filters[dateType.after]}
+                                                                onChange={(value) => {
+                                                                    this.setDateFilter(dateType.after, value);
+                                                                }}
+                                                            />
+                                                            <DatePicker
+                                                                clearIcon={null}
+                                                                calendarIcon={null}
+                                                                className="form-control"
+                                                                value={this.state.filters[dateType.before]}
+                                                                onChange={(value) => {
+                                                                    this.setDateFilter(dateType.before, value);
+                                                                }}
+                                                            />
                                                         </div>
-                                                    </div>
+                                                        <div className="d-flex justify-content-between">
+                                                            <small className="text-muted">After (inclusive)</small>
+                                                            <small className="text-muted">Before (inclusive)</small>
+                                                        </div>
+                                                    </li>
                                                 );
                                             })}
-                                        </div>
+                                        </ul>
                                     </div>
                                 </div>
                             </div>
                         </form>
                     </div>
-                    <div className="col">
+                    <div className=" col-lg-9">
                         {this.state.submissions.map((item, index) => {
-                            return <SingleSubmission item={item} key={index} />;
+                            return <SingleSubmission item={item} key={index} user={this.props.user} />;
                         })}
                     </div>
                 </div>
@@ -220,4 +279,4 @@ class SubmissionList extends React.Component {
     }
 }
 
-export default SubmissionList;
+export default withRouter(SubmissionList);

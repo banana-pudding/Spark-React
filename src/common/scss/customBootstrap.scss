@@ -38,6 +38,7 @@ $custom-colors: (
     "lime": hsl(83, 56%, 48%),
     "red": hsl(5, 90%, 60%),
     "orange": hsl(42, 100%, 45%),
+    "yellow": #ffc107,
     "pink": hsl(343, 100%, 65%),
     "magenta": hsl(320, 45%, 50%),
     "purple": hsl(267, 77%, 58%),
@@ -46,7 +47,7 @@ $custom-colors: (
     "lightgrey": #eeeeee,
     "midgrey": #888888,
     "lightpink": #ffb1bb,
-    "highlightgreen": hsl(127, 100%, 97%),
+    "highlightgreen": hsl(124, 100%, 94%),
 );
 
 $theme-colors: map-merge($theme-colors, $custom-colors);

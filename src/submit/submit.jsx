@@ -67,7 +67,6 @@ class SubmissionPage extends React.Component {
         if (this.canSubmit()) {
             const data = new FormData();
             let sendData = this.state;
-            delete sendData.validation;
             data.append("jsonData", JSON.stringify(sendData));
             for (var thisFile of this.state.files) {
                 console.log(thisFile);

@@ -11,8 +11,7 @@ class PendingCard extends React.Component {
     }
 
     reloadPage = () => {
-        let history = useHistory();
-        history.push("/files/" + this.props.file._id);
+        this.props.history.push("/files/" + this.props.file._id);
     };
 
     handleRequestPayment() {

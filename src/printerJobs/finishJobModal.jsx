@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "../common/axiosConfig";
 import FormattedDate from "../common/formattedDate";
-import { useHistory } from "react-router-dom";
 import { Modal } from "bootstrap";
 
 class FinishModal extends React.Component {
@@ -14,7 +13,6 @@ class FinishModal extends React.Component {
         printer: null,
         finalWeight: null,
         finalWeightValid: false,
-        confirmLocation: null,
     };
 
     componentDidMount() {
@@ -26,7 +24,6 @@ class FinishModal extends React.Component {
         this.setState(
             {
                 printer: printer,
-                confirmLocation: printer.location,
             },
             () => {
                 this.modal.show();
@@ -34,17 +31,14 @@ class FinishModal extends React.Component {
         );
     };
 
-    handleSubmit = () => {
+    handleSubmit = (wasSuccess) => {
         if (this.state.finalWeightValid) {
-            let history = useHistory();
-            axios
-                .post("/attempts/finish/" + this.state.printer.currentAttempt._id, {
-                    finalWeight: this.state.finalWeight,
-                    finalLocation: this.state.confirmLocation,
-                })
-                .then((res) => {
-                    history.push("/printers");
-                });
+            axios.post("/attempts/complete/" + this.state.printer.currentAttempt._id, {
+                finalWeight: this.state.finalWeight,
+                wasSuccess: wasSuccess,
+            });
+            this.modal.hide();
+            this.props.reloadPage();
         }
     };
 
@@ -118,17 +112,12 @@ class FinishModal extends React.Component {
                                                     value={this.state.finalWeight}
                                                     onChange={(e) => {
                                                         let finalWeight = e.target.value;
-                                                        if (finalWeight > attempt.startWeight || finalWeight < 100) {
-                                                            this.setState({
-                                                                finalWeight: finalWeight,
-                                                                finalWeightValid: false,
-                                                            });
-                                                        } else {
-                                                            this.setState({
-                                                                finalWeight: finalWeight,
-                                                                finalWeightValid: true,
-                                                            });
-                                                        }
+                                                        this.setState({
+                                                            finalWeight: finalWeight,
+                                                            finalWeightValid: !(
+                                                                finalWeight > attempt.startWeight || finalWeight < 100
+                                                            ),
+                                                        });
                                                     }}
                                                     id="finalWeight"
                                                     placeholder="Final Roll Weight"
@@ -144,7 +133,7 @@ class FinishModal extends React.Component {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="col">
+                                        {/* <div className="col">
                                             <div className="form-floating">
                                                 <select
                                                     className="form-select is-valid"
@@ -167,16 +156,28 @@ class FinishModal extends React.Component {
                                                 </select>
                                                 <label htmlFor="confirmLocation">Confirm Print Location</label>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 </form>
 
                                 <div className="row g-3 mb-3">
                                     <div className="col">
-                                        <button className="btn fs-3 fw-bold btn-green w-100">Succeeded</button>
+                                        <button
+                                            className="btn fs-3 fw-bold btn-green w-100"
+                                            onClick={() => {
+                                                this.handleSubmit(true);
+                                            }}>
+                                            Succeeded
+                                        </button>
                                     </div>
                                     <div className="col">
-                                        <button className="btn fs-3 fw-bold btn-red w-100">Failed</button>
+                                        <button
+                                            className="btn fs-3 fw-bold btn-red w-100"
+                                            onClick={() => {
+                                                this.handleSubmit(false);
+                                            }}>
+                                            Failed
+                                        </button>
                                     </div>
                                 </div>
                                 <p className="small">

@@ -38,6 +38,8 @@ export const statusLabel = (file) => {
             return "Printing";
         case "IN_TRANSIT":
             return "In Transit";
+        case "WAITING_FOR_PICKUP":
+            return "Waiting for Pickup";
         case "PICKED_UP":
             return "Picked Up";
         case "REJECTED":
@@ -74,7 +76,9 @@ export const statusColor = (file) => {
         case "PRINTING":
             return "green";
         case "IN_TRANSIT":
-            return "bg-magenta";
+            return "magenta";
+        case "WAITING_FOR_PICKUP":
+            return "pink";
         case "PICKED_UP":
             return "blue";
         case "REJECTED":

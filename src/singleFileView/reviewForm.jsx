@@ -105,7 +105,6 @@ class ReviewForm extends React.Component {
         data.append("jsonData", JSON.stringify(jsonObject));
         data.append("files", this.state.gcode);
 
-        let history = useHistory();
         axios.post("/submissions/review/" + this.props.file._id, data).then((res) => {
             console.log("done");
             this.props.history.go(0);

@@ -1,7 +1,9 @@
 import React from "react";
 import "./scss/requestAndReview.scss";
+// import StlImage from "../common/images/stl.png";
 import StlImage from "./res/block.svg";
-import GcodeImage from "./res/sd.svg";
+// import GcodeImage from "./res/sd.svg";
+import GcodeImage from "./res/block.svg";
 import FormattedDate from "../common/formattedDate";
 import axios from "../common/axiosConfig";
 import fileDownload from "js-file-download";
@@ -21,7 +23,7 @@ class RequestAndReview extends React.Component {
 
         const unsentWarning = () => {
             if (file.status == "REVIEWED") {
-                return " border border-2 border-yellow";
+                return " border border-2 border-orange";
             } else {
                 return null;
             }
@@ -101,14 +103,16 @@ class RequestAndReview extends React.Component {
                         </small>
                         <div className="grey-bubble mb-2">
                             <div className="d-flex flex-row align-items-center">
-                                <img
-                                    className="stl-image link-primary"
-                                    src={StlImage}
-                                    alt="Download STL"
-                                    onClick={() => {
-                                        downloadSTL();
-                                    }}
-                                />
+                                <div className="stl-label me-3">
+                                    <img
+                                        className="download-image link-primary stl-image"
+                                        src={StlImage}
+                                        alt="Download STL"
+                                        onClick={() => {
+                                            downloadSTL();
+                                        }}
+                                    />
+                                </div>
 
                                 <div>
                                     <div
@@ -154,13 +158,15 @@ class RequestAndReview extends React.Component {
                                     <div>
                                         {file.status == "REVIEWED" && (
                                             <span>
-                                                <i className="bi bi-exclamation-triangle-fill text-yellow h1 mb-0 me-4"></i>
+                                                <i className="bi bi-exclamation-triangle-fill text-orange h1 mb-0 me-4"></i>
                                             </span>
                                         )}
                                     </div>
                                     <div className={"color-bubble " + unsentWarning()}>
                                         {file.review.patronNotes || "Technician left no response."}
-                                        <div className="small text-end text-muted pt-1">{file.review.reviewedBy}</div>
+                                        <div className="small text-muted pt-1">
+                                            {file.review.reviewedByName} ({file.review.reviewedByEUID})
+                                        </div>
                                     </div>
                                 </div>
 
@@ -169,20 +175,26 @@ class RequestAndReview extends React.Component {
                                         <div>
                                             {file.status == "REVIEWED" && (
                                                 <span>
-                                                    <i className="bi bi-exclamation-triangle-fill text-yellow h1 mb-0"></i>
+                                                    <i className="bi bi-exclamation-triangle-fill text-orange h1 mb-0"></i>
                                                 </span>
                                             )}
                                         </div>
                                         <div className={"color-bubble " + unsentWarning()}>
                                             <div className="d-flex flex-row align-items-center">
-                                                <img
-                                                    className="stl-image link-primary"
-                                                    src={GcodeImage}
-                                                    alt="Download GCODE"
-                                                    onClick={() => {
-                                                        downloadGCODE();
-                                                    }}
-                                                />
+                                                <div className="gcode-label me-3">
+                                                    <img
+                                                        className="download-image link-primary gcode-image"
+                                                        src={GcodeImage}
+                                                        alt="Download GCODE"
+                                                        onClick={() => {
+                                                            downloadGCODE();
+                                                        }}
+                                                    />
+                                                </div>
+
+                                                {/* <h1 className="display-1 text-lightblue">
+                                                    <i className="bi bi-sd-card"></i>
+                                                </h1> */}
                                                 <div>
                                                     <div
                                                         className="mb-2 mt-1 h4 link-lightblue text-break"
@@ -215,8 +227,8 @@ class RequestAndReview extends React.Component {
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div className={"small text-end text-muted pt-1 "}>
-                                                {file.review.reviewedBy}
+                                            <div className={"small text-muted pt-1 "}>
+                                                {file.review.reviewedByName} ({file.review.reviewedByEUID})
                                             </div>
                                         </div>
                                     </div>

@@ -5,6 +5,8 @@ import StartModal from "./startJobModal";
 import EditModal from "./editPrinterModal";
 import DetailsModal from "./detailsModal";
 import FinishModal from "./finishJobModal";
+import { withRouter } from "react-router-dom";
+
 //import Ender5 from "../common/images/Ender-5-Plus-Hero.jpeg";
 
 import "./scss/jobs.scss";
@@ -31,7 +33,13 @@ class ManageJobs extends React.Component {
         this.finishModal = React.createRef();
         this.fetchPrinters();
         this.fetchReadyFiles();
+        this.reloadPage = this.reloadPage.bind(this);
     }
+
+    reloadPage = () => {
+        console.log("here");
+        this.props.history.go(0);
+    };
 
     fetchPrinters = () => {
         this.setState({
@@ -355,13 +363,13 @@ class ManageJobs extends React.Component {
                         </div>
                     </div>
                 </div>
-                <StartModal ref={this.startModal} />
-                <EditModal ref={this.editModal} />
+                <StartModal ref={this.startModal} reloadPage={this.reloadPage.bind(this)} />
+                <EditModal ref={this.editModal} reloadPage={this.reloadPage.bind(this)} />
                 <DetailsModal ref={this.detailsModal} />
-                <FinishModal ref={this.finishModal} />
+                <FinishModal ref={this.finishModal} reloadPage={this.reloadPage.bind(this)} />
             </div>
         );
     }
 }
 
-export default ManageJobs;
+export default withRouter(ManageJobs);

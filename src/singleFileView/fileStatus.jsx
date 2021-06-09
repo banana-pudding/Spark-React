@@ -2,6 +2,7 @@ import React from "react";
 import axios from "../common/axiosConfig";
 import PrintingCard from "./statusCards/printing";
 import PendPayCard from "./statusCards/pendpay";
+import PickupCard from "./statusCards/pickup";
 
 class FileStatus extends React.Component {
     constructor(props) {
@@ -51,10 +52,9 @@ class FileStatus extends React.Component {
                     if (!this.state.lastAttempt) {
                         this.fetchAttemptData();
                     } else {
+                        let attempt = this.state.lastAttempt;
                         return (
-                            <div className="card-body">
-                                <div></div>
-                            </div>
+                            <PickupCard file={file} submission={submission} attempt={attempt} user={this.props.user} />
                         );
                     }
                 case "PICKED_UP":

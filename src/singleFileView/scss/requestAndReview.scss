@@ -7,9 +7,44 @@
 }
 
 .single-file-view {
-    .stl-image {
+    .download-image {
         width: 4em;
         margin-right: 0.5rem;
+    }
+
+    .gcode-image {
+        filter: hue-rotate(320deg);
+    }
+
+    .stl-label {
+        position: relative;
+        &:after {
+            content: "STL";
+        }
+    }
+
+    .gcode-label {
+        position: relative;
+        &:after {
+            content: "GCODE";
+        }
+    }
+
+    .gcode-label,
+    .stl-label {
+        &:after {
+            position: absolute;
+            font-family: monospace;
+            bottom: 0.6rem;
+            right: 0.2rem;
+            font-size: 0.85rem;
+            line-height: 0.85rem;
+            display: inline-block;
+            color: white;
+            background-color: indigo;
+            padding: 0.1rem 0.3rem 0.15rem 0.3rem;
+            border-radius: 0.25rem;
+        }
     }
 
     .nowrap {

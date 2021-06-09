@@ -82,7 +82,7 @@ class SingleSubmission extends React.Component {
 
         const readyBorder = () => {
             if (submission.allFilesReviewed && reviewDate < new Date("1980")) {
-                return " border-green border-2";
+                return " border-green border-2 bg-highlightgreen";
             } else {
                 return null;
             }
@@ -269,6 +269,14 @@ class SingleSubmission extends React.Component {
                                             <div className="d-flex flex-row">
                                                 <i className="bi bi-file-earmark-zip"></i>
                                                 <span className="flex-grow-1 px-1">Download All Files</span>
+                                            </div>
+                                        </button>
+
+                                        {/* ------------------------- Pickup Full Submission ------------------------- */}
+                                        <button type="button" className="btn btn-pink">
+                                            <div className="d-flex flex-row">
+                                                <i className="bi bi-person-check"></i>
+                                                <span className="flex-grow-1 px-1">Pick Up All Files</span>
                                             </div>
                                         </button>
                                     </div>

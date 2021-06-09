@@ -72,11 +72,11 @@ class InternalNotes extends React.Component {
                                 });
                             }}></textarea>
                         <button
-                            className="btn btn-primary rounded-circle send-button ms-2"
+                            className="btn rounded-circle send-button ms-2 p-0 fs-1 text-primary"
                             onClick={() => {
                                 this.appendNote();
                             }}>
-                            <i className="bi bi-cursor-fill"></i>
+                            <i className="bi bi-telegram"></i>
                         </button>
                     </div>
                 </div>

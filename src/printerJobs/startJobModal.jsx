@@ -2,7 +2,6 @@ import React from "react";
 import axios from "../common/axiosConfig";
 import { Modal } from "bootstrap";
 import "./scss/modal.scss";
-import { withRouter } from "react-router-dom";
 
 class StartJobModal extends React.Component {
     constructor(props) {
@@ -38,7 +37,6 @@ class StartJobModal extends React.Component {
     };
 
     handleStartJob = () => {
-        let history = useHistory();
         axios
             .post("/attempts/new", {
                 fileIDs: this.state.selectedFileIDs,
@@ -48,7 +46,8 @@ class StartJobModal extends React.Component {
                 initialWeight: this.state.initialWeight,
             })
             .then((res) => {
-                this.props.history.go(0);
+                this.modal.hide();
+                this.props.reloadPage();
             });
     };
 
@@ -127,4 +126,4 @@ class StartJobModal extends React.Component {
     }
 }
 
-export default withRouter(StartJobModal);
+export default StartJobModal;

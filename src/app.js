@@ -13,6 +13,7 @@ import PaymentComplete from "./paymentComplete/paymentComplete";
 import SubmissionList from "./submissionList/submissionList";
 import FilePreview from "./singleFileView/filePreview";
 import ManageJobs from "./printerJobs/printerJobs";
+import SignaturePage from "./signaturePad/signaturePage";
 import Footer from "./common/footer";
 
 class App extends React.Component {
@@ -86,6 +87,14 @@ class App extends React.Component {
                         </ProtectedRoute>
                         <Route exact path="/payment/complete">
                             <PaymentComplete />
+                        </Route>
+
+                        <Route exact path="/signature/willis">
+                            <SignaturePage location={"Willis Library"} />
+                        </Route>
+
+                        <Route exact path="/signature/dp">
+                            <SignaturePage location={"Discovery Park"} />
                         </Route>
                     </Switch>
                     <Footer />

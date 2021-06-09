@@ -1,7 +1,6 @@
 import React from "react";
 import axios from "../common/axiosConfig";
 import { Modal } from "bootstrap";
-import { withRouter } from "react-router-dom";
 
 class EditModal extends React.Component {
     constructor(props) {
@@ -87,21 +86,21 @@ class EditModal extends React.Component {
         if (this.state.makingNewPrinter) {
             console.log("new");
             axios.post("/printers/new", data).then((res) => {
-                console.log("done");
-                this.props.history.go(0);
+                this.modal.hide();
+                this.props.reloadPage();
             });
         } else {
             axios.post("/printers/update/" + this.state.printer._id, data).then((res) => {
-                console.log("done");
-                this.props.history.go(0);
+                this.modal.hide();
+                this.props.reloadPage();
             });
         }
     };
 
     handleDelete = () => {
         axios.post("/printers/delete/" + this.state.printer._id).then((res) => {
-            console.log("done");
-            this.props.history.go(0);
+            this.modal.hide();
+            this.props.reloadPage();
         });
     };
 
@@ -301,4 +300,4 @@ class EditModal extends React.Component {
     }
 }
 
-export default withRouter(EditModal);
+export default EditModal;

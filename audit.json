@@ -1,0 +1,1616 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@svgr/plugin-svgo": {
+      "name": "@svgr/plugin-svgo",
+      "severity": "high",
+      "via": [
+        "svgo"
+      ],
+      "effects": [
+        "@svgr/webpack"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@svgr/plugin-svgo"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "@svgr/webpack": {
+      "name": "@svgr/webpack",
+      "severity": "high",
+      "via": [
+        "@svgr/plugin-svgo"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": ">=4.0.0",
+      "nodes": [
+        "node_modules/@svgr/webpack"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "autoprefixer": {
+      "name": "autoprefixer",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "9.0.0 - 9.8.6",
+      "nodes": [
+        "node_modules/autoprefixer"
+      ],
+      "fixAvailable": true
+    },
+    "browserslist": {
+      "name": "browserslist",
+      "severity": "moderate",
+      "via": [
+        {
+          "source": 1747,
+          "name": "browserslist",
+          "dependency": "browserslist",
+          "title": "Regular Expression Denial of Service",
+          "url": "https://npmjs.com/advisories/1747",
+          "severity": "moderate",
+          "range": ">=4.0.0 <4.16.5"
+        }
+      ],
+      "effects": [
+        "react-dev-utils"
+      ],
+      "range": "4.0.0 - 4.16.4",
+      "nodes": [
+        "node_modules/react-dev-utils/node_modules/browserslist"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "chokidar": {
+      "name": "chokidar",
+      "severity": "moderate",
+      "via": [
+        "glob-parent"
+      ],
+      "effects": [
+        "watchpack-chokidar2",
+        "webpack-dev-server"
+      ],
+      "range": "1.0.0-rc1 - 2.1.8",
+      "nodes": [
+        "node_modules/watchpack-chokidar2/node_modules/chokidar",
+        "node_modules/webpack-dev-server/node_modules/chokidar"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "css-blank-pseudo": {
+      "name": "css-blank-pseudo",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/css-blank-pseudo"
+      ],
+      "fixAvailable": true
+    },
+    "css-declaration-sorter": {
+      "name": "css-declaration-sorter",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "cssnano-preset-default"
+      ],
+      "range": "4.0.0 - 5.1.2",
+      "nodes": [
+        "node_modules/css-declaration-sorter"
+      ],
+      "fixAvailable": true
+    },
+    "css-has-pseudo": {
+      "name": "css-has-pseudo",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/css-has-pseudo"
+      ],
+      "fixAvailable": true
+    },
+    "css-loader": {
+      "name": "css-loader",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "2.0.0 - 4.3.0",
+      "nodes": [
+        "node_modules/css-loader"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "css-prefers-color-scheme": {
+      "name": "css-prefers-color-scheme",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/css-prefers-color-scheme"
+      ],
+      "fixAvailable": true
+    },
+    "css-select": {
+      "name": "css-select",
+      "severity": "high",
+      "via": [
+        "css-what"
+      ],
+      "effects": [
+        "svgo"
+      ],
+      "range": "<=3.1.2",
+      "nodes": [
+        "node_modules/css-select"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "css-what": {
+      "name": "css-what",
+      "severity": "high",
+      "via": [
+        {
+          "source": 1754,
+          "name": "css-what",
+          "dependency": "css-what",
+          "title": "Denial of Service",
+          "url": "https://npmjs.com/advisories/1754",
+          "severity": "high",
+          "range": "<5.0.1"
+        }
+      ],
+      "effects": [
+        "css-select"
+      ],
+      "range": "<5.0.1",
+      "nodes": [
+        "node_modules/css-what"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "cssnano": {
+      "name": "cssnano",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "optimize-css-assets-webpack-plugin"
+      ],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.1.1 - 4.1.11",
+      "nodes": [
+        "node_modules/cssnano"
+      ],
+      "fixAvailable": true
+    },
+    "cssnano-preset-default": {
+      "name": "cssnano-preset-default",
+      "severity": "high",
+      "via": [
+        "css-declaration-sorter",
+        "cssnano-util-raw-cache",
+        "postcss",
+        "postcss-normalize-url"
+      ],
+      "effects": [],
+      "range": "<=4.0.8",
+      "nodes": [
+        "node_modules/cssnano-preset-default"
+      ],
+      "fixAvailable": true
+    },
+    "cssnano-util-raw-cache": {
+      "name": "cssnano-util-raw-cache",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "cssnano-preset-default"
+      ],
+      "range": ">=4.0.1",
+      "nodes": [
+        "node_modules/cssnano-util-raw-cache"
+      ],
+      "fixAvailable": true
+    },
+    "dat.gui": {
+      "name": "dat.gui",
+      "severity": "high",
+      "via": [
+        {
+          "source": 1701,
+          "name": "dat.gui",
+          "dependency": "dat.gui",
+          "title": "Regular Expression Denial of Service",
+          "url": "https://npmjs.com/advisories/1701",
+          "severity": "high",
+          "range": ">=0.0.0"
+        }
+      ],
+      "effects": [],
+      "range": "*",
+      "nodes": [
+        "node_modules/dat.gui"
+      ],
+      "fixAvailable": false
+    },
+    "glob-parent": {
+      "name": "glob-parent",
+      "severity": "moderate",
+      "via": [
+        {
+          "source": 1751,
+          "name": "glob-parent",
+          "dependency": "glob-parent",
+          "title": "Regular expression denial of service",
+          "url": "https://npmjs.com/advisories/1751",
+          "severity": "moderate",
+          "range": "<5.1.2"
+        }
+      ],
+      "effects": [
+        "chokidar"
+      ],
+      "range": "<5.1.2",
+      "nodes": [
+        "node_modules/watchpack-chokidar2/node_modules/glob-parent",
+        "node_modules/webpack-dev-server/node_modules/glob-parent"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "icss-utils": {
+      "name": "icss-utils",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "postcss-modules-local-by-default",
+        "postcss-modules-values"
+      ],
+      "range": "4.0.0 - 4.1.1",
+      "nodes": [
+        "node_modules/icss-utils"
+      ],
+      "fixAvailable": true
+    },
+    "meow": {
+      "name": "meow",
+      "severity": "high",
+      "via": [
+        "trim-newlines"
+      ],
+      "effects": [
+        "node-sass"
+      ],
+      "range": "3.4.0 - 5.0.0",
+      "nodes": [
+        "node_modules/meow"
+      ],
+      "fixAvailable": {
+        "name": "node-sass",
+        "version": "3.4.2",
+        "isSemVerMajor": true
+      }
+    },
+    "mini-css-extract-plugin": {
+      "name": "mini-css-extract-plugin",
+      "severity": "high",
+      "via": [
+        "normalize-url"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "0.6.0 - 1.0.0",
+      "nodes": [
+        "node_modules/mini-css-extract-plugin"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "node-sass": {
+      "name": "node-sass",
+      "severity": "high",
+      "via": [
+        "meow"
+      ],
+      "effects": [],
+      "range": ">=3.5.0-beta.1",
+      "nodes": [
+        "node_modules/node-sass"
+      ],
+      "fixAvailable": {
+        "name": "node-sass",
+        "version": "3.4.2",
+        "isSemVerMajor": true
+      }
+    },
+    "normalize-url": {
+      "name": "normalize-url",
+      "severity": "high",
+      "via": [
+        {
+          "source": 1755,
+          "name": "normalize-url",
+          "dependency": "normalize-url",
+          "title": "Regular Expression Denial of Service",
+          "url": "https://npmjs.com/advisories/1755",
+          "severity": "high",
+          "range": "<4.5.1 || >=5.0.0 <5.3.1 || >=6.0.0 <6.0.1"
+        }
+      ],
+      "effects": [
+        "mini-css-extract-plugin",
+        "postcss-normalize-url"
+      ],
+      "range": "<=4.5.0 || 5.0.0 - 5.3.0 || 6.0.0",
+      "nodes": [
+        "node_modules/normalize-url",
+        "node_modules/postcss-normalize-url/node_modules/normalize-url"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "optimize-css-assets-webpack-plugin": {
+      "name": "optimize-css-assets-webpack-plugin",
+      "severity": "moderate",
+      "via": [
+        "cssnano"
+      ],
+      "effects": [],
+      "range": "3.2.1 || 5.0.2 - 5.0.6",
+      "nodes": [
+        "node_modules/optimize-css-assets-webpack-plugin"
+      ],
+      "fixAvailable": true
+    },
+    "postcss": {
+      "name": "postcss",
+      "severity": "moderate",
+      "via": [
+        {
+          "source": 1693,
+          "name": "postcss",
+          "dependency": "postcss",
+          "title": "Regular Expression Denial of Service",
+          "url": "https://npmjs.com/advisories/1693",
+          "severity": "moderate",
+          "range": ">=7.0.0 <8.2.10"
+        }
+      ],
+      "effects": [
+        "autoprefixer",
+        "css-blank-pseudo",
+        "css-declaration-sorter",
+        "css-has-pseudo",
+        "css-loader",
+        "css-prefers-color-scheme",
+        "cssnano",
+        "cssnano-preset-default",
+        "cssnano-util-raw-cache",
+        "icss-utils",
+        "postcss-attribute-case-insensitive",
+        "postcss-browser-comments",
+        "postcss-calc",
+        "postcss-color-functional-notation",
+        "postcss-color-gray",
+        "postcss-color-hex-alpha",
+        "postcss-color-mod-function",
+        "postcss-color-rebeccapurple",
+        "postcss-colormin",
+        "postcss-convert-values",
+        "postcss-custom-media",
+        "postcss-custom-properties",
+        "postcss-custom-selectors",
+        "postcss-dir-pseudo-class",
+        "postcss-discard-comments",
+        "postcss-discard-duplicates",
+        "postcss-discard-empty",
+        "postcss-discard-overridden",
+        "postcss-double-position-gradients",
+        "postcss-env-function",
+        "postcss-flexbugs-fixes",
+        "postcss-focus-visible",
+        "postcss-focus-within",
+        "postcss-font-variant",
+        "postcss-gap-properties",
+        "postcss-image-set-function",
+        "postcss-initial",
+        "postcss-lab-function",
+        "postcss-loader",
+        "postcss-logical",
+        "postcss-media-minmax",
+        "postcss-merge-longhand",
+        "postcss-merge-rules",
+        "postcss-minify-font-values",
+        "postcss-minify-gradients",
+        "postcss-minify-params",
+        "postcss-minify-selectors",
+        "postcss-modules-extract-imports",
+        "postcss-modules-local-by-default",
+        "postcss-modules-scope",
+        "postcss-modules-values",
+        "postcss-nesting",
+        "postcss-normalize",
+        "postcss-normalize-charset",
+        "postcss-normalize-display-values",
+        "postcss-normalize-positions",
+        "postcss-normalize-repeat-style",
+        "postcss-normalize-string",
+        "postcss-normalize-timing-functions",
+        "postcss-normalize-unicode",
+        "postcss-normalize-url",
+        "postcss-normalize-whitespace",
+        "postcss-ordered-values",
+        "postcss-overflow-shorthand",
+        "postcss-page-break",
+        "postcss-place",
+        "postcss-preset-env",
+        "postcss-pseudo-class-any-link",
+        "postcss-reduce-initial",
+        "postcss-reduce-transforms",
+        "postcss-replace-overflow-wrap",
+        "postcss-selector-matches",
+        "postcss-selector-not",
+        "postcss-svgo",
+        "postcss-unique-selectors",
+        "resolve-url-loader",
+        "stylehacks"
+      ],
+      "range": "7.0.0 - 8.2.9",
+      "nodes": [
+        "node_modules/postcss",
+        "node_modules/resolve-url-loader/node_modules/postcss"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "postcss-attribute-case-insensitive": {
+      "name": "postcss-attribute-case-insensitive",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-attribute-case-insensitive"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-browser-comments": {
+      "name": "postcss-browser-comments",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "postcss-normalize"
+      ],
+      "range": "2.0.0 - 3.0.0",
+      "nodes": [
+        "node_modules/postcss-browser-comments"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-calc": {
+      "name": "postcss-calc",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "6.0.2 - 7.0.5",
+      "nodes": [
+        "node_modules/postcss-calc"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-color-functional-notation": {
+      "name": "postcss-color-functional-notation",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/postcss-color-functional-notation"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-color-gray": {
+      "name": "postcss-color-gray",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": ">=5.0.0",
+      "nodes": [
+        "node_modules/postcss-color-gray"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-color-hex-alpha": {
+      "name": "postcss-color-hex-alpha",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0 - 6.0.0",
+      "nodes": [
+        "node_modules/postcss-color-hex-alpha"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-color-mod-function": {
+      "name": "postcss-color-mod-function",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=3.0.0",
+      "nodes": [
+        "node_modules/postcss-color-mod-function"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-color-rebeccapurple": {
+      "name": "postcss-color-rebeccapurple",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=4.0.0",
+      "nodes": [
+        "node_modules/postcss-color-rebeccapurple"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-colormin": {
+      "name": "postcss-colormin",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.2 - 4.0.3",
+      "nodes": [
+        "node_modules/postcss-colormin"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-convert-values": {
+      "name": "postcss-convert-values",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1",
+      "nodes": [
+        "node_modules/postcss-convert-values"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-custom-media": {
+      "name": "postcss-custom-media",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "7.0.0 - 7.0.8",
+      "nodes": [
+        "node_modules/postcss-custom-media"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-custom-properties": {
+      "name": "postcss-custom-properties",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "8.0.0 - 10.0.0",
+      "nodes": [
+        "node_modules/postcss-custom-properties"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-custom-selectors": {
+      "name": "postcss-custom-selectors",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "5.0.0 - 5.1.2",
+      "nodes": [
+        "node_modules/postcss-custom-selectors"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-dir-pseudo-class": {
+      "name": "postcss-dir-pseudo-class",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=5.0.0",
+      "nodes": [
+        "node_modules/postcss-dir-pseudo-class"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-discard-comments": {
+      "name": "postcss-discard-comments",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-discard-comments"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-discard-duplicates": {
+      "name": "postcss-discard-duplicates",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.2",
+      "nodes": [
+        "node_modules/postcss-discard-duplicates"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-discard-empty": {
+      "name": "postcss-discard-empty",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1",
+      "nodes": [
+        "node_modules/postcss-discard-empty"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-discard-overridden": {
+      "name": "postcss-discard-overridden",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1",
+      "nodes": [
+        "node_modules/postcss-discard-overridden"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-double-position-gradients": {
+      "name": "postcss-double-position-gradients",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "postcss-preset-env"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/postcss-double-position-gradients"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-env-function": {
+      "name": "postcss-env-function",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/postcss-env-function"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-flexbugs-fixes": {
+      "name": "postcss-flexbugs-fixes",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0 - 4.2.1",
+      "nodes": [
+        "node_modules/postcss-flexbugs-fixes"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-focus-visible": {
+      "name": "postcss-focus-visible",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=4.0.0",
+      "nodes": [
+        "node_modules/postcss-focus-visible"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-focus-within": {
+      "name": "postcss-focus-within",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=3.0.0",
+      "nodes": [
+        "node_modules/postcss-focus-within"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-font-variant": {
+      "name": "postcss-font-variant",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0 - 4.0.1",
+      "nodes": [
+        "node_modules/postcss-font-variant"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-gap-properties": {
+      "name": "postcss-gap-properties",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/postcss-gap-properties"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-image-set-function": {
+      "name": "postcss-image-set-function",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=3.0.0",
+      "nodes": [
+        "node_modules/postcss-image-set-function"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-initial": {
+      "name": "postcss-initial",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "3.0.0 - 3.0.4",
+      "nodes": [
+        "node_modules/postcss-initial"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-lab-function": {
+      "name": "postcss-lab-function",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/postcss-lab-function"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-loader": {
+      "name": "postcss-loader",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "3.0.0 - 4.0.1",
+      "nodes": [
+        "node_modules/postcss-loader"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-logical": {
+      "name": "postcss-logical",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/postcss-logical"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-media-minmax": {
+      "name": "postcss-media-minmax",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0",
+      "nodes": [
+        "node_modules/postcss-media-minmax"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-merge-longhand": {
+      "name": "postcss-merge-longhand",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.6 - 4.0.11",
+      "nodes": [
+        "node_modules/postcss-merge-longhand"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-merge-rules": {
+      "name": "postcss-merge-rules",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.2 - 4.0.3",
+      "nodes": [
+        "node_modules/postcss-merge-rules"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-minify-font-values": {
+      "name": "postcss-minify-font-values",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.2",
+      "nodes": [
+        "node_modules/postcss-minify-font-values"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-minify-gradients": {
+      "name": "postcss-minify-gradients",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-minify-gradients"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-minify-params": {
+      "name": "postcss-minify-params",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-minify-params"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-minify-selectors": {
+      "name": "postcss-minify-selectors",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-minify-selectors"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-modules-extract-imports": {
+      "name": "postcss-modules-extract-imports",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "2.0.0",
+      "nodes": [
+        "node_modules/postcss-modules-extract-imports"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-modules-local-by-default": {
+      "name": "postcss-modules-local-by-default",
+      "severity": "moderate",
+      "via": [
+        "icss-utils",
+        "postcss"
+      ],
+      "effects": [],
+      "range": "2.0.0 - 4.0.0-rc.4",
+      "nodes": [
+        "node_modules/postcss-modules-local-by-default"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-modules-scope": {
+      "name": "postcss-modules-scope",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "2.0.0 - 2.2.0",
+      "nodes": [
+        "node_modules/postcss-modules-scope"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-modules-values": {
+      "name": "postcss-modules-values",
+      "severity": "moderate",
+      "via": [
+        "icss-utils",
+        "postcss"
+      ],
+      "effects": [],
+      "range": "2.0.0 - 4.0.0-rc.5",
+      "nodes": [
+        "node_modules/postcss-modules-values"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-nesting": {
+      "name": "postcss-nesting",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "7.0.0 - 7.0.1",
+      "nodes": [
+        "node_modules/postcss-nesting"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize": {
+      "name": "postcss-normalize",
+      "severity": "moderate",
+      "via": [
+        "postcss",
+        "postcss-browser-comments"
+      ],
+      "effects": [],
+      "range": "7.0.0 - 9.0.0",
+      "nodes": [
+        "node_modules/postcss-normalize"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize-charset": {
+      "name": "postcss-normalize-charset",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1",
+      "nodes": [
+        "node_modules/postcss-normalize-charset"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize-display-values": {
+      "name": "postcss-normalize-display-values",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "<=4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-normalize-display-values"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize-positions": {
+      "name": "postcss-normalize-positions",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "<=4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-normalize-positions"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize-repeat-style": {
+      "name": "postcss-normalize-repeat-style",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "<=4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-normalize-repeat-style"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize-string": {
+      "name": "postcss-normalize-string",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "<=4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-normalize-string"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize-timing-functions": {
+      "name": "postcss-normalize-timing-functions",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "<=4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-normalize-timing-functions"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize-unicode": {
+      "name": "postcss-normalize-unicode",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "<=4.0.0-rc.2 || 4.0.1",
+      "nodes": [
+        "node_modules/postcss-normalize-unicode"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize-url": {
+      "name": "postcss-normalize-url",
+      "severity": "high",
+      "via": [
+        "normalize-url",
+        "postcss"
+      ],
+      "effects": [
+        "cssnano-preset-default"
+      ],
+      "range": "<=4.0.1",
+      "nodes": [
+        "node_modules/postcss-normalize-url"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-normalize-whitespace": {
+      "name": "postcss-normalize-whitespace",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "<=4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-normalize-whitespace"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-ordered-values": {
+      "name": "postcss-ordered-values",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.1.1 - 4.1.2",
+      "nodes": [
+        "node_modules/postcss-ordered-values"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-overflow-shorthand": {
+      "name": "postcss-overflow-shorthand",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=2.0.0",
+      "nodes": [
+        "node_modules/postcss-overflow-shorthand"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-page-break": {
+      "name": "postcss-page-break",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "2.0.0",
+      "nodes": [
+        "node_modules/postcss-page-break"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-place": {
+      "name": "postcss-place",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=4.0.0",
+      "nodes": [
+        "node_modules/postcss-place"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-preset-env": {
+      "name": "postcss-preset-env",
+      "severity": "moderate",
+      "via": [
+        "css-blank-pseudo",
+        "css-prefers-color-scheme",
+        "postcss",
+        "postcss-color-gray",
+        "postcss-double-position-gradients"
+      ],
+      "effects": [],
+      "range": ">=6.0.0",
+      "nodes": [
+        "node_modules/postcss-preset-env"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-pseudo-class-any-link": {
+      "name": "postcss-pseudo-class-any-link",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=6.0.0",
+      "nodes": [
+        "node_modules/postcss-pseudo-class-any-link"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-reduce-initial": {
+      "name": "postcss-reduce-initial",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.2 - 4.0.3",
+      "nodes": [
+        "node_modules/postcss-reduce-initial"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-reduce-transforms": {
+      "name": "postcss-reduce-transforms",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1 - 4.0.2",
+      "nodes": [
+        "node_modules/postcss-reduce-transforms"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-replace-overflow-wrap": {
+      "name": "postcss-replace-overflow-wrap",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "3.0.0",
+      "nodes": [
+        "node_modules/postcss-replace-overflow-wrap"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-selector-matches": {
+      "name": "postcss-selector-matches",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": ">=4.0.0",
+      "nodes": [
+        "node_modules/postcss-selector-matches"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-selector-not": {
+      "name": "postcss-selector-not",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0 - 4.0.1",
+      "nodes": [
+        "node_modules/postcss-selector-not"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-svgo": {
+      "name": "postcss-svgo",
+      "severity": "high",
+      "via": [
+        "postcss",
+        "svgo"
+      ],
+      "effects": [],
+      "range": ">=4.0.0-nightly.2020.1.9",
+      "nodes": [
+        "node_modules/postcss-svgo"
+      ],
+      "fixAvailable": true
+    },
+    "postcss-unique-selectors": {
+      "name": "postcss-unique-selectors",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1",
+      "nodes": [
+        "node_modules/postcss-unique-selectors"
+      ],
+      "fixAvailable": true
+    },
+    "react-dev-utils": {
+      "name": "react-dev-utils",
+      "severity": "moderate",
+      "via": [
+        "browserslist"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": ">=6.0.0-next.03604a46",
+      "nodes": [
+        "node_modules/react-dev-utils"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "react-scripts": {
+      "name": "react-scripts",
+      "severity": "high",
+      "via": [
+        "@svgr/webpack",
+        "css-loader",
+        "mini-css-extract-plugin",
+        "react-dev-utils",
+        "resolve-url-loader",
+        "webpack",
+        "webpack-dev-server"
+      ],
+      "effects": [],
+      "range": ">=0.10.0-alpha.328cb32e",
+      "nodes": [
+        "node_modules/react-scripts"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "resolve-url-loader": {
+      "name": "resolve-url-loader",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "3.0.0-alpha.1 - 4.0.0",
+      "nodes": [
+        "node_modules/resolve-url-loader"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "stylehacks": {
+      "name": "stylehacks",
+      "severity": "moderate",
+      "via": [
+        "postcss"
+      ],
+      "effects": [],
+      "range": "4.0.0-nightly.2020.1.9 - 4.0.0-rc.2 || 4.0.1 - 4.0.3",
+      "nodes": [
+        "node_modules/stylehacks"
+      ],
+      "fixAvailable": true
+    },
+    "svgo": {
+      "name": "svgo",
+      "severity": "high",
+      "via": [
+        "css-select"
+      ],
+      "effects": [
+        "@svgr/plugin-svgo",
+        "postcss-svgo"
+      ],
+      "range": ">=1.0.0",
+      "nodes": [
+        "node_modules/svgo"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "trim-newlines": {
+      "name": "trim-newlines",
+      "severity": "high",
+      "via": [
+        {
+          "source": 1753,
+          "name": "trim-newlines",
+          "dependency": "trim-newlines",
+          "title": "Regular Expression Denial of Service",
+          "url": "https://npmjs.com/advisories/1753",
+          "severity": "high",
+          "range": "<3.0.1 || =4.0.0"
+        }
+      ],
+      "effects": [
+        "meow"
+      ],
+      "range": "<3.0.1 || =4.0.0",
+      "nodes": [
+        "node_modules/trim-newlines"
+      ],
+      "fixAvailable": {
+        "name": "node-sass",
+        "version": "3.4.2",
+        "isSemVerMajor": true
+      }
+    },
+    "watchpack": {
+      "name": "watchpack",
+      "severity": "moderate",
+      "via": [
+        "watchpack-chokidar2"
+      ],
+      "effects": [
+        "webpack"
+      ],
+      "range": "1.7.2 - 1.7.5",
+      "nodes": [
+        "node_modules/watchpack"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "watchpack-chokidar2": {
+      "name": "watchpack-chokidar2",
+      "severity": "moderate",
+      "via": [
+        "chokidar"
+      ],
+      "effects": [
+        "watchpack"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/watchpack-chokidar2"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "webpack": {
+      "name": "webpack",
+      "severity": "moderate",
+      "via": [
+        "watchpack"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "4.44.0 - 4.46.0",
+      "nodes": [
+        "node_modules/webpack"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    },
+    "webpack-dev-server": {
+      "name": "webpack-dev-server",
+      "severity": "moderate",
+      "via": [
+        "chokidar"
+      ],
+      "effects": [
+        "react-scripts"
+      ],
+      "range": "2.0.0-beta - 3.11.2",
+      "nodes": [
+        "node_modules/webpack-dev-server"
+      ],
+      "fixAvailable": {
+        "name": "react-scripts",
+        "version": "1.1.5",
+        "isSemVerMajor": true
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 84,
+      "high": 15,
+      "critical": 0,
+      "total": 99
+    },
+    "dependencies": {
+      "prod": 1990,
+      "dev": 0,
+      "optional": 29,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 2018
+    }
+  }
+}

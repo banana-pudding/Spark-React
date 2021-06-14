@@ -1,8 +1,10 @@
 import React from "react";
 import axios from "../common/axiosConfig";
+import { statusText, statusLabel } from "../common/utils";
 import PrintingCard from "./statusCards/printing";
 import PendPayCard from "./statusCards/pendpay";
 import PickupCard from "./statusCards/pickup";
+import TransitCard from "./statusCards/transit";
 
 class FileStatus extends React.Component {
     constructor(props) {
@@ -42,10 +44,9 @@ class FileStatus extends React.Component {
                     if (!this.state.lastAttempt) {
                         this.fetchAttemptData();
                     } else {
+                        let attempt = this.state.lastAttempt;
                         return (
-                            <div className="card-body">
-                                <div></div>
-                            </div>
+                            <TransitCard file={file} submission={submission} attempt={attempt} user={this.props.user} />
                         );
                     }
                 case "WAITING_FOR_PICKUP":
@@ -96,7 +97,16 @@ class FileStatus extends React.Component {
             }
         };
 
-        return <div className="card shadow mb-3">{statusBody()}</div>;
+        return (
+            <div className="card shadow mb-3">
+                <div className="card-body">
+                    <h3>
+                        Status: <span className={"fw-bold " + statusText(file)}>{statusLabel(file)}</span>
+                    </h3>
+                    {statusBody()}
+                </div>
+            </div>
+        );
     }
 }
 

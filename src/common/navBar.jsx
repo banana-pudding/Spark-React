@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import React, { Component } from "react";
 import { Collapse } from "bootstrap";
 
@@ -46,17 +46,29 @@ class NavBar extends Component {
                 return (
                     <React.Fragment>
                         <div className="d-lg-flex flex-row">
-                            <li className="nav-item ">
-                                <Link to="/prints" className="nav-link">
+                            <Link to="/prints">
+                                <button
+                                    className={
+                                        "btn me-1 " +
+                                        (this.props.location.pathname == "/prints"
+                                            ? "btn-light text-primary fw-bold"
+                                            : "btn-primary")
+                                    }>
                                     Submission Queue
-                                </Link>
-                            </li>
+                                </button>
+                            </Link>
 
-                            <li className="nav-item ">
-                                <Link to="/printers" className="nav-link">
+                            <Link to="/printers">
+                                <button
+                                    className={
+                                        "btn ms-1 " +
+                                        (this.props.location.pathname == "/printers"
+                                            ? "btn-light text-primary fw-bold"
+                                            : "btn-primary")
+                                    }>
                                     Printer Dashboard
-                                </Link>
-                            </li>
+                                </button>
+                            </Link>
                         </div>
 
                         <div className="d-lg-flex flex-row me-3">
@@ -118,4 +130,4 @@ class NavBar extends Component {
     }
 }
 
-export default NavBar;
+export default withRouter(NavBar);

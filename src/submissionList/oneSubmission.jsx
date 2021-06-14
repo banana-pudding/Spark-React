@@ -4,6 +4,7 @@ import StatusFlag from "./flags/statusFlag";
 import axios from "../common/axiosConfig";
 import { statusText } from "../common/utils";
 import { withRouter } from "react-router-dom";
+import PickupModal from "../singleFileView/pickupModal";
 
 class SingleSubmission extends React.Component {
     constructor(props) {
@@ -12,6 +13,7 @@ class SingleSubmission extends React.Component {
             item: props.item,
             printPage: props.printPage,
         };
+        this.pickupModal = React.createRef();
     }
 
     handleRequestPayment() {
@@ -58,6 +60,14 @@ class SingleSubmission extends React.Component {
             });
     }
 
+    openPickupModal = (files) => {
+        let fileIDs = [];
+        for (let file of files) {
+            fileIDs.push(file._id);
+        }
+        this.pickupModal.current.openModal(fileIDs);
+    };
+
     render() {
         let submission = this.state.item;
         let submittedDate = new Date(submission.timestampSubmitted);
@@ -83,6 +93,30 @@ class SingleSubmission extends React.Component {
         const readyBorder = () => {
             if (submission.allFilesReviewed && reviewDate < new Date("1980")) {
                 return " border-green border-2 bg-highlightgreen";
+            } else {
+                return null;
+            }
+        };
+
+        const pickupButton = () => {
+            let hasPickup = submission.files.reduce((accum, curr) => {
+                return accum || curr.status == "WAITING_FOR_PICKUP";
+            }, false);
+
+            if (hasPickup) {
+                return (
+                    <button
+                        type="button"
+                        className="btn btn-pink"
+                        onClick={() => {
+                            this.openPickupModal(submission.files);
+                        }}>
+                        <div className="d-flex flex-row">
+                            <i className="bi bi-person-check"></i>
+                            <span className="flex-grow-1 px-1">Pick Up All Files</span>
+                        </div>
+                    </button>
+                );
             } else {
                 return null;
             }
@@ -273,88 +307,105 @@ class SingleSubmission extends React.Component {
                                         </button>
 
                                         {/* ------------------------- Pickup Full Submission ------------------------- */}
-                                        <button type="button" className="btn btn-pink">
-                                            <div className="d-flex flex-row">
-                                                <i className="bi bi-person-check"></i>
-                                                <span className="flex-grow-1 px-1">Pick Up All Files</span>
-                                            </div>
-                                        </button>
+                                        {pickupButton()}
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div className="col-12 col-xxl-custom-right">
                             <div className="card">
-                                <table className="table table-hover mb-0">
-                                    <thead className="card-header">
-                                        <tr>
-                                            <th style={{ width: "44%" }}>Filename</th>
-                                            <th>Filament</th>
-                                            <th>Volume</th>
-                                            <th>Weight</th>
-                                            <th>Time</th>
-                                            <th>Pickup</th>
-                                            <th style={{ width: "0%" }}></th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {submission.files.map((file, index) => {
-                                            return (
-                                                <tr key={index}>
-                                                    <td>
-                                                        <a
-                                                            className={
-                                                                "text-decoration-none fw-bold me-2 " + statusText(file)
-                                                            }
-                                                            href={"/files/" + file._id}>
-                                                            {file.fileName}
-                                                        </a>
-                                                        <StatusFlag file={file} />
-                                                    </td>
-                                                    <td className="text-nowrap text-capitalize">{requestInfo(file)}</td>
-                                                    <td className="text-nowrap">
-                                                        {file.review.calculatedVolumeCm} cm<sup>3</sup>
-                                                    </td>
-                                                    <td className="text-nowrap">{file.review.slicedGrams}g</td>
-                                                    <td className="text-nowrap">
-                                                        {file.review.slicedHours}h {file.review.slicedMinutes}m
-                                                    </td>
-                                                    <td className="text-nowrap">{file.request.pickupLocation}</td>
-                                                    <td>
-                                                        <button
-                                                            className="btn btn-link text-danger p-0"
-                                                            onClick={() => {
-                                                                this.handleDeleteFile(file._id);
-                                                            }}>
-                                                            <i className="bi bi-trash-fill"></i>
-                                                        </button>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                    </tbody>
-                                    <tfoot>
-                                        <tr className="card-footer">
-                                            <th scope="row">Totals</th>
-                                            <td></td>
-                                            <th scope="row" className="text-nowrap">
-                                                {submission.sums.totalVolume.toFixed(2)} cm<sup>3</sup>
-                                            </th>
-                                            <th scope="row" className="text-nowrap">
-                                                {submission.sums.totalWeight}g
-                                            </th>
-                                            <th scope="row" className="text-nowrap">
-                                                {finalHours}h {finalMintes}m
-                                            </th>
-                                            <td></td>
-                                            <td></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
+                                <div className="w-100 table-container">
+                                    <table className="table table-hover mb-0 text-nowrap">
+                                        <thead className="card-header">
+                                            <tr>
+                                                <th>Filename</th>
+                                                <th>Status</th>
+                                                <th>Filament</th>
+                                                <th>Est. Volume</th>
+                                                <th>Est. Weight</th>
+                                                <th>Est. Time</th>
+                                                <th>Pickup Location</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {submission.files.map((file, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        {/* FILENAME */}
+                                                        <td>
+                                                            <a
+                                                                className={
+                                                                    "text-decoration-none fw-bold me-2 " +
+                                                                    statusText(file)
+                                                                }
+                                                                href={"/files/" + file._id}>
+                                                                {file.fileName}
+                                                            </a>
+                                                        </td>
+
+                                                        {/* STATUS */}
+                                                        <td>
+                                                            <StatusFlag file={file} />
+                                                        </td>
+
+                                                        {/* FILAMENT */}
+                                                        <td className="text-capitalize">{requestInfo(file)}</td>
+
+                                                        {/* EST VOLUME */}
+                                                        <td>
+                                                            {file.review.calculatedVolumeCm} cm<sup>3</sup>
+                                                        </td>
+
+                                                        {/* EST WEIGHT */}
+                                                        <td>{file.review.slicedGrams}g</td>
+
+                                                        {/* EST TIME */}
+                                                        <td>
+                                                            {file.review.slicedHours}h {file.review.slicedMinutes}m
+                                                        </td>
+
+                                                        {/* EST TIME */}
+                                                        <td>{file.request.pickupLocation}</td>
+
+                                                        <td>
+                                                            <button
+                                                                className="btn btn-link text-danger p-0"
+                                                                onClick={() => {
+                                                                    this.handleDeleteFile(file._id);
+                                                                }}>
+                                                                <i className="bi bi-trash-fill"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr className="card-footer">
+                                                <th scope="row">Totals</th>
+                                                <td></td>
+                                                <td></td>
+                                                <th scope="row" className="text-nowrap">
+                                                    {submission.sums.totalVolume.toFixed(2)} cm<sup>3</sup>
+                                                </th>
+                                                <th scope="row" className="text-nowrap">
+                                                    {submission.sums.totalWeight}g
+                                                </th>
+                                                <th scope="row" className="text-nowrap">
+                                                    {finalHours}h {finalMintes}m
+                                                </th>
+                                                <td></td>
+                                                <td></td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <PickupModal ref={this.pickupModal} />
             </div>
         );
     }

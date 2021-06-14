@@ -118,10 +118,7 @@ class PendingCard extends React.Component {
         };
 
         return (
-            <div className="card-body">
-                <h3>
-                    Status: <span className={statusText(file)}>Waiting for Pickup</span>
-                </h3>
+            <React.Fragment>
                 <h5 className="text-muted mb-3">
                     File printed on <FormattedDate date={file.printing.timestampPrinted} />
                 </h5>
@@ -153,7 +150,7 @@ class PendingCard extends React.Component {
                 </table>
 
                 <PickupModal ref={this.pickupModal} reloadPage={this.reloadPage.bind(this)} />
-            </div>
+            </React.Fragment>
         );
     }
 }

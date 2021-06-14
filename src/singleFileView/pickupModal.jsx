@@ -1,5 +1,6 @@
 import React from "react";
 import { Modal } from "bootstrap";
+import idImage from "../common/images/id.jpg";
 var QRCode = require("qrcode.react");
 
 class PickupModal extends React.Component {
@@ -22,122 +23,66 @@ class PickupModal extends React.Component {
     openModal(fileIDs) {
         this.setState(
             {
-                status: "CHOSING_LOCATION",
                 fileIDs: fileIDs,
             },
             () => {
                 this.modal.show();
             }
         );
+
+        console.log(fileIDs);
     }
 
-    finishPickup() {
-        this.ws.close();
-    }
+    generateQRLink = () => {
+        let link = "/pickup?files=";
+        let query = encodeURIComponent(this.state.fileIDs);
+        return link + query;
+    };
 
     render() {
-        const modalBody = () => {
-            switch (this.state.status) {
-                case "CHOSING_LOCATION":
-                    return (
-                        <React.Fragment>
-                            <p>Which location are you at?</p>
-                            <div className="row g-2">
-                                <div className="col">
-                                    <button
-                                        className="btn btn-blue w-100"
-                                        onClick={() => {
-                                            this.setState(
-                                                {
-                                                    status: "WAITING_FOR_PATRON",
-                                                    pickupLocation: "Willis Library",
-                                                },
-                                                () => {
-                                                    this.startPickup("Willis Library");
-                                                }
-                                            );
-                                        }}>
-                                        Willis Library
-                                    </button>
-                                </div>
-                                <div className="col">
-                                    <button
-                                        className="btn btn-purple w-100"
-                                        onClick={() => {
-                                            this.setState(
-                                                {
-                                                    status: "WAITING_FOR_PATRON",
-                                                    pickupLocation: "Discovery Park",
-                                                },
-                                                () => {
-                                                    this.startPickup("Discovery Park");
-                                                }
-                                            );
-                                        }}>
-                                        Discovery Park
-                                    </button>
-                                </div>
-                            </div>
-                        </React.Fragment>
-                    );
-                case "SHOW_QR":
-                    return (
-                        <React.Fragment>
-                            <p>test</p>
-                            <QRCode value="http://facebook.github.io/react/" />
-                        </React.Fragment>
-                    );
-                case "CONFIRMING_LOGIN":
-                    return (
-                        <form>
-                            <div className="form-floating mb-3">
-                                <input
-                                    type="text"
-                                    className="form-control"
-                                    value={this.state.euid}
-                                    onChange={(e) => {
-                                        this.setState({ euid: e.target.value });
-                                    }}
-                                    id="confirmEUID"
-                                    placeholder="euid"
-                                />
-                                <label for="confirmEUID">EUID</label>
-                            </div>
-                            <div className="form-floating">
-                                <input
-                                    type="password"
-                                    className="form-control"
-                                    id="confirmPass"
-                                    value={this.state.password}
-                                    onChange={(e) => {
-                                        this.setState({ password: e.target.value });
-                                    }}
-                                    placeholder="Password"
-                                />
-                                <label for="confirmPass">Password</label>
-                            </div>
-                            <div className="d-grid">
-                                <button
-                                    className="btn btn-primary"
-                                    onClick={(e) => {
-                                        e.preventDefault();
-                                        this.finishPickup();
-                                    }}>
-                                    Submit
-                                </button>
-                            </div>
-                        </form>
-                    );
-                default:
-                    return null;
-            }
-        };
-
         return (
             <div className="modal fade" tabIndex="-1" ref={this.modalRef}>
-                <div className="modal-dialog modal-dialog-centered">
+                <div className="modal-dialog modal-dialog-centered modal-lg">
                     <div className="modal-content">
-                        <div className="modal-body">{modalBody()}</div>
+                        <div
+                            className="card-img-top d-flex align-items-center justify-content-center"
+                            style={{ maxHeight: "20rem", overflow: "hidden" }}>
+                            <img src={idImage} style={{ width: "100%", height: "auto" }}></img>
+                        </div>
+                        <div className="modal-body">
+                            <p className="h1">Remember to check the patron's ID card!</p>
+                            <p>
+                                After confirming the patron's ID, scan this QR code on an iPad to begin the pickup
+                                process. Once the patron has signed, please confirm your euid and password on the iPad
+                                to complete the pickup.
+                            </p>
+                            <div className="row">
+                                <div className="col-4">
+                                    <QRCode
+                                        value={"https://sparkorders.library.unt.edu" + this.generateQRLink()}
+                                        renderAs="svg"
+                                        size="100%"
+                                    />
+                                </div>
+                                <div className="col d-flex flex-column justify-content-between">
+                                    <div className="alert alert-purple" role="alert">
+                                        <p className="fs-4 mb-0">
+                                            Don't forget to <strong>confirm your euid and password</strong> on the iPad
+                                            after the patron has signed!
+                                        </p>
+                                    </div>
+                                    <p>
+                                        Refresh this page after both parties have finished confirming pickup to see
+                                        changes!
+                                    </p>
+
+                                    <p className="mb-0 text-muted">
+                                        Generated pickup link is:{" "}
+                                        <a href={this.generateQRLink()}>{this.generateQRLink()}</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

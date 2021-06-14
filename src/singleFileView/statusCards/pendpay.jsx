@@ -62,13 +62,7 @@ class PendingCard extends React.Component {
         let file = this.props.file;
         let submission = this.props.submission;
         return (
-            <div className="card-body">
-                <h3>
-                    Status:{" "}
-                    <span className={statusText(file)}>
-                        {submission.isPendingWaive ? "Pending Waive" : "Pending Payment"}
-                    </span>
-                </h3>
+            <React.Fragment>
                 <h5 className="text-muted">
                     Payment requested on <FormattedDate date={file.payment.timestampPaymentRequested} />
                 </h5>
@@ -161,7 +155,7 @@ class PendingCard extends React.Component {
                         </button>
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

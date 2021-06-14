@@ -1,17 +1,40 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, withRouter } from "react-router-dom";
 import FormattedDate from "../../common/formattedDate";
-import { statusText } from "../../common/utils";
+import axios from "../../common/axiosConfig";
 
-class PrintingCard extends React.Component {
+class TransitCard extends React.Component {
     constructor(props) {
         super(props);
     }
 
+    markFileArrived = () => {
+        let fileIDs = [];
+        fileIDs.push(this.props.file._id);
+        axios.post("/submissions/arrived", { fileIDs: fileIDs }).then((res) => {
+            this.props.history.go(0);
+        });
+    };
+
     render() {
         let attempt = this.props.attempt;
+        let file = this.props.file;
         return (
             <React.Fragment>
+                <p className="h4">In transit to: {file.request.pickupLocation}</p>
+                <div className="d-grid">
+                    <button
+                        className="btn btn-purple mb-2"
+                        onClick={() => {
+                            this.markFileArrived();
+                        }}>
+                        Arrived at Pickup Location?
+                    </button>
+                    <p>
+                        The patron will only be notified once <strong>all</strong> files have arrived at the requested
+                        pickup location.
+                    </p>
+                </div>
                 <h5 className="text-muted">Attempt ID: {attempt.prettyID}</h5>
                 <table className="table">
                     <tbody>
@@ -61,12 +84,9 @@ class PrintingCard extends React.Component {
                         </tr>
                     </tbody>
                 </table>
-                <Link to="/printers" className="w-100">
-                    <button className="btn btn-blue w-100">Go to the Printer Dashboard</button>
-                </Link>
             </React.Fragment>
         );
     }
 }
 
-export default PrintingCard;
+export default withRouter(TransitCard);

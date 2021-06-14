@@ -18,7 +18,6 @@ class FilePreview extends React.Component {
 
     componentDidMount() {
         var fileID = window.location.pathname.split("/files/")[1];
-        console.log(fileID);
         axios.get("/submissions/onefile/" + fileID).then((res) => {
             this.setState({
                 fileID: fileID,

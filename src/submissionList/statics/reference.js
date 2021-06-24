@@ -1,3 +1,51 @@
+import { statusToggleColor } from "../../common/utils";
+export const defaultState = () => {
+    return {
+        selectedQueue: "New Submissions",
+        filters: {
+            status: [
+                "UNREVIEWED",
+                "REVIEWED",
+                // "PENDING_PAYMENT",
+                // "READY_TO_PRINT",
+                // "PRINTING",
+                // "IN_TRANSIT",
+                // "WAITING_FOR_PICKUP",
+                // "PICKED_UP",
+                // "REJECTED",
+                // "STALE_ON_PAYMENT",
+                // "REPOSESSED",
+                // "LOST_IN_TRANSIT",
+            ],
+            submittedBefore: null,
+            submittedAfter: null,
+            reviewedBefore: null,
+            reviewedAfter: null,
+            paidBefore: null,
+            paidAfter: null,
+            printedBefore: null,
+            printedAfter: null,
+            pickedupBefore: null,
+            pickedupAfter: null,
+            paymentType: ["PAID", "WAIVED", "UNPAID"],
+            pickupLocation: ["Willis Library", "Discovery Park"],
+            printedLocation: ["Willis Library", "Discovery Park"],
+            waitingLocation: ["Willis Library", "Discovery Park"],
+            showPersonal: true,
+            showClass: true,
+            showInternal: true,
+            showFullSubmission: false,
+            showUnarchived: true,
+            showArchived: false,
+
+            currentPage: 1,
+        },
+        submissions: [],
+        totalCount: 0,
+        filterTab: "Queues",
+    };
+};
+
 export const statusList = [
     {
         name: "UNREVIEWED",
@@ -40,12 +88,12 @@ export const statusList = [
         label: "Never Paid",
     },
     {
-        name: "REPOSESSED",
-        label: "Never Picked Up",
-    },
-    {
         name: "LOST_IN_TRANSIT",
         label: "Lost in Transit",
+    },
+    {
+        name: "REPOSESSED",
+        label: "Never Picked Up",
     },
 ];
 
@@ -86,107 +134,86 @@ export const dateList = [
     },
 ];
 
-export const defaultState = {
-    selectedQueue: "New Submissions",
-    filters: {
-        status: [
-            // "UNREVIEWED",
-            // "REVIEWED",
-            // "PENDING_PAYMENT",
-            // "READY_TO_PRINT",
-            // "PRINTING",
-            // "IN_TRANSIT",
-            // "WAITING_FOR_PICKUP",
-            // "PICKED_UP",
-            // "REJECTED",
-            // "STALE_ON_PAYMENT",
-            // "REPOSESSED",
-            // "LOST_IN_TRANSIT",
-        ],
-        submittedBefore: null,
-        submittedAfter: null,
-        reviewedBefore: null,
-        reviewedAfter: null,
-        paidBefore: null,
-        paidAfter: null,
-        printedBefore: null,
-        printedAfter: null,
-        pickedupBefore: null,
-        pickedupAfter: null,
-        paymentType: ["PAID", "WAIVED", "UNPAID"],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
-        showPersonal: true,
-        showClass: true,
-        showInternal: true,
-        showFullSubmission: false,
+export const typeList = [
+    {
+        name: "showPersonal",
+        label: "Show Personal Submissions",
+        color: "lightblue",
     },
-    submissions: [],
-};
+    {
+        name: "showClass",
+        label: "Show Class Submissions",
+        color: "purple",
+    },
+    {
+        name: "showInternal",
+        label: "Show Internal Submissions",
+        color: "orange",
+    },
+    {
+        name: "showUnarchived",
+        label: "Show Unarchived Submissions",
+        color: "green",
+    },
+    {
+        name: "showArchived",
+        label: "Show Archived Submissions",
+        color: "midgrey",
+    },
+];
+
+export const filterTabList = ["Queues", "Statuses", "Dates", "Locations", "Types"];
 
 export const queueFilters = [
     {
         name: "New Submissions",
+        color: statusToggleColor("UNREVIEWED"),
         status: ["UNREVIEWED", "REVIEWED"],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
     },
     {
         name: "Pending Payment",
+        color: statusToggleColor("PENDING_PAYMENT"),
         status: ["PENDING_PAYMENT"],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
     },
     {
         name: "Ready to Print",
+        color: statusToggleColor("READY_TO_PRINT"),
         status: ["READY_TO_PRINT"],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
     },
     {
         name: "Printing",
+        color: statusToggleColor("PRINTING"),
         status: ["PRINTING"],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
     },
     {
         name: "In Transit",
+        color: statusToggleColor("IN_TRANSIT"),
         status: ["IN_TRANSIT"],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
     },
     {
-        name: "Ready for Pickup",
+        name: "Waiting for Pickup",
+        color: statusToggleColor("WAITING_FOR_PICKUP"),
         status: ["WAITING_FOR_PICKUP"],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
     },
     {
-        name: "Ready for Pickup (Willis)",
-        status: ["WAITING_FOR_PICKUP"],
-        pickupLocation: ["Willis Library"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
-    },
-    {
-        name: "Ready for Pickup (DP)",
-        status: ["WAITING_FOR_PICKUP"],
-        pickupLocation: ["Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
-    },
-    {
-        name: "Rejected",
-        status: ["REJECTED"],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
+        name: "Completed",
+        color: statusToggleColor("PICKED_UP"),
+        status: ["PICKED_UP"],
     },
     {
         name: "Reposessed",
+        color: statusToggleColor("REPOSESSED"),
         status: ["REPOSESSED"],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
     },
     {
+        name: "Rejected",
+        color: statusToggleColor("REJECTED"),
+        status: ["REJECTED"],
+    },
+
+    {
         name: "All",
+        color: "lightblue",
         status: [
             "UNREVIEWED",
             "REVIEWED",
@@ -201,7 +228,5 @@ export const queueFilters = [
             "REPOSESSED",
             "LOST_IN_TRANSIT",
         ],
-        pickupLocation: ["Willis Library", "Discovery Park"],
-        reviewLocation: ["Willis Library", "Discovery Park"],
     },
 ];

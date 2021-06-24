@@ -1,0 +1,82 @@
+<div className="card">
+<div className="w-100 table-container">
+<table className="table table-hover mb-0 ">
+                                        <thead className="card-header">
+                                            <tr>
+                                                <th>Filename</th>
+                                                {/* <th>Request</th>
+                                                <th>Review</th>
+                                                <th>Attempts</th>
+                                                <th>Print</th> */}
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {submission.files.map((file, index) => {
+                                                return (
+                                                    <tr key={index}>
+                                                        {/* FILENAME */}
+                                                        <td>
+                                                            <div
+                                                                className="h-100 overflow-hidden rounded-start"
+                                                                style={{
+                                                                    backgroundImage: `url(submissions/thumbnail/${file._id})`,
+                                                                    backgroundSize: "cover",
+                                                                    backgroundPosition: "center center",
+                                                                }}></div>
+                                                            <Opener
+                                                                file={file}
+                                                                submission={submission}
+                                                                user={this.props.user}
+                                                            />
+                                                            <StatusFlag file={file} />
+                                                        </td>
+
+                                                        {/* REQUEST */}
+                                                        {/* <td>
+                                                            <Balloon item="request" file={file} />
+                                                        </td> */}
+
+                                                        {/* REVIEW */}
+                                                        {/* <td>
+                                                            <Balloon item="review" file={file} />
+                                                        </td> */}
+
+                                                        {/* PRINTING */}
+                                                        {/* <td>
+                                                            <Balloon item="print" file={file} />
+                                                        </td> */}
+
+                                                        <td>
+                                                            <button
+                                                                className="btn btn-link text-danger p-0"
+                                                                onClick={() => {
+                                                                    this.handleDeleteFile(file._id);
+                                                                }}>
+                                                                <i className="bi bi-trash-fill"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                        </tbody>
+                                        <tfoot>
+                                            <tr className="card-footer">
+                                                <th scope="row">Totals</th>
+                                                <td></td>
+
+                                                <th scope="row" className="text-nowrap">
+                                                    {submission.sums.totalVolume.toFixed(2)} cm<sup>3</sup>
+                                                </th>
+                                                <th scope="row" className="text-nowrap">
+                                                    {submission.sums.totalWeight}g
+                                                </th>
+                                                <th scope="row" className="text-nowrap">
+                                                    {finalHours}h {finalMintes}m
+                                                </th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                    </div>
+                                
+                                </div>

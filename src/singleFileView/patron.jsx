@@ -25,7 +25,7 @@ class Patron extends React.Component {
                         </tr>
                         <tr>
                             <th scope="row">Submitted</th>
-                            <td>{formatDate(submission.timestampSubmitted)}</td>
+                            <td>{formatDate(submission.submissionDetails.timestampSubmitted)}</td>
                         </tr>
                         <tr>
                             <th scope="row">Email</th>
@@ -51,23 +51,23 @@ class Patron extends React.Component {
                         </tr>
                         <tr className={classStyle()}>
                             <th scope="row">Class Code</th>
-                            <td>{submission.classCode}</td>
+                            <td>{submission.submissionDetails.classDetails.classCode}</td>
                         </tr>
                         <tr className={classStyle()}>
                             <th scope="row">Professor</th>
-                            <td>{submission.professor}</td>
+                            <td>{submission.submissionDetails.classDetails.professor}</td>
                         </tr>
                         <tr className={classStyle()}>
                             <th scope="row">Project</th>
-                            <td>{submission.projectType}</td>
+                            <td>{submission.submissionDetails.classDetails.project}</td>
                         </tr>
                         <tr className={internalStyle()}>
                             <th scope="row">Department</th>
-                            <td>{submission.department}</td>
+                            <td>{submission.submissionDetails.internalDetails.department}</td>
                         </tr>
                         <tr className={internalStyle()}>
                             <th scope="row">Project</th>
-                            <td>{submission.departmentProject}</td>
+                            <td>{submission.submissionDetails.internalDetails.departmentProject}</td>
                         </tr>
                     </tbody>
                 </table>

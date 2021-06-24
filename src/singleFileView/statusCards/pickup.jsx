@@ -28,7 +28,7 @@ class PendingCard extends React.Component {
         todayLate.setHours(23, 59, 59, 0);
 
         const submissionCompleteAlert = () => {
-            if (new Date(submission.timestampPickupRequested) < new Date("1980")) {
+            if (new Date(submission.pickup.timestampPickupRequested) < new Date("1980")) {
                 return (
                     <div className="alert alert-purple" role="alert">
                         <h4 className="alert-heading">
@@ -58,12 +58,12 @@ class PendingCard extends React.Component {
         };
 
         const completedRow = () => {
-            if (new Date(submission.timestampPickupRequested) > new Date("1980")) {
+            if (new Date(submission.pickup.timestampPickupRequested) > new Date("1980")) {
                 return (
                     <tr>
                         <th scope="row">Submission Completed:</th>
                         <td>
-                            <FormattedDate date={submission.timestampPickupRequested} />
+                            <FormattedDate date={submission.pickup.timestampPickupRequested} />
                         </td>
                     </tr>
                 );
@@ -73,12 +73,12 @@ class PendingCard extends React.Component {
         };
 
         const firstWarning = () => {
-            if (todayLate > new Date(submission.timestampFirstWarning)) {
+            if (todayLate > new Date(submission.pickup.timestampFirstWarning)) {
                 return (
                     <tr>
                         <th scope="row">First Warning:</th>
                         <td>
-                            <FormattedShortDate date={submission.timestampFirstWarning} />
+                            <FormattedShortDate date={submission.pickup.timestampFirstWarning} />
                         </td>
                     </tr>
                 );
@@ -88,12 +88,12 @@ class PendingCard extends React.Component {
         };
 
         const finalWarning = () => {
-            if (todayLate > new Date(submission.timestampFinalWarning)) {
+            if (todayLate > new Date(submission.pickup.timestampFinalWarning)) {
                 return (
                     <tr>
                         <th scope="row">Final Warning:</th>
                         <td>
-                            <FormattedShortDate date={submission.timestampFinalWarning} />
+                            <FormattedShortDate date={submission.pickup.timestampFinalWarning} />
                         </td>
                     </tr>
                 );
@@ -103,12 +103,12 @@ class PendingCard extends React.Component {
         };
 
         const reposession = () => {
-            if (todayLate > new Date(submission.timestampReposessed)) {
+            if (todayLate > new Date(submission.pickup.timestampReposessed)) {
                 return (
                     <tr>
                         <th scope="row">Reposession:</th>
                         <td>
-                            <FormattedShortDate date={submission.timestampReposessed} />
+                            <FormattedShortDate date={submission.pickup.timestampReposessed} />
                         </td>
                     </tr>
                 );

@@ -1,10 +1,12 @@
 import React from "react";
 import FormattedDate from "../common/formattedDate";
-import StatusFlag from "./flags/statusFlag";
-import axios from "../common/axiosConfig";
 import { statusText } from "../common/utils";
+import axios from "../common/axiosConfig";
+import StatusFlag from "./flags/statusFlag";
 import { withRouter } from "react-router-dom";
 import PickupModal from "../singleFileView/pickupModal";
+import Balloon from "./clickBalloon";
+import Opener from "./filenameModalOpener";
 
 class SingleSubmission extends React.Component {
     constructor(props) {
@@ -20,6 +22,7 @@ class SingleSubmission extends React.Component {
         axios
             .post("/submissions/requestpayment/" + this.state.item._id)
             .then((res) => {
+                console.log(res.data);
                 this.props.history.go(0);
             })
             .catch((err) => {
@@ -70,9 +73,9 @@ class SingleSubmission extends React.Component {
 
     render() {
         let submission = this.state.item;
-        let submittedDate = new Date(submission.timestampSubmitted);
-        let reviewDate = new Date(submission.timestampPaymentRequested);
-        let paidDate = new Date(submission.timestampPaid);
+        let submittedDate = new Date(submission.submissionDetails.timestampSubmitted);
+        let reviewDate = new Date(submission.paymentRequest.timestampPaymentRequested);
+        let paidDate = new Date(submission.payment.timestampPaid);
 
         let totalMinutes = submission.sums.totalHours * 60 + submission.sums.totalMinutes;
         let finalHours = Math.floor(totalMinutes / 60);
@@ -91,8 +94,107 @@ class SingleSubmission extends React.Component {
         };
 
         const readyBorder = () => {
-            if (submission.allFilesReviewed && reviewDate < new Date("1980")) {
+            if (submission.flags.allFilesReviewed && reviewDate < new Date("1980")) {
                 return " border-green border-2 bg-highlightgreen";
+            } else {
+                return null;
+            }
+        };
+
+        const buttonTextClasses = () => {
+            return "flex-grow-1 px-1 h6 lh-1 m-0";
+        };
+
+        const buttonFlexClasses = () => {
+            return "d-flex flex-row align-items-center";
+        };
+
+        const requestAndUndoWaiveButton = () => {
+            if (!this.props.user.isAdmin) {
+                if (!submission.flags.isPendingWaive) {
+                    return (
+                        <button
+                            type="button"
+                            className="btn btn-outline-green"
+                            onClick={() => {
+                                this.handleWaive();
+                            }}>
+                            <div className={buttonFlexClasses()}>
+                                <i className="bi bi-cash-coin"></i>
+                                <span className={buttonTextClasses()}>Request Waive</span>
+                            </div>
+                        </button>
+                    );
+                } else {
+                    return (
+                        <button
+                            type="button"
+                            className="btn btn-outline-orange"
+                            onClick={() => {
+                                this.handleUndoWaive();
+                            }}>
+                            <div className={buttonFlexClasses()}>
+                                <i className="bi bi-reply"></i>
+                                <span className={buttonTextClasses()}>Undo Waive Request</span>
+                            </div>
+                        </button>
+                    );
+                }
+            }
+        };
+
+        const adminWaiveButton = () => {
+            if (this.props.user.isAdmin && !submission.flags.isPendingWaive) {
+                return (
+                    <button
+                        type="button"
+                        className="btn btn-outline-green"
+                        onClick={() => {
+                            this.handleWaive();
+                        }}>
+                        <div className={buttonFlexClasses()}>
+                            <i className="bi bi-cash-coin"></i>
+                            <span className={buttonTextClasses()}>Waive Payment</span>
+                        </div>
+                    </button>
+                );
+            } else {
+                return null;
+            }
+        };
+
+        const acceptRejectWaiveButtons = () => {
+            if (this.props.user.isAdmin && submission.flags.isPendingWaive) {
+                return (
+                    <div className="row g-1">
+                        <div className="col">
+                            <button
+                                type="button"
+                                className="btn btn-outline-green"
+                                onClick={() => {
+                                    this.handleWaive();
+                                }}>
+                                <div className={buttonFlexClasses()}>
+                                    <i className="bi bi-hand-thumbs-up"></i>
+                                    <span className={buttonTextClasses()}>Approve Waive</span>
+                                </div>
+                            </button>
+                        </div>
+                        <div className="col">
+                            <button
+                                type="button"
+                                className="btn btn-outline-red"
+                                onClick={() => {
+                                    this.handleUndoWaive();
+                                }}>
+                                <div className={buttonFlexClasses()}>
+                                    <i className="bi bi-hand-thumbs-down"></i>
+                                    <span className={buttonTextClasses()}>Reject Waive</span>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                );
             } else {
                 return null;
             }
@@ -107,18 +209,42 @@ class SingleSubmission extends React.Component {
                 return (
                     <button
                         type="button"
-                        className="btn btn-pink"
+                        className="btn btn-outline-pink"
                         onClick={() => {
                             this.openPickupModal(submission.files);
                         }}>
-                        <div className="d-flex flex-row">
+                        <div className={buttonFlexClasses()}>
                             <i className="bi bi-person-check"></i>
-                            <span className="flex-grow-1 px-1">Pick Up All Files</span>
+                            <span className={buttonTextClasses()}>Pick Up All Files</span>
                         </div>
                     </button>
                 );
             } else {
                 return null;
+            }
+        };
+
+        const finalTime = (hours, minutes) => {
+            let extraMinutes = minutes % 60;
+            let extraHours = Math.floor(minutes / 60);
+            return {
+                hours: hours + extraHours,
+                minutes: extraMinutes,
+            };
+        };
+
+        const formatMaterial = (material, color) => {
+            if (
+                (color.toLowerCase() == "any color" || color.toLowerCase() == "no preference") &&
+                (material.toLowerCase() == "any material" || material.toLowerCase() == "no preference")
+            ) {
+                return "Any Filament";
+            } else if (color.toLowerCase() == "any color" || color.toLowerCase() == "no preference") {
+                return material;
+            } else if (material.toLowerCase() == "any material" || material.toLowerCase() == "no preference") {
+                return color;
+            } else {
+                return color + " " + material;
             }
         };
 
@@ -132,37 +258,36 @@ class SingleSubmission extends React.Component {
                                     <h5 className="card-title mb-2">
                                         {submission.patron.fname + " " + submission.patron.lname}
                                     </h5>
-                                    <h6 className="card-subtitle mb-3 text-muted">
-                                        {submission.isForClass
-                                            ? "Class Submission"
-                                            : submission.isForDepartment
-                                            ? "Departmental Submission"
-                                            : "Personal Submission"}
+                                    <h6 className="card-subtitle mb-3 text-muted text-capitalize">
+                                        {submission.submissionDetails.submissionType.toLowerCase() + " submission"}
                                     </h6>
                                 </div>
                                 <div className="col-12 col-sm-6 col-md-4 col-xxl-12">
-                                    {/* {submissionDetails()} */}
-                                    {submission.isForClass && (
+                                    {submission.submissionDetails.submissionType == "CLASS" && (
                                         <table className="table mb-0 table-sm table-borderless text-nowrap text-capitalize border-top border-bottom top-table">
                                             <tbody>
                                                 <tr>
-                                                    <td className="ps-0">{submission.projectType}</td>
-                                                    <td>{submission.classCode}</td>
+                                                    <td className="ps-0">
+                                                        {submission.submissionDetails.classDetails.project}
+                                                    </td>
+                                                    <td>{submission.submissionDetails.classDetails.classCode}</td>
                                                 </tr>
                                                 <tr>
                                                     <td className="ps-0 text-muted" colSpan="2">
-                                                        {submission.professor}
+                                                        {submission.submissionDetails.classDetails.professor}
                                                     </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     )}
-                                    {submission.isForDepartment && (
+                                    {submission.submissionDetails.submissionType == "INTERNAL" && (
                                         <table className="table mb-0 table-sm table-borderless text-nowrap text-capitalize border-top border-bottom top-table">
                                             <tbody>
                                                 <tr>
-                                                    <td className="ps-0">{submission.department}</td>
-                                                    <td>{submission.departmentProject}</td>
+                                                    <td className="ps-0">
+                                                        {submission.submissionDetails.internalDetails.department}
+                                                    </td>
+                                                    <td>{submission.submissionDetails.internalDetails.project}</td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -208,17 +333,17 @@ class SingleSubmission extends React.Component {
                                                 type="button"
                                                 className={
                                                     "btn " +
-                                                    (submission.allFilesReviewed
+                                                    (submission.flags.allFilesReviewed
                                                         ? "btn-primary"
                                                         : "btn-outline-primary ")
                                                 }
                                                 onClick={() => {
                                                     this.handleRequestPayment();
                                                 }}
-                                                disabled={!submission.allFilesReviewed}>
-                                                <div className="d-flex flex-row">
+                                                disabled={!submission.flags.allFilesReviewed}>
+                                                <div className={buttonFlexClasses()}>
                                                     <i className="bi bi-cash-coin"></i>
-                                                    <span className="flex-grow-1 px-1">Request Payment</span>
+                                                    <span className={buttonTextClasses()}>Request Payment</span>
                                                 </div>
                                             </button>
                                         )}
@@ -226,83 +351,30 @@ class SingleSubmission extends React.Component {
                                         {/* -------------------------- Resend Payment -------------------------- */}
                                         {reviewDate > new Date("1980") && paidDate < new Date("1980") && (
                                             <React.Fragment>
-                                                {/*  ------------------------ Admin only approve waive ------------------------  */}
-                                                {this.props.user.isAdmin && submission.isPendingWaive && (
-                                                    <button
-                                                        type="button"
-                                                        className="btn btn-lime"
-                                                        onClick={() => {
-                                                            this.handleWaive();
-                                                        }}>
-                                                        <div className="d-flex flex-row">
-                                                            <i className="bi bi-hand-thumbs-up-fill"></i>
-                                                            <span className="flex-grow-1 px-1">Approve Waive</span>
-                                                        </div>
-                                                    </button>
-                                                )}
-
-                                                {/* ------------------- request/undo or accept/reject waive ------------------ */}
-                                                <button
-                                                    type="button"
-                                                    className={
-                                                        "btn " +
-                                                        (submission.isPendingWaive
-                                                            ? this.props.user.isAdmin
-                                                                ? "btn-red"
-                                                                : "btn-orange"
-                                                            : this.props.user.isAdmin
-                                                            ? "btn-lime"
-                                                            : "btn-orange")
-                                                    }
-                                                    onClick={() => {
-                                                        if (submission.isPendingWaive) {
-                                                            this.handleUndoWaive();
-                                                        } else {
-                                                            this.handleWaive();
-                                                        }
-                                                    }}>
-                                                    <div className="d-flex flex-row">
-                                                        <i
-                                                            className={
-                                                                "bi " +
-                                                                (submission.isPendingWaive
-                                                                    ? this.props.user.isAdmin
-                                                                        ? "bi-hand-thumbs-down-fill"
-                                                                        : "bi-x-lg"
-                                                                    : this.props.user.isAdmin
-                                                                    ? "bi-cash-coin"
-                                                                    : "bi-asterisk")
-                                                            }></i>
-                                                        <span className="flex-grow-1 px-1">
-                                                            {submission.isPendingWaive
-                                                                ? this.props.user.isAdmin
-                                                                    ? "Reject Waive"
-                                                                    : "Undo Waive Request"
-                                                                : this.props.user.isAdmin
-                                                                ? "Waive Payment"
-                                                                : "Request Waive"}
-                                                        </span>
-                                                    </div>
-                                                </button>
+                                                {requestAndUndoWaiveButton()}
+                                                {acceptRejectWaiveButtons()}
+                                                {adminWaiveButton()}
 
                                                 <button
                                                     type="button"
-                                                    className="btn btn-purple"
+                                                    className="btn btn-outline-purple"
                                                     onClick={() => {
                                                         this.handleRequestPayment();
                                                     }}>
-                                                    <div className="d-flex flex-row">
+                                                    <div className={buttonFlexClasses()}>
                                                         <i className="bi bi-envelope-open"></i>
-                                                        <span className="flex-grow-1 px-1">Resend Payment Email</span>
+                                                        <span className={buttonTextClasses()}>
+                                                            Resend Payment Email
+                                                        </span>
                                                     </div>
                                                 </button>
                                             </React.Fragment>
                                         )}
                                         {/* ------------------------ Download All Files Button ----------------------- */}
-                                        <button type="button" className="btn btn-lightblue">
-                                            <div className="d-flex flex-row">
+                                        <button type="button" className="btn btn-outline-lightblue">
+                                            <div className={buttonFlexClasses()}>
                                                 <i className="bi bi-file-earmark-zip"></i>
-                                                <span className="flex-grow-1 px-1">Download All Files</span>
+                                                <span className={buttonTextClasses()}>Download All Files</span>
                                             </div>
                                         </button>
 
@@ -314,93 +386,146 @@ class SingleSubmission extends React.Component {
                         </div>
                         <div className="col-12 col-xxl-custom-right">
                             <div className="card">
-                                <div className="w-100 table-container">
-                                    <table className="table table-hover mb-0 text-nowrap">
-                                        <thead className="card-header">
-                                            <tr>
-                                                <th>Filename</th>
-                                                <th>Status</th>
-                                                <th>Filament</th>
-                                                <th>Est. Volume</th>
-                                                <th>Est. Weight</th>
-                                                <th>Est. Time</th>
-                                                <th>Pickup Location</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {submission.files.map((file, index) => {
-                                                return (
-                                                    <tr key={index}>
-                                                        {/* FILENAME */}
-                                                        <td>
+                                <table className="table mb-0 table-hover">
+                                    <thead className="card-header">
+                                        <tr>
+                                            <th style={{ width: "1%" }}>Preview</th>
+                                            <th style={{ width: "20%" }}>Filename</th>
+                                            <th>Request</th>
+                                            <th>Review</th>
+                                            <th>Review</th>
+                                            <th>Price</th>
+                                            <th>Print Attempts</th>
+                                            <th style={{ width: "1%" }}></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {submission.files.map((file, index) => {
+                                            return (
+                                                <tr>
+                                                    <td>
+                                                        <div
+                                                            className="rounded border"
+                                                            style={{
+                                                                backgroundImage: `url(submissions/thumbnail/${file._id})`,
+                                                                backgroundSize: "cover",
+                                                                backgroundPosition: "center center",
+                                                                width: "4.5rem",
+                                                                height: "4.5rem",
+                                                            }}></div>
+                                                    </td>
+                                                    <td className="h-100">
+                                                        <div>
                                                             <a
                                                                 className={
-                                                                    "text-decoration-none fw-bold me-2 " +
+                                                                    "text-decoration-none h5 mb-0 me-2 " +
                                                                     statusText(file)
                                                                 }
-                                                                href={"/files/" + file._id}>
+                                                                href={`/files/${file._id}`}>
                                                                 {file.fileName}
                                                             </a>
-                                                        </td>
-
-                                                        {/* STATUS */}
-                                                        <td>
+                                                        </div>
+                                                        <p className="mb-0">
+                                                            {file.review.calculatedVolumeCm.toFixed(2)} cm<sup>3</sup>
+                                                        </p>
+                                                        <div>
                                                             <StatusFlag file={file} />
-                                                        </td>
-
-                                                        {/* FILAMENT */}
-                                                        <td className="text-capitalize">{requestInfo(file)}</td>
-
-                                                        {/* EST VOLUME */}
-                                                        <td>
-                                                            {file.review.calculatedVolumeCm} cm<sup>3</sup>
-                                                        </td>
-
-                                                        {/* EST WEIGHT */}
-                                                        <td>{file.review.slicedGrams}g</td>
-
-                                                        {/* EST TIME */}
-                                                        <td>
-                                                            {file.review.slicedHours}h {file.review.slicedMinutes}m
-                                                        </td>
-
-                                                        {/* EST TIME */}
-                                                        <td>{file.request.pickupLocation}</td>
-
-                                                        <td>
-                                                            <button
-                                                                className="btn btn-link text-danger p-0"
-                                                                onClick={() => {
-                                                                    this.handleDeleteFile(file._id);
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        {formatMaterial(file.request.material, file.request.color)}
+                                                        <br />
+                                                        {file.request.infill}% infill <br />
+                                                        {file.request.pickupLocation}
+                                                    </td>
+                                                    <td className="text-capitalize">
+                                                        {(file.review.slicedPrinter || "").toLowerCase()}
+                                                        <br />
+                                                        {file.review.slicedMaterial}
+                                                    </td>
+                                                    <td>
+                                                        {file.review.slicedHours}h {file.review.slicedMinutes}m<br />
+                                                        {file.review.slicedGrams}g <br />
+                                                    </td>
+                                                    <td>
+                                                        $
+                                                        {(
+                                                            (file.review.slicedHours * 60 + file.review.slicedMinutes) /
+                                                            60
+                                                        ).toFixed(2)}
+                                                    </td>
+                                                    <td>
+                                                        {file.printing.attemptDetails.map((attempt, index) => {
+                                                            return (
+                                                                <div className="">
+                                                                    <p className="mb-0">
+                                                                        <span
+                                                                            className={
+                                                                                attempt.isSuccess
+                                                                                    ? "text-green"
+                                                                                    : attempt.isFailure
+                                                                                    ? "text-red"
+                                                                                    : "text-blue"
+                                                                            }>
+                                                                            {attempt.prettyID}
+                                                                        </span>
+                                                                        :{" "}
+                                                                        <span>
+                                                                            {attempt.startWeight - attempt.endWeight}g
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </td>
+                                                    <td>
+                                                        <button
+                                                            className="btn btn-light lh-1 p-1 rounded-circle"
+                                                            onClick={() => {
+                                                                this.handleDeleteFile(file._id);
+                                                            }}>
+                                                            <span
+                                                                className="d-block text-center text-red"
+                                                                style={{
+                                                                    width: "1rem",
+                                                                    height: "1rem",
                                                                 }}>
-                                                                <i className="bi bi-trash-fill"></i>
-                                                            </button>
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
-                                        </tbody>
-                                        <tfoot>
-                                            <tr className="card-footer">
-                                                <th scope="row">Totals</th>
-                                                <td></td>
-                                                <td></td>
-                                                <th scope="row" className="text-nowrap">
-                                                    {submission.sums.totalVolume.toFixed(2)} cm<sup>3</sup>
-                                                </th>
-                                                <th scope="row" className="text-nowrap">
-                                                    {submission.sums.totalWeight}g
-                                                </th>
-                                                <th scope="row" className="text-nowrap">
-                                                    {finalHours}h {finalMintes}m
-                                                </th>
-                                                <td></td>
-                                                <td></td>
-                                            </tr>
-                                        </tfoot>
-                                    </table>
-                                </div>
+                                                                ⃠
+                                                            </span>
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            );
+                                        })}
+                                        {/* ⃠*/}
+                                    </tbody>
+                                    <tfoot className="card-footer">
+                                        <tr>
+                                            <th scope="row">Totals</th>
+                                            <td>
+                                                {submission.sums.totalVolume.toFixed(2)} cm <sup>3</sup>
+                                            </td>
+                                            <td></td>
+                                            <td></td>
+                                            <td>
+                                                {
+                                                    finalTime(submission.sums.totalHours, submission.sums.totalMinutes)
+                                                        .hours
+                                                }
+                                                h{" "}
+                                                {
+                                                    finalTime(submission.sums.totalHours, submission.sums.totalMinutes)
+                                                        .minutes
+                                                }
+                                                m<br />
+                                                {submission.sums.totalWeight}g
+                                            </td>
+                                            <td>${submission.paymentRequest.requestedPrice}</td>
+                                            <td></td>
+                                            <td></td>
+                                        </tr>
+                                    </tfoot>
+                                </table>
                             </div>
                         </div>
                     </div>

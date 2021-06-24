@@ -3,16 +3,30 @@ import "./submit.css";
 import SingleFile from "./singleFile";
 import axios from "../common/axiosConfig";
 import { withRouter } from "react-router-dom";
+import { Modal } from "bootstrap";
+
+function DataURIToBlob(dataURI) {
+    const splitDataURI = dataURI.split(",");
+    const byteString = splitDataURI[0].indexOf("base64") >= 0 ? atob(splitDataURI[1]) : decodeURI(splitDataURI[1]);
+    const mimeString = splitDataURI[0].split(":")[1].split(";")[0];
+
+    const ia = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) ia[i] = byteString.charCodeAt(i);
+
+    return new Blob([ia], { type: mimeString });
+}
+
 class SubmissionPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            counter: 0,
             fname: "",
             lname: "",
             email: "",
             euid: "",
             phone: "",
-            submissionType: "personal",
+            submissionType: "PERSONAL",
             classCode: "",
             professor: "",
             assignment: "",
@@ -24,6 +38,8 @@ class SubmissionPage extends React.Component {
                 {
                     file: null,
                     fileName: "",
+                    copyGroupID: 0,
+                    thumbdata: null,
                     material: "Any Material",
                     color: "Any Color",
                     copies: "1",
@@ -33,24 +49,30 @@ class SubmissionPage extends React.Component {
                 },
             ],
         };
+        this.modal = null;
+        this.exampleModal = React.createRef();
+    }
+
+    componentDidMount() {
+        this.modal = new Modal(this.exampleModal.current);
     }
 
     canSubmit = () => {
         let checkStuff = {},
             checkFiles = [];
-        checkStuff = Object.assign(checkStuff, this.state);
+        checkStuff = JSON.parse(JSON.stringify(this.state));
         checkFiles = checkStuff.files;
 
         delete checkStuff.files;
         delete checkStuff.euid;
 
-        if (checkStuff.submissionType != "class") {
+        if (checkStuff.submissionType != "CLASS") {
             delete checkStuff.classCode;
             delete checkStuff.professor;
             delete checkStuff.assignment;
         }
 
-        if (checkStuff.submissionType != "internal") {
+        if (checkStuff.submissionType != "INTERNAL") {
             delete checkStuff.department;
             delete checkStuff.project;
         }
@@ -65,19 +87,23 @@ class SubmissionPage extends React.Component {
 
     onSubmit() {
         if (this.canSubmit()) {
+            this.modal.show();
             const data = new FormData();
-            let sendData = this.state;
+            let sendData = JSON.parse(JSON.stringify(this.state));
+            delete sendData.counter;
             data.append("jsonData", JSON.stringify(sendData));
             for (var thisFile of this.state.files) {
-                console.log(thisFile);
+                const thumbFile = DataURIToBlob(thisFile.thumbdata);
+                console.log(thisFile.file);
                 if (thisFile) {
-                    data.append("files", thisFile.file);
+                    data.append("stl-" + thisFile.copyGroupID, thisFile.file);
+                    data.append("thumb-" + thisFile.copyGroupID, thumbFile);
                 }
             }
             axios
                 .post("/submit", data)
                 .then((res) => {
-                    console.log("done");
+                    this.modal.hide();
                     this.props.history.push("/");
                 })
                 .catch((err) => {
@@ -92,7 +118,9 @@ class SubmissionPage extends React.Component {
         tempFiles[newState.index] = {
             file: newState.file,
             fileName: newState.fileName,
+            thumbdata: newState.thumbdata,
             material: newState.material,
+            copyGroupID: newState.copyGroupID,
             color: newState.color,
             copies: newState.copies,
             infill: newState.infill,
@@ -157,17 +185,17 @@ class SubmissionPage extends React.Component {
                     <ul className="nav nav-tabs nav-justified mb-3" id="myTab" role="tablist">
                         <li className="nav-item" role="presentation">
                             <button
-                                className={(this.state.submissionType === "personal" ? "active " : "") + "nav-link"}
+                                className={(this.state.submissionType === "PERSONAL" ? "active " : "") + "nav-link"}
                                 id="personal-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#personal"
                                 type="button"
                                 role="tab"
                                 aria-controls="personal"
-                                aria-selected={this.state.submissionType === "personal" ? "true" : "false"}
+                                aria-selected={this.state.submissionType === "PERSONAL" ? "true" : "false"}
                                 onClick={() => {
                                     this.setState({
-                                        submissionType: "personal",
+                                        submissionType: "PERSONAL",
                                         classCode: "",
                                         professor: "",
                                         assignment: "",
@@ -180,17 +208,17 @@ class SubmissionPage extends React.Component {
                         </li>
                         <li className="nav-item" role="presentation">
                             <button
-                                className={(this.state.submissionType === "class" ? "active " : "") + "nav-link"}
+                                className={(this.state.submissionType === "CLASS" ? "active " : "") + "nav-link"}
                                 id="class-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#class"
                                 type="button"
                                 role="tab"
                                 aria-controls="class"
-                                aria-selected={this.state.submissionType === "class" ? "true" : "false"}
+                                aria-selected={this.state.submissionType === "CLASS" ? "true" : "false"}
                                 onClick={() => {
                                     this.setState({
-                                        submissionType: "class",
+                                        submissionType: "CLASS",
                                         department: "",
                                         project: "",
                                     });
@@ -200,17 +228,17 @@ class SubmissionPage extends React.Component {
                         </li>
                         <li className="nav-item" role="presentation">
                             <button
-                                className={(this.state.submissionType === "internal" ? "active " : "") + "nav-link"}
+                                className={(this.state.submissionType === "INTERNAL" ? "active " : "") + "nav-link"}
                                 id="internal-tab"
                                 data-bs-toggle="tab"
                                 data-bs-target="#internal"
                                 type="button"
                                 role="tab"
                                 aria-controls="internal"
-                                aria-selected={this.state.submissionType === "internal" ? "true" : "false"}
+                                aria-selected={this.state.submissionType === "INTERNAL" ? "true" : "false"}
                                 onClick={() => {
                                     this.setState({
-                                        submissionType: "internal",
+                                        submissionType: "INTERNAL",
                                         classCode: "",
                                         professor: "",
                                         assignment: "",
@@ -222,7 +250,7 @@ class SubmissionPage extends React.Component {
                     </ul>
                     <div className="tab-content" id="myTabContent">
                         <div
-                            className={this.state.submissionType === "personal" ? "show active " : "" + "tab-pane fade"}
+                            className={this.state.submissionType === "PERSONAL" ? "show active " : "" + "tab-pane fade"}
                             id="personal"
                             role="tabpanel"
                             aria-labelledby="personal-tab">
@@ -234,7 +262,7 @@ class SubmissionPage extends React.Component {
                             </p>
                         </div>
                         <div
-                            className={this.state.submissionType == "class" ? "show active " : "" + "tab-pane fade"}
+                            className={this.state.submissionType == "CLASS" ? "show active " : "" + "tab-pane fade"}
                             id="class"
                             role="tabpanel"
                             aria-labelledby="class-tab">
@@ -311,7 +339,7 @@ class SubmissionPage extends React.Component {
                             </div>
                         </div>
                         <div
-                            className={this.state.submissionType == "internal" ? "show active " : "" + "tab-pane fade"}
+                            className={this.state.submissionType == "INTERNAL" ? "show active " : "" + "tab-pane fade"}
                             id="internal"
                             role="tabpanel"
                             aria-labelledby="internal-tab">
@@ -397,12 +425,16 @@ class SubmissionPage extends React.Component {
                             type="button"
                             className="btn btn-success rounded-circle fs-3 p-0"
                             onClick={() => {
+                                console.log(this.state.counter);
+                                let oldCounter = this.state.counter;
                                 this.setState({
+                                    counter: oldCounter + 1,
                                     files: [
                                         ...this.state.files,
                                         {
                                             fileName: "",
                                             material: "Any Material",
+                                            copyGroupID: oldCounter + 1,
                                             color: "Any Color",
                                             copies: "1",
                                             infill: "12.5",
@@ -509,49 +541,68 @@ class SubmissionPage extends React.Component {
         };
 
         return (
-            <div className="container-xl mt-5">
-                <div className="col-8 offset-2">
-                    <div className="shadow card">
-                        <div className="card-header">
-                            <h1>New Submission</h1>
-                        </div>
-                        <div className="card-body">
-                            <form
-                                id="submission-form"
-                                action="/submitprint"
-                                method="POST"
-                                enctype="multipart/form-data">
-                                {patronInfo()}
-                                <hr />
-                                {pickupInfo()}
-                                <hr />
-                                {submissionType()}
-                                <hr />
-                                {files()}
-                                <div className="d-grid">
-                                    <button
-                                        type="submit"
-                                        className="btn btn-primary"
-                                        onClick={(e) => {
-                                            e.preventDefault();
-                                            this.onSubmit();
-                                        }}
-                                        disabled={!this.canSubmit()}>
-                                        {!this.canSubmit()
-                                            ? "Please make sure to fill out all required fields!"
-                                            : "Submit"}
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="card-footer">
-                            <p>
-                                Go <a href="/">home</a>?
-                            </p>
+            <React.Fragment>
+                <div className="container-xl mt-5">
+                    <div className="col-8 offset-2">
+                        <div className="shadow card">
+                            <div className="card-header">
+                                <h1>New Submission</h1>
+                            </div>
+                            <div className="card-body">
+                                <form
+                                    id="submission-form"
+                                    action="/submitprint"
+                                    method="POST"
+                                    enctype="multipart/form-data">
+                                    {patronInfo()}
+                                    <hr />
+                                    {pickupInfo()}
+                                    <hr />
+                                    {submissionType()}
+                                    <hr />
+                                    {files()}
+                                    <div className="d-grid">
+                                        <button
+                                            type="submit"
+                                            className="btn btn-primary"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                this.onSubmit();
+                                            }}
+                                            disabled={!this.canSubmit()}>
+                                            {!this.canSubmit()
+                                                ? "Please make sure to fill out all required fields!"
+                                                : "Submit"}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="card-footer">
+                                <p>
+                                    Go <a href="/">home</a>?
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+                <div
+                    className="modal fade"
+                    ref={this.exampleModal}
+                    tabIndex="-1"
+                    aria-labelledby="exampleModalLabel"
+                    aria-hidden="true">
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title" id="exampleModalLabel">
+                                    Modal title
+                                </h5>
+                            </div>
+                            <div className="modal-body">...</div>
+                        </div>
+                    </div>
+                </div>
+            </React.Fragment>
         );
     }
 }

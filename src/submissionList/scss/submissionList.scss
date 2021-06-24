@@ -6,6 +6,21 @@
     .table-container {
         overflow-x: scroll;
     }
+
+    .showpop {
+        z-index: 99999;
+        max-width: 20rem;
+        overflow-x: auto;
+    }
+
+    tfoot tr td,
+    tfoot tr th {
+        border-bottom: none;
+    }
+}
+
+.fullscreen-modal {
+    max-width: 100vw;
 }
 
 .react-date-picker__wrapper {

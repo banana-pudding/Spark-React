@@ -84,7 +84,8 @@ class PendingCard extends React.Component {
                                 {file.review.reviewedByName} ({file.review.reviewedByEUID})
                             </td>
                             <td>
-                                {submission.paymentRequestingName} ({submission.paymentRequestingEUID})
+                                {submission.paymentRequest.paymentRequestingName} (
+                                {submission.paymentRequest.paymentRequestingEUID})
                             </td>
                         </tr>
                         <tr>
@@ -95,13 +96,13 @@ class PendingCard extends React.Component {
                                 <FormattedDate date={file.review.timestampReviewed} />
                             </td>
                             <td>
-                                <FormattedDate date={submission.timestampPaymentRequested} />
+                                <FormattedDate date={submission.paymentRequest.timestampPaymentRequested} />
                             </td>
                         </tr>
                     </tbody>
                 </table>
 
-                {this.props.user.isAdmin && submission.isPendingWaive && (
+                {this.props.user.isAdmin && submission.flags.isPendingWaive && (
                     <button
                         type="button"
                         className="w-100 btn btn-orange mb-2"
@@ -120,7 +121,7 @@ class PendingCard extends React.Component {
                             type="button"
                             className="w-100 btn btn-lime"
                             onClick={() => {
-                                if (submission.isPendingWaive) {
+                                if (submission.flags.isPendingWaive) {
                                     this.handleUndoWaive();
                                 } else {
                                     this.handleWaive();
@@ -129,7 +130,7 @@ class PendingCard extends React.Component {
                             <div className="d-flex flex-row">
                                 <i className="bi bi-cash-coin"></i>
                                 <span className="flex-grow-1 px-1">
-                                    {submission.isPendingWaive
+                                    {submission.flags.isPendingWaive
                                         ? this.props.user.isAdmin
                                             ? "Reject Waive Request"
                                             : "Undo Waive Request"

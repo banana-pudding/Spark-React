@@ -1,11 +1,16 @@
 import React from "react";
+import Thumbnailer from "./thumbnailGenerator";
+
 class SingleFile extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             index: props.index,
             file: null,
+            filedata: null,
+            thumbdata: null,
             fileName: null,
+            copyGroupID: props.copyGroupID,
             material: props.material,
             color: props.color,
             infill: props.infill,
@@ -13,7 +18,28 @@ class SingleFile extends React.Component {
             notes: props.notes,
             pickupLocation: props.pickupLocation,
         };
+        this.recieveThumbnail = this.recieveThumbnail.bind(this);
     }
+
+    fileReader = null;
+
+    handleFileRead = (e) => {
+        const content = this.fileReader.result;
+        console.log(content);
+        this.setState({ filedata: content });
+    };
+
+    handleFileChosen = (file) => {
+        this.fileReader = new FileReader();
+        this.fileReader.onloadend = this.handleFileRead;
+        this.fileReader.readAsArrayBuffer(file);
+    };
+
+    recieveThumbnail = (thumbdata) => {
+        var tempState = this.state;
+        tempState.thumbdata = thumbdata;
+        this.props.updateSubFile(tempState);
+    };
 
     render() {
         function addSeparator(index, lastIndex) {
@@ -26,6 +52,7 @@ class SingleFile extends React.Component {
 
         return (
             <div className="mb-4">
+                {this.state.filedata && <Thumbnailer file={this.state.filedata} pushThumb={this.recieveThumbnail} />}
                 <form className="form mb-4">
                     <div className="row">
                         <div className="col">
@@ -33,6 +60,7 @@ class SingleFile extends React.Component {
                                 className={"form-control mb-3 " + (this.state.file ? "is-valid" : "is-invalid")}
                                 type="file"
                                 onChange={(e) => {
+                                    this.handleFileChosen(e.target.files[0]);
                                     var tempState = this.state;
                                     tempState.file = e.target.files[0];
                                     tempState.fileName = e.target.files[0].name;

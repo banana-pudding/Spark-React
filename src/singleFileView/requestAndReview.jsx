@@ -61,7 +61,7 @@ class RequestAndReview extends React.Component {
             if (file.status == "REVIEWED" || file.status == "UNREVIEWED") {
                 return "Not Requested Yet";
             } else {
-                return <FormattedDate date={submission.timestampPaymentRequested} />;
+                return <FormattedDate date={submission.paymentRequest.timestampPaymentRequested} />;
             }
         };
 
@@ -81,7 +81,7 @@ class RequestAndReview extends React.Component {
                             Submitted
                             <br />
                             <strong>
-                                <FormattedDate date={submission.timestampSubmitted} />
+                                <FormattedDate date={submission.submissionDetails.timestampSubmitted} />
                             </strong>
                         </div>
                         <div className="col">
@@ -99,7 +99,7 @@ class RequestAndReview extends React.Component {
                 <div className="card-body">
                     <div className="d-flex flex-column">
                         <small className="text-muted">
-                            <FormattedDate date={submission.timestampSubmitted} />
+                            <FormattedDate date={submission.submissionDetails.timestampSubmitted} />
                         </small>
                         <div className="grey-bubble mb-2">
                             <div className="d-flex flex-row align-items-center">

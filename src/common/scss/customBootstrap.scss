@@ -32,27 +32,32 @@ $warning: #c4d600;
 // );
 
 $custom-colors: (
-    "purple": hsl(267, 77%, 58%),
-    "blue": hsl(222, 79%, 55%),
-    "lightblue": hsl(199, 100%, 45%),
-    "teal": hsl(183, 76%, 41%),
-    "green": hsl(140, 73%, 45%),
-    "lime": hsl(83, 56%, 48%),
-    "yellow": #ffc107,
-    "orange": hsl(39, 100%, 49%),
-    "red": hsl(5, 90%, 60%),
-    "pink": hsl(343, 100%, 65%),
-    "magenta": hsl(320, 45%, 50%),
+    "purple": #8c41e6,
+    "blue": #3268e7,
+    "lightblue": #009de6,
+    "teal": #19b0b8,
+    "green": #1fc757,
+    "lime": #8abf36,
+    "yellow": #ff9c07,
+    "orange": #fa7900,
+    "red": #f54d3d,
+    "pink": #ff4d7f,
+    "magenta": #b94693,
     "grey": #cccccc,
     "lightgrey": #eeeeee,
     "midgrey": #888888,
     "lightpink": #ffb1bb,
+    "brown1": #9d6342,
+    "brown2": #8a5937,
+    "brown3": #784e2d,
+    "brown4": #654322,
     "highlightgreen": hsl(124, 100%, 94%),
+    "modalbg": hsl(141, 22%, 87%),
 );
 
 $theme-colors: map-merge($theme-colors, $custom-colors);
 
-$min-contrast-ratio: 2.2;
+$min-contrast-ratio: 1.7;
 
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap");
 @import "bootstrap/scss/bootstrap";

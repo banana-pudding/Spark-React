@@ -92,7 +92,7 @@ class ManageJobs extends React.Component {
                 status: ["READY_TO_PRINT"],
                 paymentType: ["PAID", "WAIVED", "UNPAID"],
                 pickupLocation: ["Willis Library", "Discovery Park"],
-                reviewLocation: ["Willis Library", "Discovery Park"],
+                waitingLocation: ["Willis Library", "Discovery Park"],
                 showPersonal: true,
                 showClass: true,
                 showInternal: true,
@@ -157,7 +157,7 @@ class ManageJobs extends React.Component {
                                             {submission.files[0].payment.paymentType.charAt(0) +
                                                 submission.files[0].payment.paymentType.toLowerCase().slice(1) +
                                                 " on "}
-                                            <FormattedDate date={submission.timestampPaid} />
+                                            <FormattedDate date={submission.payment.timestampPaid} />
                                         </small>
                                     </div>
                                     <ul className="list-group list-group-flush">

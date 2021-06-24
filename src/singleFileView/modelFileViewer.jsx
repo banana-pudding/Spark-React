@@ -6,6 +6,7 @@ import { GCodeLoader } from "./res/customGcodeLoader";
 import { RgbaColorPicker } from "react-colorful";
 
 import "./scss/modelPreview.scss";
+import { Vector3 } from "three";
 
 class ModelDisplay extends React.Component {
     constructor(props) {
@@ -20,6 +21,8 @@ class ModelDisplay extends React.Component {
             showGCODETravel: false,
             extrudeColor: { a: 0.04, b: 255, g: 38, r: 192 },
             travelColor: { r: 0, g: 170, b: 255, a: 0.02 },
+            renderer: null,
+            camera: null,
         };
         this.mount = React.createRef();
         this.controls = React.createRef();
@@ -27,6 +30,9 @@ class ModelDisplay extends React.Component {
         this.gcodeModel = null;
         this.stlModel = null;
     }
+
+    renderer = null;
+    camera = null;
 
     updateDimensions = (renderer, camera) => {
         if (this.mount.current) {
@@ -36,6 +42,10 @@ class ModelDisplay extends React.Component {
             camera.updateProjectionMatrix();
         }
     };
+
+    resizeGo() {
+        this.updateDimensions(this.renderer, this.camera);
+    }
 
     componentDidMount() {
         /* -------------------------------------------------------------------------- */
@@ -64,6 +74,9 @@ class ModelDisplay extends React.Component {
         /* ---------------------- Insert canvas and size to fit --------------------- */
         this.mount.current.appendChild(renderer.domElement);
         this.updateDimensions(renderer, camera);
+
+        this.renderer = renderer;
+        this.camera = camera;
 
         window.addEventListener("resize", () => {
             this.updateDimensions(renderer, camera);
@@ -218,9 +231,13 @@ class ModelDisplay extends React.Component {
                         mesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(-middle.x, -middle.y, 0));
                         const maxDim = Math.max(size.x, size.y, size.z);
 
+                        geometry.boundingBox.getCenter(middle);
+                        geometry.boundingBox.getSize(size);
+
                         camera.position.z = maxDim + 80;
                         camera.position.y = maxDim + 100;
                         controls.target = middle;
+                        camera.lookAt(middle);
 
                         resolve(mesh);
                     },
@@ -278,6 +295,10 @@ class ModelDisplay extends React.Component {
         });
     }
 
+    componentDidUpdate() {
+        this.updateDimensions(this.renderer, this.camera);
+    }
+
     rgba2hexAndAlpha = (rgba) => {
         let r = rgba.r.toString(16);
         let g = rgba.g.toString(16);
@@ -294,6 +315,8 @@ class ModelDisplay extends React.Component {
     };
 
     render() {
+        console.log(this.props);
+
         return (
             <div className="card shadow mb-3">
                 <div id="canvas-wrapper" ref={this.mount} />

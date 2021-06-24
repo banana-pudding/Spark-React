@@ -17,6 +17,48 @@ export const formatDate = (date) => {
     );
 };
 
+const statusColorRef = (status, descision, waive) => {
+    switch (status) {
+        case "UNREVIEWED":
+            return "magenta";
+        case "REVIEWED":
+            if (descision == "Accepted") {
+                return "lime";
+            } else if (descision == "Rejected") {
+                return "red";
+            } else {
+                return "pink";
+            }
+        case "PENDING_PAYMENT":
+            if (waive) {
+                return "lime";
+            } else {
+                return "orange";
+            }
+        case "READY_TO_PRINT":
+            return "yellow";
+        case "PRINTING":
+            return "green";
+        case "IN_TRANSIT":
+            return "teal";
+        case "WAITING_FOR_PICKUP":
+            return "blue";
+        case "PICKED_UP":
+            return "purple";
+        case "REJECTED":
+            return "red";
+        case "STALE_ON_PAYMENT":
+            return "midgrey";
+        case "LOST_IN_TRANSIT":
+            return "midgrey";
+        case "REPOSESSED":
+            return "magenta";
+
+        default:
+            return "lightblue";
+    }
+};
+
 export const statusLabel = (file) => {
     switch (file.status) {
         case "UNREVIEWED":
@@ -57,42 +99,11 @@ export const statusLabel = (file) => {
 };
 
 export const statusColor = (file) => {
-    switch (file.status) {
-        case "UNREVIEWED":
-            return "magenta";
-        case "REVIEWED":
-            if (file.review.descision == "Accepted") {
-                return "lime";
-            } else {
-                return "red";
-            }
-        case "PENDING_PAYMENT":
-            if (file.payment.isPendingWaive) {
-                return "teal";
-            } else {
-                return "pink";
-            }
-        case "READY_TO_PRINT":
-            return "orange";
-        case "PRINTING":
-            return "green";
-        case "IN_TRANSIT":
-            return "teal";
-        case "WAITING_FOR_PICKUP":
-            return "blue";
-        case "PICKED_UP":
-            return "purple";
-        case "REJECTED":
-            return "red";
-        case "STALE_ON_PAYMENT":
-            return "purple";
-        case "REPOSESSED":
-            return "purple";
-        case "LOST_IN_TRANSIT":
-            return "magenta";
-        default:
-            return "magenta";
-    }
+    return statusColorRef(file.status, file.review.descision, file.payment.isPendingWaive);
+};
+
+export const statusToggleColor = (status) => {
+    return statusColorRef(status);
 };
 
 export const statusBG = (file) => {
@@ -106,28 +117,28 @@ export const statusText = (file) => {
 export const statusBadge = (status) => {
     switch (status) {
         case "UNREVIEWED":
-            return <span className="badge rounded bg-magenta">Unreviewed</span>;
+            return <span className={"badge rounded " + statusColorRef(status)}>Unreviewed</span>;
         case "REVIEWED":
             return (
                 <React.Fragment>
-                    <span className="ms-auto badge rounded bg-lime">Accepted</span>
-                    <span className="ms-1 badge rounded bg-red">Rejected</span>
+                    <span className={"ms-auto rounded " + statusColorRef(status)}>Accepted</span>
+                    <span className={"ms-1 badge rounded " + statusColorRef(status)}>Rejected</span>
                 </React.Fragment>
             );
         case "PENDING_PAYMENT":
-            return <span className="badge rounded bg-pink">Pending Payment</span>;
+            return <span className={"badge rounded " + statusColorRef(status)}>Pending Payment</span>;
         case "READY_TO_PRINT":
-            return <span className="badge rounded bg-orange">Ready to Print</span>;
+            return <span className={"badge rounded " + statusColorRef(status)}>Ready to Print</span>;
         case "PRINTING":
-            return <span className="badge rounded bg-green">Printing</span>;
+            return <span className={"badge rounded " + statusColorRef(status)}>Printing</span>;
         case "IN_TRANSIT":
-            return <span className="badge rounded bg-teal">In Transit</span>;
+            return <span className={"badge rounded " + statusColorRef(status)}>In Transit</span>;
         case "WAITING_FOR_PICKUP":
-            return <span className="badge rounded bg-blue">Waiting for Pickup</span>;
+            return <span className={"badge rounded " + statusColorRef(status)}>Waiting for Pickup</span>;
         case "PICKED_UP":
-            return <span className="badge rounded bg-purple">Picked Up</span>;
+            return <span className={"badge rounded " + statusColorRef(status)}>Picked Up</span>;
         case "REJECTED":
-            return <span className="badge rounded bg-red">Rejected</span>;
+            return <span className={"badge rounded " + statusColorRef(status)}>Rejected</span>;
         default:
             return null;
     }

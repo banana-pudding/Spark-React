@@ -1,3 +1,4 @@
+@import "./customBootstrap.scss";
 #tint {
     display: block;
     position: fixed;
@@ -25,7 +26,16 @@
 }
 
 .root-container {
-    height: 100vh;
+    min-height: calc(100vh + 13rem);
+}
+
+.sticky-filters {
+    top: calc(0px + 5rem);
+}
+
+#footerComponent {
+    height: 13rem;
+    overflow: hidden;
 }
 
 .custom-icon {
@@ -37,7 +47,7 @@
     font-variant: normal;
     text-transform: none;
     line-height: 1;
-    vertical-align: -0.125em;
+    vertical-align: -0.125rem;
     -webkit-font-smoothing: antialiased;
 
     svg {
@@ -67,4 +77,98 @@
 .table > :not(:last-child) > :last-child > * {
     border-bottom-color: #dee2e6 !important;
     border-bottom-width: 2px !important;
+}
+
+.tgl {
+    display: none;
+
+    // add default box-sizing for this scope
+    &,
+    &:after,
+    &:before,
+    & *,
+    & *:after,
+    & *:before,
+    & + .tgl-btn {
+        box-sizing: border-box;
+        &::selection {
+            background: none;
+        }
+    }
+
+    + .tgl-btn {
+        outline: 0;
+        display: block;
+        width: calc(3rem - 4px);
+        height: 1.5rem;
+        position: relative;
+        cursor: pointer;
+        user-select: none;
+        &:after,
+        &:before {
+            position: relative;
+            display: block;
+            content: "";
+            width: 50%;
+            height: 100%;
+        }
+
+        &:after {
+            left: 0;
+        }
+
+        &:before {
+            display: none;
+        }
+    }
+
+    &:checked + .tgl-btn:after {
+        left: 50%;
+    }
+}
+
+.tgl-ios {
+    + .tgl-btn {
+        //background: #fbfbfb;
+        @each $color, $value in $theme-colors {
+            &.tgl-#{$color} {
+                background: transparentize($value, 0.75);
+            }
+        }
+        border-radius: 2rem;
+        padding: 2px;
+        transition: all 0.4s ease;
+        border: 1px solid #e8eae9;
+        &:after {
+            border-radius: 2rem;
+            background: #fbfbfb;
+            transition: left 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), padding 0.3s ease, margin 0.3s ease;
+            box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), 0 4px 0 rgba(0, 0, 0, 0.08);
+        }
+
+        &:hover:after {
+            will-change: padding;
+        }
+
+        &:active {
+            box-shadow: inset 0 0 0 2rem #e8eae9;
+            &:after {
+                padding-right: 0.8rem;
+            }
+        }
+    }
+
+    &:checked + .tgl-btn {
+        @each $color, $value in $theme-colors {
+            &.tgl-#{$color} {
+                background: $value;
+            }
+        }
+        &:active {
+            box-shadow: none;
+            &:after {
+                margin-left: -0.8rem;
+            }
+        }
+    }
 }

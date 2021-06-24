@@ -40,8 +40,6 @@ class SubmissionList extends React.Component {
         } else {
             this.setQueue(queueFilters[0]);
         }
-
-        console.log(this.state);
     }
 
     fetchPrints = () => {
@@ -120,10 +118,7 @@ class SubmissionList extends React.Component {
 
     toggleType = (type) => {
         let tempFilters = this.state.filters;
-
         tempFilters[type] = !tempFilters[type];
-
-        console.log(tempFilters[type]);
 
         this.setState({
             filters: tempFilters,
@@ -139,7 +134,6 @@ class SubmissionList extends React.Component {
     };
 
     setQueue = (queueItem) => {
-        console.log("setqueue");
         let tempState = defaultState();
         let tempFilters = tempState.filters;
 
@@ -176,7 +170,6 @@ class SubmissionList extends React.Component {
     };
 
     setPrintedLocation = (newLocation) => {
-        console.log(newLocation);
         let tempState = this.state;
         let tempFilters = tempState.filters;
 
@@ -215,7 +208,6 @@ class SubmissionList extends React.Component {
     };
 
     updateHistory = () => {
-        console.log("updatehistory");
         let query = {
             selectedQueue: this.state.selectedQueue,
             filters: this.state.filters,
@@ -454,7 +446,7 @@ class SubmissionList extends React.Component {
                                 })}
                             </nav>
                             <div className="card-body border-bottom">
-                                <div className="row g-1">
+                                <div className="row g-2">
                                     <div className="col">
                                         <button
                                             className="btn btn-warning w-100"

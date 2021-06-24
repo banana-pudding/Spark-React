@@ -37,7 +37,7 @@ export const defaultState = () => {
             showFullSubmission: false,
             showUnarchived: true,
             showArchived: false,
-
+            searchQuery: "",
             currentPage: 1,
         },
         submissions: [],

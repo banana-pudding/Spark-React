@@ -157,7 +157,7 @@ class SubmissionList extends React.Component {
     };
 
     setPickupLocation = (newLocation) => {
-        let tempState = defaultState();
+        let tempState = this.state;
         let tempFilters = tempState.filters;
 
         let newPickup = [];
@@ -176,7 +176,8 @@ class SubmissionList extends React.Component {
     };
 
     setPrintedLocation = (newLocation) => {
-        let tempState = defaultState();
+        console.log(newLocation);
+        let tempState = this.state;
         let tempFilters = tempState.filters;
 
         let newPrinted = [];
@@ -187,7 +188,7 @@ class SubmissionList extends React.Component {
             newPrinted.push(newLocation);
         }
 
-        tempFilters.printedLocaton = newPrinted;
+        tempFilters.printedLocation = newPrinted;
 
         tempState.filters = tempFilters;
 
@@ -195,7 +196,7 @@ class SubmissionList extends React.Component {
     };
 
     setWaitingLocation = (newLocation) => {
-        let tempState = defaultState();
+        let tempState = this.state;
         let tempFilters = tempState.filters;
 
         let newWaiting = [];
@@ -228,6 +229,19 @@ class SubmissionList extends React.Component {
         this.fetchPrints();
     };
 
+    setPage = (pageNum) => {
+        let temp = this.state.filters;
+        temp.currentPage = pageNum;
+        this.setState(
+            {
+                filters: temp,
+            },
+            () => {
+                this.updateHistory();
+            }
+        );
+    };
+
     render() {
         const pageButtons = () => {
             let numPages = Math.floor(this.state.totalCount / 10);
@@ -255,7 +269,11 @@ class SubmissionList extends React.Component {
 
             return (
                 <div className="d-flex">
-                    <button className="btn bg-white text-primary border me-2">
+                    <button
+                        className="btn bg-white text-primary border me-2"
+                        onClick={(e) => {
+                            this.setPage(1);
+                        }}>
                         <i className="bi bi-chevron-double-left"></i>
                     </button>
 
@@ -263,6 +281,11 @@ class SubmissionList extends React.Component {
                         {rangeWithDots.map((pageNum, index) => {
                             return (
                                 <button
+                                    onClick={(e) => {
+                                        if (pageNum != "...") {
+                                            this.setPage(pageNum);
+                                        }
+                                    }}
                                     className={
                                         "btn border " +
                                         (this.state.filters.currentPage == pageNum
@@ -275,7 +298,11 @@ class SubmissionList extends React.Component {
                         })}
                     </div>
 
-                    <button className="btn bg-white text-primary border ms-2">
+                    <button
+                        className="btn bg-white text-primary border ms-2"
+                        onClick={(e) => {
+                            this.setPage(lastPage);
+                        }}>
                         <i className="bi bi-chevron-double-right"></i>
                     </button>
                 </div>
@@ -404,7 +431,7 @@ class SubmissionList extends React.Component {
                                             <button
                                                 className={
                                                     "nav-link position-relative border-bottom " +
-                                                    (this.state.filterTab == tab ? "active border-primary" : "")
+                                                    (this.state.filterTab == tab ? "active" : "")
                                                 }
                                                 style={{
                                                     flexBasis: "25%",
@@ -470,11 +497,24 @@ class SubmissionList extends React.Component {
                                     <form className="d-flex flex-grow-1 me-5">
                                         <div className="input-group">
                                             <input
+                                                value={this.state.filters.searchQuery}
                                                 type="text"
                                                 className="form-control"
                                                 placeholder="Search for patrons or files!"
+                                                onChange={(e) => {
+                                                    let temp = this.state.filters;
+                                                    temp.searchQuery = e.target.value;
+                                                    this.setState({
+                                                        filters: temp,
+                                                    });
+                                                }}
                                             />
-                                            <button className="btn btn-primary">
+                                            <button
+                                                className="btn btn-primary"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    this.updateHistory();
+                                                }}>
                                                 <i className="bi bi-search"></i>
                                             </button>
                                         </div>

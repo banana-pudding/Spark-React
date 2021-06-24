@@ -474,6 +474,7 @@ class SingleSubmission extends React.Component {
                                                                             {attempt.startWeight - attempt.endWeight}g
                                                                         </span>
                                                                     </p>
+                                                                    <p className="mb-0">{attempt.location}</p>
                                                                 </div>
                                                             );
                                                         })}

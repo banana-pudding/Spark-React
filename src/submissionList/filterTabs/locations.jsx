@@ -15,6 +15,8 @@ class LocationFilters extends React.Component {
             this.props.filters.printedLocation.length == 1 ? this.props.filters.printedLocation[0] : "both";
         let selectedWaiting =
             this.props.filters.waitingLocation.length == 1 ? this.props.filters.waitingLocation[0] : "both";
+
+        console.log(selectedPrinted);
         return (
             <div className="card-body">
                 <div className="row mb-3">

@@ -1,34 +1,15 @@
-function ProfilePage() {
-    return (
-        <div>
-            <div className="dropdown">
-                <button
-                    className="btn btn-secondary dropdown-toggle"
-                    type="button"
-                    id="dropdownMenuButton1"
-                    data-bs-toggle="dropdown"
-                    aria-expanded="false">
-                    Dropdown button
-                </button>
-                <ul className="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                    <li>
-                        <a className="dropdown-item" href="#">
-                            Action
-                        </a>
-                    </li>
-                    <li>
-                        <a className="dropdown-item" href="#">
-                            Another action
-                        </a>
-                    </li>
-                    <li>
-                        <a className="dropdown-item" href="#">
-                            Something else here
-                        </a>
-                    </li>
-                </ul>
+import React from "react";
+
+class ProfilePage extends React.Component {
+    render() {
+        return (
+            <div className="container-fluid px-5 mt-3">
+                <div className="row">
+                    <div className="col"></div>
+                </div>
             </div>
-        </div>
-    );
+        );
+    }
 }
+
 export default ProfilePage;

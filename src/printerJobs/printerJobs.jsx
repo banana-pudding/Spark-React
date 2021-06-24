@@ -49,7 +49,7 @@ class ManageJobs extends React.Component {
             dpSelfService: [],
         });
         axios
-            .get("/printers")
+            .get("/printers/list")
             .then((res) => {
                 var willisFullService = [],
                     willisSelfService = [],
@@ -88,16 +88,7 @@ class ManageJobs extends React.Component {
         });
 
         axios
-            .post("/submissions/filter", {
-                status: ["READY_TO_PRINT"],
-                paymentType: ["PAID", "WAIVED", "UNPAID"],
-                pickupLocation: ["Willis Library", "Discovery Park"],
-                waitingLocation: ["Willis Library", "Discovery Park"],
-                showPersonal: true,
-                showClass: true,
-                showInternal: true,
-                showFullSubmission: false,
-            })
+            .get("/submissions/ready-queue")
             .then((res) => {
                 this.setState({
                     submissions: res.data.submissions,

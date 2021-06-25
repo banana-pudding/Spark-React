@@ -41,9 +41,7 @@ class InternalNotes extends React.Component {
         return (
             <div className="card shadow mb-3 internal-notes">
                 <div className="card-header bg-transparent">
-                    <h5 className="mb-0">Spark Technician Chat</h5>
-                    <p className="text-muted small mb-2">woohoo</p>
-                    <p className="text-center mb-0 fw-bold">wow</p>
+                    <h5 className="mb-0">Spark Technician Notes</h5>
                 </div>
                 <div className="card-body">
                     <div className="d-flex flex-column">

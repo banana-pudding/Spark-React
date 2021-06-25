@@ -5,8 +5,8 @@ import axios from "../common/axiosConfig";
 import StatusFlag from "./flags/statusFlag";
 import { withRouter } from "react-router-dom";
 import PickupModal from "../singleFileView/pickupModal";
-import Balloon from "./clickBalloon";
-import Opener from "./filenameModalOpener";
+import { ReactComponent as GradCap } from "../common/images/education.svg";
+import ReactTooltip from "react-tooltip";
 
 class SingleSubmission extends React.Component {
     constructor(props) {
@@ -120,7 +120,14 @@ class SingleSubmission extends React.Component {
                                 this.handleWaive();
                             }}>
                             <div className={buttonFlexClasses()}>
-                                <i className="bi bi-cash-coin"></i>
+                                <GradCap
+                                    style={{
+                                        width: "1.2rem",
+                                        height: "1.5rem",
+                                        marginLeft: "-0.1rem",
+                                        fill: "currentcolor",
+                                    }}
+                                />
                                 <span className={buttonTextClasses()}>Request Waive</span>
                             </div>
                         </button>
@@ -153,7 +160,14 @@ class SingleSubmission extends React.Component {
                             this.handleWaive();
                         }}>
                         <div className={buttonFlexClasses()}>
-                            <i className="bi bi-cash-coin"></i>
+                            <GradCap
+                                style={{
+                                    width: "1.2rem",
+                                    height: "1.5rem",
+                                    marginLeft: "-0.1rem",
+                                    fill: "currentcolor",
+                                }}
+                            />
                             <span className={buttonTextClasses()}>Waive Payment</span>
                         </div>
                     </button>
@@ -250,6 +264,7 @@ class SingleSubmission extends React.Component {
 
         return (
             <div className={"card shadow mb-3 " + readyBorder()} key={this.props.index}>
+                <ReactTooltip place="left" />
                 <div className="card-body">
                     <div className="row">
                         <div className="col-12  col-xxl-custom-left">
@@ -392,7 +407,7 @@ class SingleSubmission extends React.Component {
                                             <th style={{ width: "1%" }}>Preview</th>
                                             <th style={{ width: "20%" }}>Filename</th>
                                             <th>Request</th>
-                                            <th>Review</th>
+                                            <th>Printer</th>
                                             <th>Review</th>
                                             <th>Price</th>
                                             <th>Print Attempts</th>
@@ -425,7 +440,11 @@ class SingleSubmission extends React.Component {
                                                                 {file.fileName}
                                                             </a>
                                                         </div>
-                                                        <p className="mb-0">
+                                                        <p
+                                                            className="mb-0"
+                                                            data-place="bottom"
+                                                            data-multiline={true}
+                                                            data-tip="Volume calculated from the submitted file.<br/>This will not include supports!">
                                                             {file.review.calculatedVolumeCm.toFixed(2)} cm<sup>3</sup>
                                                         </p>
                                                         <div>
@@ -474,26 +493,27 @@ class SingleSubmission extends React.Component {
                                                                             {attempt.startWeight - attempt.endWeight}g
                                                                         </span>
                                                                     </p>
-                                                                    <p className="mb-0">{attempt.location}</p>
+                                                                    {/* <p className="mb-0">{attempt.location}</p> */}
                                                                 </div>
                                                             );
                                                         })}
                                                     </td>
                                                     <td>
-                                                        <button
-                                                            className="btn btn-light lh-1 p-1 rounded-circle"
-                                                            onClick={() => {
-                                                                this.handleDeleteFile(file._id);
-                                                            }}>
-                                                            <span
-                                                                className="d-block text-center text-red"
-                                                                style={{
-                                                                    width: "1rem",
-                                                                    height: "1rem",
+                                                        <div className="d-flex flex-column">
+                                                            <button
+                                                                data-tip="Request to be deleted"
+                                                                className="btn btn-outline-red lh-1 p-1 rounded-circle mb-1"
+                                                                onClick={() => {
+                                                                    this.handleDeleteFile(file._id);
                                                                 }}>
-                                                                ⃠
-                                                            </span>
-                                                        </button>
+                                                                <i className="bi bi-trash"></i>
+                                                            </button>
+                                                            <button
+                                                                data-tip="Request to be archived"
+                                                                className="btn btn-outline-midgrey lh-1 p-1 rounded-circle">
+                                                                <i className="bi bi-box-seam"></i>
+                                                            </button>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             );

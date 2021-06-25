@@ -65,6 +65,7 @@ class SubmissionPage extends React.Component {
 
         delete checkStuff.files;
         delete checkStuff.euid;
+        delete checkStuff.counter;
 
         if (checkStuff.submissionType != "CLASS") {
             delete checkStuff.classCode;
@@ -76,6 +77,8 @@ class SubmissionPage extends React.Component {
             delete checkStuff.department;
             delete checkStuff.project;
         }
+
+        console.log(checkStuff);
 
         return (
             Object.values(checkStuff).every(Boolean) &&

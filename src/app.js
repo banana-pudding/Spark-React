@@ -24,15 +24,21 @@ class App extends React.Component {
             user: localStorage.jwtToken ? jwt_decode(localStorage.jwtToken) : null,
             jwtValid: false,
         };
+        this.updateUserFromDatabase = this.updateUserFromDatabase.bind(this);
     }
 
     componentDidMount() {
         //if logged in, double check the jwt is still valid
         if (this.state.user && !this.state.jwtValid) {
             axios.get("/users/validatejwt").then((res) => {
-                this.setState({
-                    jwtValid: true,
-                });
+                this.setState(
+                    {
+                        jwtValid: true,
+                    },
+                    () => {
+                        this.updateUserFromDatabase();
+                    }
+                );
             });
         }
     }
@@ -47,10 +53,23 @@ class App extends React.Component {
         } else {
             localStorage.setItem("jwtToken", data);
             axios.defaults.headers.common["Authorization"] = data;
-            this.setState({
-                user: jwt_decode(data),
-            });
+            this.setState(
+                {
+                    user: jwt_decode(data),
+                },
+                () => {
+                    this.updateUserFromDatabase();
+                }
+            );
         }
+    }
+
+    updateUserFromDatabase() {
+        axios.get("/users/info/" + this.state.user.euid).then((res) => {
+            this.setState({
+                user: res.data.formattedUser,
+            });
+        });
     }
 
     render() {
@@ -73,7 +92,10 @@ class App extends React.Component {
                             )}
                         </Route>
                         <ProtectedRoute exact path="/profile" user={this.state.user}>
-                            <Profile user={this.state.user} />
+                            <Profile
+                                user={this.state.user}
+                                updateUserFromDatabase={this.updateUserFromDatabase.bind(this)}
+                            />
                         </ProtectedRoute>
 
                         <ProtectedRoute exact path="/prints" user={this.state.user}>

@@ -90,6 +90,9 @@ class SubmissionPage extends React.Component {
 
     onSubmit() {
         if (this.canSubmit()) {
+            this.exampleModal.current.addEventListener("hidden.bs.modal", () => {
+                this.props.history.push("/");
+            });
             this.modal.show();
             const data = new FormData();
             let sendData = JSON.parse(JSON.stringify(this.state));
@@ -107,7 +110,6 @@ class SubmissionPage extends React.Component {
                 .post("/submit", data)
                 .then((res) => {
                     this.modal.hide();
-                    this.props.history.push("/");
                 })
                 .catch((err) => {
                     console.log("error", err);
@@ -598,10 +600,13 @@ class SubmissionPage extends React.Component {
                         <div className="modal-content">
                             <div className="modal-header">
                                 <h5 className="modal-title" id="exampleModalLabel">
-                                    Modal title
+                                    Uploading Your Request!
                                 </h5>
                             </div>
-                            <div className="modal-body">...</div>
+                            <div className="modal-body">
+                                Please be patient; large files may take a moment to upload. You will be redirected when
+                                your submission is complete.
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -62,4 +62,59 @@ $min-contrast-ratio: 1.7;
 
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300;0,400;0,600;0,700;0,800;1,300;1,400;1,600;1,700;1,800&display=swap");
 @import "bootstrap/scss/bootstrap";
+
+//@import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+
+.rdw-editor-wrapper {
+    @extend .form-control, .p-1;
+}
+.rdw-editor-toolbar {
+    @extend .d-flex, .justify-content-between;
+}
+
+.rdw-colorpicker-wrapper,
+.rdw-embedded-wrapper,
+.rdw-emoji-wrapper,
+.rdw-image-wrapper,
+.rdw-remove-wrapper {
+    @extend .d-none;
+}
+
+.rdw-inline-wrapper,
+.rdw-list-wrapper,
+.rdw-text-align-wrapper,
+.rdw-link-wrapper,
+.rdw-history-wrapper {
+    @extend .btn-group;
+}
+
+.rdw-option-wrapper {
+    @extend .btn, .btn-light, .border, .bg-white;
+}
+
+.rdw-dropdown-selectedtext {
+    @extend .form-select, .text-dark, .text-decoration-none;
+}
+.rdw-dropdown-optionwrapper {
+    z-index: 999999;
+    position: absolute;
+    @extend .list-group;
+    max-height: 25rem !important;
+    overflow-y: auto !important;
+}
+
+.rdw-dropdownoption-default {
+    @extend .list-group-item;
+}
+
+.rdw-dropdownoption-active {
+    @extend .active;
+}
+
+.rdw-editor-main {
+    @extend .my-3, .mx-2;
+    max-height: 30rem;
+    overflow-y: auto;
+}
+
 //@import "./vaporswatch.scss";

@@ -1,8 +1,14 @@
 import React from "react";
+import Editor from "./emailEditorModal";
 
 class EditEmails extends React.Component {
     constructor(props) {
         super(props);
+        this.editor = React.createRef();
+    }
+
+    openEditor(email) {
+        this.editor.current.showModal(email);
     }
 
     render() {
@@ -17,7 +23,11 @@ class EditEmails extends React.Component {
                                     Sent to the patron when their submission has been successfully uploaded.
                                 </p>
                             </div>
-                            <button className="btn btn-pink lh-1 p-2 rounded-circle">
+                            <button
+                                className="btn btn-pink lh-1 p-2 rounded-circle"
+                                onClick={() => {
+                                    this.openEditor("submissionRecieved");
+                                }}>
                                 <i className="bi bi-pencil-square lh-1"></i>
                             </button>
                         </div>
@@ -30,7 +40,11 @@ class EditEmails extends React.Component {
                                     Sent when all files have been reivewed. Includes the payment link.
                                 </p>
                             </div>
-                            <button className="btn btn-yellow lh-1 p-2 rounded-circle">
+                            <button
+                                className="btn btn-yellow lh-1 p-2 rounded-circle"
+                                onClick={() => {
+                                    this.openEditor("submissionReviewed");
+                                }}>
                                 <i className="bi bi-pencil-square lh-1"></i>
                             </button>
                         </div>
@@ -44,7 +58,11 @@ class EditEmails extends React.Component {
                                     reciept they will get from the payment portal!
                                 </p>
                             </div>
-                            <button className="btn btn-green lh-1 p-2 rounded-circle">
+                            <button
+                                className="btn btn-green lh-1 p-2 rounded-circle"
+                                onClick={() => {
+                                    this.openEditor("paymentRecieved");
+                                }}>
                                 <i className="bi bi-pencil-square lh-1"></i>
                             </button>
                         </div>
@@ -58,7 +76,11 @@ class EditEmails extends React.Component {
                                     being able to still pay for their submission.
                                 </p>
                             </div>
-                            <button className="btn btn-lightblue lh-1 p-2 rounded-circle">
+                            <button
+                                className="btn btn-lightblue lh-1 p-2 rounded-circle"
+                                onClick={() => {
+                                    this.openEditor("paymentWaived");
+                                }}>
                                 <i className="bi bi-pencil-square lh-1"></i>
                             </button>
                         </div>
@@ -72,12 +94,17 @@ class EditEmails extends React.Component {
                                     requested pickup location!
                                 </p>
                             </div>
-                            <button className="btn btn-purple lh-1 p-2 rounded-circle">
+                            <button
+                                className="btn btn-purple lh-1 p-2 rounded-circle"
+                                onClick={() => {
+                                    this.openEditor("readyForPickup");
+                                }}>
                                 <i className="bi bi-pencil-square lh-1"></i>
                             </button>
                         </div>
                     </li>
                 </ul>
+                <Editor ref={this.editor} />
             </React.Fragment>
         );
     }

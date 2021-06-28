@@ -7,6 +7,7 @@ import { withRouter } from "react-router-dom";
 import PickupModal from "../singleFileView/pickupModal";
 import { ReactComponent as GradCap } from "../common/images/education.svg";
 import ReactTooltip from "react-tooltip";
+import { Undo } from "@iconicicons/react";
 
 class SingleSubmission extends React.Component {
     constructor(props) {

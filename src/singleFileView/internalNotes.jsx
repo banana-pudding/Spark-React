@@ -1,7 +1,7 @@
 import React from "react";
 import FormattedDate from "../common/formattedDate";
 import axios from "../common/axiosConfig";
-import "bootstrap-icons/font/bootstrap-icons.css";
+//import "bootstrap-icons/font/bootstrap-icons.css";
 import "./scss/internalNotes.scss";
 import { withRouter } from "react-router-dom";
 

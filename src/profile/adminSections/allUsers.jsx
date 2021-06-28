@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "../../common/axiosConfig";
+import { StarIcon } from "@iconicicons/react";
 
 class AllUsers extends React.Component {
     constructor(props) {
@@ -60,13 +61,10 @@ class AllUsers extends React.Component {
                                     </td>
                                     <td className="align-middle nowrap">
                                         <div className="d-flex">
-                                            <i
-                                                className={
-                                                    "me-2 bi " +
-                                                    (user.isSuperAdmin
-                                                        ? "bi-star-fill text-bsyellow"
-                                                        : "bi-star text-midgrey")
-                                                }></i>
+                                            <StarIcon
+                                                style={{ width: "1.5rem", height: "1.5rem" }}
+                                                className={user.isSuperAdmin ? "text-bsyellow" : "text-midgrey"}
+                                            />
                                             {user.isSuperAdmin ? "Admin" : "Tech"}
                                             <button
                                                 className="btn text-primary rounded-circle lh-1 p-1 ms-auto"

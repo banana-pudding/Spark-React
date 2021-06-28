@@ -12,7 +12,6 @@ class EditorModal extends React.Component {
         this.modalRef = React.createRef();
         this.state = {
             editorState: EditorState.createEmpty(),
-            editorHTML: null,
             templateName: null,
             subject: null,
             bodyText: null,
@@ -85,7 +84,7 @@ class EditorModal extends React.Component {
             <div ref={this.modalRef} className="modal fade" tabIndex="-1">
                 <div className="modal-dialog modal-dialog-centered modal-xl">
                     <div className="modal-content">
-                        <div className="modal-header">
+                        <div className="modal-header card-header">
                             <h5 className="modal-title">Editing Email: {template()}</h5>
                             <button
                                 type="button"
@@ -116,18 +115,29 @@ class EditorModal extends React.Component {
                                 onEditorStateChange={this.onEditorStateChange}
                             />
                         </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-midgrey" data-bs-dismiss="modal">
-                                Close
-                            </button>
-                            <button
-                                type="button"
-                                className="btn btn-primary"
-                                onClick={() => {
-                                    this.updateEmail();
-                                }}>
-                                Save changes
-                            </button>
+                        <div className="modal-footer card-footer">
+                            <div className="d-flex align-items-start">
+                                <p className="mb-0">
+                                    Each email will have the submission detail page link automatically appended when
+                                    sent to the patron, so don't worry about adding it here. In addition, when a
+                                    submission requires payment, the submission detail page linked in each email will
+                                    provide the payment link to the patron.
+                                </p>
+                                <button
+                                    type="button"
+                                    className="btn btn-midgrey flex-shrink-0 ms-2"
+                                    data-bs-dismiss="modal">
+                                    Close
+                                </button>
+                                <button
+                                    type="button"
+                                    className="btn btn-primary flex-shrink-0 ms-2"
+                                    onClick={() => {
+                                        this.updateEmail();
+                                    }}>
+                                    Save changes
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>

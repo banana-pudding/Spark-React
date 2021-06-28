@@ -76,7 +76,8 @@ $min-contrast-ratio: 1.7;
 .rdw-embedded-wrapper,
 .rdw-emoji-wrapper,
 .rdw-image-wrapper,
-.rdw-remove-wrapper {
+.rdw-remove-wrapper,
+.rdw-fontfamily-wrapper {
     @extend .d-none;
 }
 

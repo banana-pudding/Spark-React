@@ -11,6 +11,7 @@ import Profile from "./profile/profile";
 import Submit from "./submit/submit";
 import PaymentComplete from "./paymentComplete/paymentComplete";
 import SubmissionList from "./submissionList/submissionList";
+import SubmissionView from "./publicSubmissionView/publicSubmissionView";
 import FilePreview from "./singleFileView/filePreview";
 import ManageJobs from "./printerJobs/printerJobs";
 import PickupForm from "./pickupForm/pickupForm";
@@ -110,7 +111,9 @@ class App extends React.Component {
                         <Route exact path="/payment/complete">
                             <PaymentComplete />
                         </Route>
-
+                        <Route path="/submission">
+                            <SubmissionView />
+                        </Route>
                         <Route exact path="/pickup">
                             <PickupForm />
                         </Route>

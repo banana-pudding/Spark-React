@@ -92,6 +92,7 @@ class ProfilePage extends React.Component {
                                 <div className="col">
                                     <h4>Emails</h4>
                                     <p>Edit the text in any of the following emails sent to patrons.</p>
+
                                     <EditEmails />
                                 </div>
                                 <div className="col">

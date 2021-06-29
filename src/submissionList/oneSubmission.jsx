@@ -7,7 +7,18 @@ import { withRouter } from "react-router-dom";
 import PickupModal from "../singleFileView/pickupModal";
 import { ReactComponent as GradCap } from "../common/images/education.svg";
 import ReactTooltip from "react-tooltip";
-import { Undo } from "@iconicicons/react";
+import fileDownload from "js-file-download";
+import {
+    IoMailOpenOutline,
+    IoCashOutline,
+    BsFileEarmarkZip,
+    BiUndo,
+    BsGift,
+    VscTrash,
+    CgBox,
+    HiOutlineThumbUp,
+    HiOutlineThumbDown,
+} from "react-icons/all";
 
 class SingleSubmission extends React.Component {
     constructor(props) {
@@ -64,6 +75,16 @@ class SingleSubmission extends React.Component {
             });
     }
 
+    downloadAll(submissionID) {
+        axios
+            .get("/download/zip/" + submissionID, {
+                responseType: "blob",
+            })
+            .then((res) => {
+                fileDownload(res.data, submissionID + ".zip");
+            });
+    }
+
     openPickupModal = (files) => {
         let fileIDs = [];
         for (let file of files) {
@@ -103,11 +124,11 @@ class SingleSubmission extends React.Component {
         };
 
         const buttonTextClasses = () => {
-            return "flex-grow-1 px-1 h6 lh-1 m-0";
+            return "flex-grow-1 px-1 lh-1 m-0";
         };
 
         const buttonFlexClasses = () => {
-            return "d-flex flex-row align-items-center";
+            return "d-flex flex-row align-items-center p-1";
         };
 
         const requestAndUndoWaiveButton = () => {
@@ -123,9 +144,8 @@ class SingleSubmission extends React.Component {
                             <div className={buttonFlexClasses()}>
                                 <GradCap
                                     style={{
-                                        width: "1.2rem",
-                                        height: "1.5rem",
-                                        marginLeft: "-0.1rem",
+                                        width: "1rem",
+                                        height: "1rem",
                                         fill: "currentcolor",
                                     }}
                                 />
@@ -142,7 +162,7 @@ class SingleSubmission extends React.Component {
                                 this.handleUndoWaive();
                             }}>
                             <div className={buttonFlexClasses()}>
-                                <i className="bi bi-reply"></i>
+                                <BiUndo />
                                 <span className={buttonTextClasses()}>Undo Waive Request</span>
                             </div>
                         </button>
@@ -163,9 +183,8 @@ class SingleSubmission extends React.Component {
                         <div className={buttonFlexClasses()}>
                             <GradCap
                                 style={{
-                                    width: "1.2rem",
-                                    height: "1.5rem",
-                                    marginLeft: "-0.1rem",
+                                    width: "1rem",
+                                    height: "1rem",
                                     fill: "currentcolor",
                                 }}
                             />
@@ -185,26 +204,26 @@ class SingleSubmission extends React.Component {
                         <div className="col">
                             <button
                                 type="button"
-                                className="btn btn-outline-green"
+                                className="btn btn-outline-green w-100"
                                 onClick={() => {
                                     this.handleWaive();
                                 }}>
                                 <div className={buttonFlexClasses()}>
-                                    <i className="bi bi-hand-thumbs-up"></i>
-                                    <span className={buttonTextClasses()}>Approve Waive</span>
+                                    <HiOutlineThumbUp className="flex-shrink-0" />
+                                    <span className={buttonTextClasses()}>Waive</span>
                                 </div>
                             </button>
                         </div>
                         <div className="col">
                             <button
                                 type="button"
-                                className="btn btn-outline-red"
+                                className="btn btn-outline-red w-100"
                                 onClick={() => {
                                     this.handleUndoWaive();
                                 }}>
                                 <div className={buttonFlexClasses()}>
-                                    <i className="bi bi-hand-thumbs-down"></i>
-                                    <span className={buttonTextClasses()}>Reject Waive</span>
+                                    <HiOutlineThumbDown className="flex-shrink-0" />
+                                    <span className={buttonTextClasses()}>Reject</span>
                                 </div>
                             </button>
                         </div>
@@ -229,7 +248,7 @@ class SingleSubmission extends React.Component {
                             this.openPickupModal(submission.files);
                         }}>
                         <div className={buttonFlexClasses()}>
-                            <i className="bi bi-person-check"></i>
+                            <BsGift />
                             <span className={buttonTextClasses()}>Pick Up All Files</span>
                         </div>
                     </button>
@@ -358,7 +377,7 @@ class SingleSubmission extends React.Component {
                                                 }}
                                                 disabled={!submission.flags.allFilesReviewed}>
                                                 <div className={buttonFlexClasses()}>
-                                                    <i className="bi bi-cash-coin"></i>
+                                                    <IoCashOutline />
                                                     <span className={buttonTextClasses()}>Request Payment</span>
                                                 </div>
                                             </button>
@@ -378,7 +397,7 @@ class SingleSubmission extends React.Component {
                                                         this.handleRequestPayment();
                                                     }}>
                                                     <div className={buttonFlexClasses()}>
-                                                        <i className="bi bi-envelope-open"></i>
+                                                        <IoMailOpenOutline />
                                                         <span className={buttonTextClasses()}>
                                                             Resend Payment Email
                                                         </span>
@@ -388,8 +407,12 @@ class SingleSubmission extends React.Component {
                                         )}
                                         {/* ------------------------ Download All Files Button ----------------------- */}
                                         <button type="button" className="btn btn-outline-lightblue">
-                                            <div className={buttonFlexClasses()}>
-                                                <i className="bi bi-file-earmark-zip"></i>
+                                            <div
+                                                className={buttonFlexClasses()}
+                                                onClick={() => {
+                                                    this.downloadAll(submission._id);
+                                                }}>
+                                                <BsFileEarmarkZip />
                                                 <span className={buttonTextClasses()}>Download All Files</span>
                                             </div>
                                         </button>
@@ -507,12 +530,12 @@ class SingleSubmission extends React.Component {
                                                                 onClick={() => {
                                                                     this.handleDeleteFile(file._id);
                                                                 }}>
-                                                                <i className="bi bi-trash"></i>
+                                                                <VscTrash />
                                                             </button>
                                                             <button
                                                                 data-tip="Request to be archived"
                                                                 className="btn btn-outline-midgrey lh-1 p-1 rounded-circle">
-                                                                <i className="bi bi-box-seam"></i>
+                                                                <CgBox />
                                                             </button>
                                                         </div>
                                                     </td>

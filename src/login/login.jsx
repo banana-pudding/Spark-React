@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "../common/axiosConfig";
-import { UserIcon } from "@iconicicons/react";
+import { AiOutlineUser } from "react-icons/ai";
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
@@ -29,7 +29,7 @@ class LoginPage extends React.Component {
                         <div className="shadow card">
                             <div className="card-body">
                                 <h1>
-                                    <UserIcon className="fs-1" />
+                                    <AiOutlineUser />
                                     Login
                                 </h1>
 

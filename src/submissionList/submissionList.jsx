@@ -5,6 +5,14 @@ import SingleSubmission from "./oneSubmission";
 import { defaultState, queueFilters, filterTabList, dateList, typeList } from "./statics/reference";
 import "./scss/submissionList.scss";
 import { withRouter } from "react-router-dom";
+import {
+    HiOutlineRefresh,
+    FiCheck,
+    BsChevronDoubleLeft,
+    BsChevronDoubleRight,
+    BsSearch,
+    BsFillExclamationCircleFill,
+} from "react-icons/all";
 import SimpleBar from "simplebar-react";
 import "simplebar/dist/simplebar.min.css";
 
@@ -266,7 +274,7 @@ class SubmissionList extends React.Component {
                         onClick={(e) => {
                             this.setPage(1);
                         }}>
-                        <i className="bi bi-chevron-double-left"></i>
+                        <BsChevronDoubleLeft />
                     </button>
 
                     <div className="btn-group" role="group">
@@ -295,7 +303,7 @@ class SubmissionList extends React.Component {
                         onClick={(e) => {
                             this.setPage(lastPage);
                         }}>
-                        <i className="bi bi-chevron-double-right"></i>
+                        <BsChevronDoubleRight />
                     </button>
                 </div>
             );
@@ -341,7 +349,7 @@ class SubmissionList extends React.Component {
                         width: "1.3rem",
                         zIndex: 999999,
                     }}>
-                    <i className="bi bi-exclamation-circle-fill"></i>
+                    <BsSearch />
                 </div>
             );
 
@@ -455,7 +463,7 @@ class SubmissionList extends React.Component {
                                                 this.resetFilters();
                                             }}>
                                             <div className="d-flex flex-row align-items-center">
-                                                <i className="bi bi-arrow-counterclockwise"></i>
+                                                <HiOutlineRefresh />
                                                 <span className="flex-grow-1 px-1">Reset Filters</span>
                                             </div>
                                         </button>
@@ -469,7 +477,7 @@ class SubmissionList extends React.Component {
                                             }}
                                             disabled={this.state.filterTab == "Queues"}>
                                             <div className="d-flex flex-row align-items-center">
-                                                <i className="bi bi-check2"></i>
+                                                <FiCheck />
                                                 <span className="flex-grow-1 px-1">Apply Changes</span>
                                             </div>
                                         </button>
@@ -507,7 +515,7 @@ class SubmissionList extends React.Component {
                                                     e.preventDefault();
                                                     this.updateHistory();
                                                 }}>
-                                                <i className="bi bi-search"></i>
+                                                <BsSearch />
                                             </button>
                                         </div>
                                     </form>
@@ -518,10 +526,10 @@ class SubmissionList extends React.Component {
 
                         {this.state.submissions.length == 0 && (
                             <div className="alert alert-red shadow">
-                                <div className="d-flex justify-content-between">
-                                    <i className="h1 mb-0 bi bi-exclamation-circle-fill"></i>
+                                <div className="d-flex justify-content-between align-items-center">
+                                    <BsFillExclamationCircleFill className="fs-1" />
                                     <p className="h1 mb-0">No matching results!</p>
-                                    <i className="h1 mb-0 bi bi-exclamation-circle-fill"></i>
+                                    <BsFillExclamationCircleFill className="fs-1" />
                                 </div>
                             </div>
                         )}

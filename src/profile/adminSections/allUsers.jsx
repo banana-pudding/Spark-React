@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "../../common/axiosConfig";
-import { StarIcon } from "@iconicicons/react";
+import { AiOutlineStar, HiOutlineSwitchHorizontal } from "react-icons/all";
 
 class AllUsers extends React.Component {
     constructor(props) {
@@ -60,10 +60,11 @@ class AllUsers extends React.Component {
                                             }}></input>
                                     </td>
                                     <td className="align-middle nowrap">
-                                        <div className="d-flex">
-                                            <StarIcon
-                                                style={{ width: "1.5rem", height: "1.5rem" }}
-                                                className={user.isSuperAdmin ? "text-bsyellow" : "text-midgrey"}
+                                        <div className="d-flex align-items-center">
+                                            <AiOutlineStar
+                                                className={
+                                                    (user.isSuperAdmin ? "text-bsyellow" : "text-midgrey") + " lh-1"
+                                                }
                                             />
                                             {user.isSuperAdmin ? "Admin" : "Tech"}
                                             <button
@@ -77,7 +78,7 @@ class AllUsers extends React.Component {
                                                     });
                                                 }}
                                                 disabled={user.local.euid == this.props.user.euid}>
-                                                <i className="bi bi-arrow-repeat"></i>
+                                                <HiOutlineSwitchHorizontal />
                                             </button>
                                         </div>
                                     </td>

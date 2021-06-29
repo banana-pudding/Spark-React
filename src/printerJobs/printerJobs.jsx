@@ -7,7 +7,7 @@ import DetailsModal from "./detailsModal";
 import FinishModal from "./finishJobModal";
 import { withRouter } from "react-router-dom";
 
-import { PlusIcon, SettingsIcon } from "@iconicicons/react";
+import { AiOutlinePlus, BsGear } from "react-icons/all";
 //import Ender5 from "../common/images/Ender-5-Plus-Hero.jpeg";
 
 import "./scss/jobs.scss";
@@ -109,11 +109,12 @@ class ManageJobs extends React.Component {
             if (this.props.user.isAdmin) {
                 return (
                     <button
-                        className="btn btn-sm ms-3 btn-light border rounded-circle p-0"
+                        className="btn btn-sm ms-3 btn-light border rounded-circle p-1 fs-5"
+                        style={{ lineHeight: "1rem" }}
                         onClick={() => {
                             this.openNewPrinterModal(location, serviceLevel);
                         }}>
-                        <PlusIcon style={{ width: "1.5rem", height: "1.5rem" }} />
+                        <AiOutlinePlus />
                     </button>
                 );
             } else {
@@ -300,7 +301,7 @@ class ManageJobs extends React.Component {
                                                     e.stopPropagation();
                                                     this.editModal.current.setPrinter(printer);
                                                 }}>
-                                                <SettingsIcon style={{ width: "1.5rem", height: "1.5rem" }} />
+                                                <BsGear />
                                             </button>
                                         </div>
                                     )}

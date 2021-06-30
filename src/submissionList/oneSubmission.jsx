@@ -6,19 +6,10 @@ import StatusFlag from "./flags/statusFlag";
 import { withRouter } from "react-router-dom";
 import PickupModal from "../singleFileView/pickupModal";
 import { ReactComponent as GradCap } from "../common/images/education.svg";
+import { ReactComponent as Archive } from "../common/images/archive.svg";
+import { ReactComponent as Delete } from "../common/images/delete.svg";
 import ReactTooltip from "react-tooltip";
 import fileDownload from "js-file-download";
-import {
-    IoMailOpenOutline,
-    IoCashOutline,
-    BsFileEarmarkZip,
-    BiUndo,
-    BsGift,
-    VscTrash,
-    CgBox,
-    HiOutlineThumbUp,
-    HiOutlineThumbDown,
-} from "react-icons/all";
 
 class SingleSubmission extends React.Component {
     constructor(props) {
@@ -128,7 +119,7 @@ class SingleSubmission extends React.Component {
         };
 
         const buttonFlexClasses = () => {
-            return "d-flex flex-row align-items-center p-1";
+            return "d-flex flex-row align-items-center";
         };
 
         const requestAndUndoWaiveButton = () => {
@@ -137,18 +128,14 @@ class SingleSubmission extends React.Component {
                     return (
                         <button
                             type="button"
-                            className="btn btn-outline-green"
+                            className="btn btn-outline-lime"
                             onClick={() => {
                                 this.handleWaive();
                             }}>
                             <div className={buttonFlexClasses()}>
-                                <GradCap
-                                    style={{
-                                        width: "1rem",
-                                        height: "1rem",
-                                        fill: "currentcolor",
-                                    }}
-                                />
+                                <i className="custom-icon">
+                                    <GradCap />
+                                </i>
                                 <span className={buttonTextClasses()}>Request Waive</span>
                             </div>
                         </button>
@@ -162,7 +149,7 @@ class SingleSubmission extends React.Component {
                                 this.handleUndoWaive();
                             }}>
                             <div className={buttonFlexClasses()}>
-                                <BiUndo />
+                                <i className="bi-arrow-90deg-left"></i>
                                 <span className={buttonTextClasses()}>Undo Waive Request</span>
                             </div>
                         </button>
@@ -176,18 +163,15 @@ class SingleSubmission extends React.Component {
                 return (
                     <button
                         type="button"
-                        className="btn btn-outline-green"
+                        className="btn btn-outline-lime"
                         onClick={() => {
                             this.handleWaive();
                         }}>
                         <div className={buttonFlexClasses()}>
-                            <GradCap
-                                style={{
-                                    width: "1rem",
-                                    height: "1rem",
-                                    fill: "currentcolor",
-                                }}
-                            />
+                            <i className="custom-icon">
+                                <GradCap />
+                            </i>
+
                             <span className={buttonTextClasses()}>Waive Payment</span>
                         </div>
                     </button>
@@ -209,7 +193,7 @@ class SingleSubmission extends React.Component {
                                     this.handleWaive();
                                 }}>
                                 <div className={buttonFlexClasses()}>
-                                    <HiOutlineThumbUp className="flex-shrink-0" />
+                                    <i className="bi-hand-thumbs-up"></i>
                                     <span className={buttonTextClasses()}>Waive</span>
                                 </div>
                             </button>
@@ -222,7 +206,7 @@ class SingleSubmission extends React.Component {
                                     this.handleUndoWaive();
                                 }}>
                                 <div className={buttonFlexClasses()}>
-                                    <HiOutlineThumbDown className="flex-shrink-0" />
+                                    <i className="bi-hand-thumbs-down"></i>
                                     <span className={buttonTextClasses()}>Reject</span>
                                 </div>
                             </button>
@@ -243,12 +227,12 @@ class SingleSubmission extends React.Component {
                 return (
                     <button
                         type="button"
-                        className="btn btn-outline-pink"
+                        className="btn btn-outline-purple"
                         onClick={() => {
                             this.openPickupModal(submission.files);
                         }}>
                         <div className={buttonFlexClasses()}>
-                            <BsGift />
+                            <i className="bi-gift"></i>
                             <span className={buttonTextClasses()}>Pick Up All Files</span>
                         </div>
                     </button>
@@ -377,7 +361,7 @@ class SingleSubmission extends React.Component {
                                                 }}
                                                 disabled={!submission.flags.allFilesReviewed}>
                                                 <div className={buttonFlexClasses()}>
-                                                    <IoCashOutline />
+                                                    <i className="bi-cash-stack"></i>
                                                     <span className={buttonTextClasses()}>Request Payment</span>
                                                 </div>
                                             </button>
@@ -392,12 +376,12 @@ class SingleSubmission extends React.Component {
 
                                                 <button
                                                     type="button"
-                                                    className="btn btn-outline-purple"
+                                                    className="btn btn-outline-orange"
                                                     onClick={() => {
                                                         this.handleRequestPayment();
                                                     }}>
                                                     <div className={buttonFlexClasses()}>
-                                                        <IoMailOpenOutline />
+                                                        <i className="bi-envelope-open"></i>
                                                         <span className={buttonTextClasses()}>
                                                             Resend Payment Email
                                                         </span>
@@ -412,7 +396,7 @@ class SingleSubmission extends React.Component {
                                                 onClick={() => {
                                                     this.downloadAll(submission._id);
                                                 }}>
-                                                <BsFileEarmarkZip />
+                                                <i className="bi-file-earmark-zip"></i>
                                                 <span className={buttonTextClasses()}>Download All Files</span>
                                             </div>
                                         </button>
@@ -526,16 +510,32 @@ class SingleSubmission extends React.Component {
                                                         <div className="d-flex flex-column">
                                                             <button
                                                                 data-tip="Request to be deleted"
-                                                                className="btn btn-outline-red lh-1 p-1 rounded-circle mb-1"
+                                                                className="btn btn-outline-red lh-1 rounded-circle mb-1"
+                                                                style={{ padding: "0.3rem" }}
                                                                 onClick={() => {
                                                                     this.handleDeleteFile(file._id);
                                                                 }}>
-                                                                <VscTrash />
+                                                                <Delete
+                                                                    style={{
+                                                                        width: "1rem",
+                                                                        height: "1rem",
+                                                                        verticalAlign: "-0.125em",
+                                                                        fill: "currentcolor",
+                                                                    }}
+                                                                />
                                                             </button>
                                                             <button
                                                                 data-tip="Request to be archived"
-                                                                className="btn btn-outline-midgrey lh-1 p-1 rounded-circle">
-                                                                <CgBox />
+                                                                className="btn btn-outline-midgrey lh-1 rounded-circle"
+                                                                style={{ padding: "0.3rem" }}>
+                                                                <Archive
+                                                                    style={{
+                                                                        width: "1rem",
+                                                                        height: "1rem",
+                                                                        verticalAlign: "-0.125em",
+                                                                        fill: "currentcolor",
+                                                                    }}
+                                                                />
                                                             </button>
                                                         </div>
                                                     </td>

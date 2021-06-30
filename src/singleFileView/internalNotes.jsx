@@ -4,7 +4,6 @@ import axios from "../common/axiosConfig";
 //import "bootstrap-icons/font/bootstrap-icons.css";
 import "./scss/internalNotes.scss";
 import { withRouter } from "react-router-dom";
-import { FiSend } from "react-icons/fi";
 
 class InternalNotes extends React.Component {
     constructor(props) {
@@ -75,7 +74,7 @@ class InternalNotes extends React.Component {
                             onClick={() => {
                                 this.appendNote();
                             }}>
-                            <FiSend />
+                            <i className="bi-telegram"></i>
                         </button>
                     </div>
                 </div>

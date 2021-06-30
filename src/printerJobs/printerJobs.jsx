@@ -7,7 +7,6 @@ import DetailsModal from "./detailsModal";
 import FinishModal from "./finishJobModal";
 import { withRouter } from "react-router-dom";
 
-import { AiOutlinePlus, BsGear } from "react-icons/all";
 //import Ender5 from "../common/images/Ender-5-Plus-Hero.jpeg";
 
 import "./scss/jobs.scss";
@@ -114,7 +113,7 @@ class ManageJobs extends React.Component {
                         onClick={() => {
                             this.openNewPrinterModal(location, serviceLevel);
                         }}>
-                        <AiOutlinePlus />
+                        <i className="bi bi-plus-lg"></i>
                     </button>
                 );
             } else {
@@ -301,7 +300,7 @@ class ManageJobs extends React.Component {
                                                     e.stopPropagation();
                                                     this.editModal.current.setPrinter(printer);
                                                 }}>
-                                                <BsGear />
+                                                <i className="bi bi-gear"></i>
                                             </button>
                                         </div>
                                     )}

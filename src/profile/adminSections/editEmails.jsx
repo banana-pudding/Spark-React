@@ -1,6 +1,5 @@
 import React from "react";
 import Editor from "./emailEditorModal";
-import { FiEdit3 } from "react-icons/fi";
 
 class EditEmails extends React.Component {
     constructor(props) {
@@ -29,7 +28,7 @@ class EditEmails extends React.Component {
                                 onClick={() => {
                                     this.openEditor("submissionRecieved");
                                 }}>
-                                <FiEdit3 />
+                                <i className="bi-pencil"></i>
                             </button>
                         </div>
                     </li>
@@ -46,7 +45,7 @@ class EditEmails extends React.Component {
                                 onClick={() => {
                                     this.openEditor("submissionReviewed");
                                 }}>
-                                <FiEdit3 />
+                                <i className="bi-pencil"></i>
                             </button>
                         </div>
                     </li>
@@ -64,7 +63,7 @@ class EditEmails extends React.Component {
                                 onClick={() => {
                                     this.openEditor("paymentRecieved");
                                 }}>
-                                <FiEdit3 />
+                                <i className="bi-pencil"></i>
                             </button>
                         </div>
                     </li>
@@ -82,7 +81,7 @@ class EditEmails extends React.Component {
                                 onClick={() => {
                                     this.openEditor("paymentWaived");
                                 }}>
-                                <FiEdit3 />
+                                <i className="bi-pencil"></i>
                             </button>
                         </div>
                     </li>
@@ -100,7 +99,7 @@ class EditEmails extends React.Component {
                                 onClick={() => {
                                     this.openEditor("readyForPickup");
                                 }}>
-                                <FiEdit3 />
+                                <i className="bi-pencil"></i>
                             </button>
                         </div>
                     </li>

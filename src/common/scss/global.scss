@@ -37,22 +37,14 @@
     height: 13rem;
     overflow: hidden;
 }
-
-.custom-icon {
+.custom-icon svg {
     display: inline-block;
-    font-family: bootstrap-icons !important;
-    font-style: normal;
-    font-weight: normal !important;
-    font-feature-settings: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    vertical-align: -0.125rem;
+    vertical-align: -0.25em;
+    margin: 0 -0.125em;
     -webkit-font-smoothing: antialiased;
-
-    svg {
-        fill: currentColor;
-    }
+    line-height: 1;
+    color: currentColor !important;
+    fill: currentColor !important;
 }
 
 // .btn .d-flex svg {

@@ -4,6 +4,7 @@ import ReactDOM from "react-dom";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 //global css
 import "./common/scss/global.scss";
+import "bootstrap-icons/font/bootstrap-icons.css";
 //import "./common/scss/customBootstrap.scss";
 //import "bootstrap/scss/bootstrap.scss";
 

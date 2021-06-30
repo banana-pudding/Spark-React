@@ -2,6 +2,7 @@ import React from "react";
 import AllUsers from "./adminSections/allUsers";
 import EditEmails from "./adminSections/editEmails";
 import axios from "../common/axiosConfig";
+import fileDownload from "js-file-download";
 
 class ProfilePage extends React.Component {
     constructor(props) {
@@ -99,9 +100,45 @@ class ProfilePage extends React.Component {
                                     <h4>Database Tools</h4>
                                     <p>Export the current database in spreadsheet format.</p>
                                     <div className="d-grid gap-2">
-                                        <button className="btn btn-pink">Export Submissions</button>
-                                        <button className="btn btn-magenta">Export Attempts</button>
-                                        <button className="btn btn-purple">Export Printers</button>
+                                        <button
+                                            className="btn btn-pink"
+                                            onClick={() => {
+                                                axios
+                                                    .get("/download/export/submissions", {
+                                                        responseType: "blob",
+                                                    })
+                                                    .then((res) => {
+                                                        fileDownload(res.data, "submissions.xlsx");
+                                                    });
+                                            }}>
+                                            Export Submissions
+                                        </button>
+                                        <button
+                                            className="btn btn-magenta"
+                                            onClick={() => {
+                                                axios
+                                                    .get("/download/export/attempts", {
+                                                        responseType: "blob",
+                                                    })
+                                                    .then((res) => {
+                                                        fileDownload(res.data, "attempts.xlsx");
+                                                    });
+                                            }}>
+                                            Export Attempts
+                                        </button>
+                                        <button
+                                            className="btn btn-purple"
+                                            onClick={() => {
+                                                axios
+                                                    .get("/download/export/printers", {
+                                                        responseType: "blob",
+                                                    })
+                                                    .then((res) => {
+                                                        fileDownload(res.data, "printers.xlsx");
+                                                    });
+                                            }}>
+                                            Export Printers
+                                        </button>
                                     </div>
                                 </div>
                             </div>

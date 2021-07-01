@@ -30,7 +30,7 @@ class RequestAndReview extends React.Component {
         };
 
         const downloadSTL = () => {
-            axios
+            axiosInstance
                 .get("/download/stl/" + this.props.file._id, {
                     responseType: "blob",
                 })
@@ -40,7 +40,7 @@ class RequestAndReview extends React.Component {
         };
 
         const downloadGCODE = () => {
-            axios
+            axiosInstance
                 .get("/download/gcode/" + this.props.file._id, {
                     responseType: "blob",
                 })

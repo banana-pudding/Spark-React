@@ -51,7 +51,7 @@ class EditorModal extends React.Component {
 
     updateEmail() {
         let html = draftToHtml(convertToRaw(this.state.editorState.getCurrentContent()));
-        axios
+        axiosInstance
             .post("/emails/update/" + this.state.templateName, {
                 bodyText: html,
                 subject: this.state.subject,

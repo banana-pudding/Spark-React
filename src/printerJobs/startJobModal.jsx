@@ -37,7 +37,7 @@ class StartJobModal extends React.Component {
     };
 
     handleStartJob = () => {
-        axios
+        axiosInstance
             .post("/attempts/new", {
                 fileIDs: this.state.selectedFileIDs,
                 fileNames: this.state.selectedFileNames,

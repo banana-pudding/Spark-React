@@ -103,7 +103,7 @@ class ProfilePage extends React.Component {
                                         <button
                                             className="btn btn-pink"
                                             onClick={() => {
-                                                axios
+                                                axiosInstance
                                                     .get("/download/export/submissions", {
                                                         responseType: "blob",
                                                     })
@@ -116,7 +116,7 @@ class ProfilePage extends React.Component {
                                         <button
                                             className="btn btn-magenta"
                                             onClick={() => {
-                                                axios
+                                                axiosInstance
                                                     .get("/download/export/attempts", {
                                                         responseType: "blob",
                                                     })
@@ -129,7 +129,7 @@ class ProfilePage extends React.Component {
                                         <button
                                             className="btn btn-purple"
                                             onClick={() => {
-                                                axios
+                                                axiosInstance
                                                     .get("/download/export/printers", {
                                                         responseType: "blob",
                                                     })

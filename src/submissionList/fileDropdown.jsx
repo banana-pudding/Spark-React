@@ -10,7 +10,7 @@ class FileDropdown extends React.Component {
     }
 
     handleDelete() {
-        axios
+        axiosInstance
             .post("/submissions/delete/file/" + this.props.file._id)
             .then((res) => {
                 this.props.history.go(0);
@@ -21,7 +21,7 @@ class FileDropdown extends React.Component {
     }
 
     handleRequestPayment() {
-        axios
+        axiosInstance
             .post("/submissions/requestpayment/" + this.props.submission._id)
             .then((res) => {
                 this.props.history.go(0);
@@ -32,7 +32,7 @@ class FileDropdown extends React.Component {
     }
 
     handleWaive() {
-        axios
+        axiosInstance
             .post("/submissions/waive/" + this.props.submission._id)
             .then((res) => {
                 this.props.history.go(0);

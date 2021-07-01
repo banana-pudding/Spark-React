@@ -36,7 +36,7 @@ class SignaturePage extends React.Component {
     }
 
     handleTechLogin() {
-        axios
+        axiosInstance
             .post("/pickup/tech", {
                 fileIDs: this.state.fileIDs,
                 euid: this.state.euid,

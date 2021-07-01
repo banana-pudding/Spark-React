@@ -48,7 +48,7 @@ class ManageJobs extends React.Component {
             dpFullService: [],
             dpSelfService: [],
         });
-        axios
+        axiosInstance
             .get("/printers/list")
             .then((res) => {
                 var willisFullService = [],
@@ -87,7 +87,7 @@ class ManageJobs extends React.Component {
             submissions: [],
         });
 
-        axios
+        axiosInstance
             .get("/submissions/ready-queue")
             .then((res) => {
                 this.setState({

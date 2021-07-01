@@ -103,8 +103,12 @@
 }
 
 .table > :not(:last-child) > :last-child > * {
-    border-bottom-color: #dee2e6 !important;
-    border-bottom-width: 2px !important;
+    border-bottom-color: #dee2e6;
+    border-bottom-width: 2px;
+}
+
+.table .first-row td {
+    border-top-width: 2px;
 }
 
 .tgl {

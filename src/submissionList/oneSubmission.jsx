@@ -22,7 +22,7 @@ class SingleSubmission extends React.Component {
     }
 
     handleRequestPayment() {
-        axios
+        axiosInstance
             .post("/submissions/requestpayment/" + this.state.item._id)
             .then((res) => {
                 console.log(res.data);
@@ -34,7 +34,7 @@ class SingleSubmission extends React.Component {
     }
 
     handleWaive() {
-        axios
+        axiosInstance
             .post("/submissions/waive/" + this.state.item._id)
             .then((res) => {
                 this.props.history.go(0);
@@ -45,7 +45,7 @@ class SingleSubmission extends React.Component {
     }
 
     handleUndoWaive() {
-        axios
+        axiosInstance
             .post("/submissions/undowaive/" + this.state.item._id)
             .then((res) => {
                 this.props.history.go(0);
@@ -56,7 +56,7 @@ class SingleSubmission extends React.Component {
     }
 
     handleDeleteFile(fileID) {
-        axios
+        axiosInstance
             .post("/submissions/delete/file/" + fileID)
             .then((res) => {
                 this.props.history.go(0);
@@ -67,7 +67,7 @@ class SingleSubmission extends React.Component {
     }
 
     downloadAll(submissionID) {
-        axios
+        axiosInstance
             .get("/download/zip/" + submissionID, {
                 responseType: "blob",
             })

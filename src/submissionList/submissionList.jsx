@@ -44,7 +44,7 @@ class SubmissionList extends React.Component {
 
     fetchPrints = () => {
         this.setState({ submissions: [] });
-        axios
+        axiosInstance
             .post("/submissions/filter", this.state.filters)
             .then((res) => {
                 this.setState({

@@ -106,7 +106,7 @@ class SubmissionPage extends React.Component {
                     data.append("thumb-" + thisFile.copyGroupID, thumbFile);
                 }
             }
-            axios
+            axiosInstance
                 .post("/submit", data)
                 .then((res) => {
                     this.modal.hide();

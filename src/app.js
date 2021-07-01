@@ -1,7 +1,9 @@
 import React from "react";
 import jwt_decode from "jwt-decode";
-import axios from "./common/axiosConfig";
+//import axios from "./common/axiosConfig";
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
+
+import { ToastContainer, toast } from "react-toastify";
 
 import ProtectedRoute from "./common/protectedRoute";
 import NavBar from "./common/navBar";
@@ -15,7 +17,48 @@ import SubmissionView from "./publicSubmissionView/publicSubmissionView";
 import FilePreview from "./singleFileView/filePreview";
 import ManageJobs from "./printerJobs/printerJobs";
 import PickupForm from "./pickupForm/pickupForm";
+import Aggregation from "./aggregation/aggregation";
 import Footer from "./common/footer";
+
+import axios from "axios";
+
+const axiosInstance = axios.create({});
+
+/* -------------------------------------------------------------------------- */
+/*               For every request, grab the jwt in localstorage              */
+/* -------------------------------------------------------------------------- */
+axiosInstance.interceptors.request.use(
+    function (config) {
+        config.headers.Authorization = localStorage.jwtToken;
+        return config;
+    },
+    function (error) {
+        return Promise.reject(error);
+    }
+);
+
+/* -------------------------------------------------------------------------- */
+/*                         Remove jwt if user invalid                         */
+/* -------------------------------------------------------------------------- */
+axiosInstance.interceptors.response.use(
+    function (response) {
+        return response;
+    },
+    function (error) {
+        console.log("ERROR", error);
+        toast.error(error.toString(), {
+            position: "bottom-right",
+        });
+
+        if (error.response.status == 401) {
+            localStorage.removeItem("jwtToken");
+            axios.defaults.headers.common["Authorization"] = null;
+            window.location.replace("/login");
+        }
+
+        return Promise.reject(error);
+    }
+);
 
 class App extends React.Component {
     constructor(props) {
@@ -31,7 +74,7 @@ class App extends React.Component {
     componentDidMount() {
         //if logged in, double check the jwt is still valid
         if (this.state.user && !this.state.jwtValid) {
-            axios.get("/users/validatejwt").then((res) => {
+            axiosInstance.get("/users/validatejwt").then((res) => {
                 this.setState(
                     {
                         jwtValid: true,
@@ -66,7 +109,7 @@ class App extends React.Component {
     }
 
     updateUserFromDatabase() {
-        axios.get("/users/info/" + this.state.user.euid).then((res) => {
+        axiosInstance.get("/users/info/" + this.state.user.euid).then((res) => {
             this.setState({
                 user: res.data.formattedUser,
             });
@@ -78,7 +121,6 @@ class App extends React.Component {
             <Router>
                 <div className="d-flex flex-column root-container">
                     <NavBar user={this.state.user} updateLogin={this.updateLogin.bind(this)} />
-
                     <Switch>
                         <Route path="/" exact={true} component={Landing} />
                         <Route exact path="/submit">
@@ -114,10 +156,14 @@ class App extends React.Component {
                         <Route path="/submission">
                             <SubmissionView />
                         </Route>
+                        <Route path="/meta">
+                            <Aggregation />
+                        </Route>
                         <Route exact path="/pickup">
                             <PickupForm />
                         </Route>
                     </Switch>
+                    <ToastContainer />
                     <Footer />
                 </div>
             </Router>
@@ -126,3 +172,4 @@ class App extends React.Component {
 }
 
 export default App;
+export { axiosInstance };

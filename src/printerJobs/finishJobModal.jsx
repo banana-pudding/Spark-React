@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import FormattedDate from "../common/formattedDate";
 import { Modal } from "bootstrap";
 
@@ -33,7 +33,7 @@ class FinishModal extends React.Component {
 
     handleSubmit = (wasSuccess) => {
         if (this.state.finalWeightValid) {
-            axios.post("/attempts/complete/" + this.state.printer.currentAttempt._id, {
+            axiosInstance.post("/attempts/complete/" + this.state.printer.currentAttempt._id, {
                 finalWeight: this.state.finalWeight,
                 wasSuccess: wasSuccess,
             });

@@ -1,6 +1,6 @@
 import React from "react";
 import { withRouter } from "react-router";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 
 class SignaturePage extends React.Component {
     state = {
@@ -23,7 +23,7 @@ class SignaturePage extends React.Component {
     }
 
     handleSignature() {
-        axios
+        axiosInstance
             .post("/pickup/patron", {
                 fileIDs: this.state.fileIDs,
                 patronName: this.state.patronName,

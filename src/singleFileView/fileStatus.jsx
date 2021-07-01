@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import { statusText, statusLabel } from "../common/utils";
 import PrintingCard from "./statusCards/printing";
 import PendPayCard from "./statusCards/pendpay";
@@ -15,7 +15,7 @@ class FileStatus extends React.Component {
     }
 
     fetchAttemptData = () => {
-        axios.get("/attempts/" + this.props.file.printing.attemptIDs.slice(-1).pop()).then((res) => {
+        axiosInstance.get("/attempts/" + this.props.file.printing.attemptIDs.slice(-1).pop()).then((res) => {
             this.setState({
                 lastAttempt: res.data,
             });

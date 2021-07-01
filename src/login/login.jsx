@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 class LoginPage extends React.Component {
     constructor(props) {
         super(props);
@@ -10,7 +10,7 @@ class LoginPage extends React.Component {
     }
 
     handleSubmit() {
-        axios
+        axiosInstance
             .post("/users/login", { username: this.state.username, password: this.state.password })
             .then((res) => {
                 this.props.updateLogin(res.data.token);

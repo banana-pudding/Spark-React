@@ -1,7 +1,7 @@
 import React from "react";
 import "./submit.css";
 import SingleFile from "./singleFile";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import { withRouter } from "react-router-dom";
 import { Modal } from "bootstrap";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import SingleSubmission from "./oneSubmission";
 
 import { defaultState, queueFilters, filterTabList, dateList, typeList } from "./statics/reference";

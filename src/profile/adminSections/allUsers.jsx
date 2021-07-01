@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../../common/axiosConfig";
+import { axiosInstance } from "../../app";
 
 class AllUsers extends React.Component {
     constructor(props) {
@@ -15,7 +15,7 @@ class AllUsers extends React.Component {
     }
 
     fetchUsers = () => {
-        axios.get("/users/list").then((res) => {
+        axiosInstance.get("/users/list").then((res) => {
             this.setState({
                 users: res.data.users,
             });
@@ -23,7 +23,7 @@ class AllUsers extends React.Component {
     };
 
     handleSubmit = () => {
-        axios.post("/users/update", this.state).then((res) => {
+        axiosInstance.post("/users/update", this.state).then((res) => {
             this.fetchUsers();
         });
     };

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import { Modal } from "bootstrap";
 
 class EditModal extends React.Component {
@@ -85,12 +85,12 @@ class EditModal extends React.Component {
 
         if (this.state.makingNewPrinter) {
             console.log("new");
-            axios.post("/printers/new", data).then((res) => {
+            axiosInstance.post("/printers/new", data).then((res) => {
                 this.modal.hide();
                 this.props.reloadPage();
             });
         } else {
-            axios.post("/printers/update/" + this.state.printer._id, data).then((res) => {
+            axiosInstance.post("/printers/update/" + this.state.printer._id, data).then((res) => {
                 this.modal.hide();
                 this.props.reloadPage();
             });
@@ -98,7 +98,7 @@ class EditModal extends React.Component {
     };
 
     handleDelete = () => {
-        axios.post("/printers/delete/" + this.state.printer._id).then((res) => {
+        axiosInstance.post("/printers/delete/" + this.state.printer._id).then((res) => {
             this.modal.hide();
             this.props.reloadPage();
         });

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import { Dropdown } from "bootstrap/dist/js/bootstrap";
 import { withRouter } from "react-router-dom";
 

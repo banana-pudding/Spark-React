@@ -1,6 +1,6 @@
 import React from "react";
 import FormattedDate from "../common/formattedDate";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 //import "bootstrap-icons/font/bootstrap-icons.css";
 import "./scss/internalNotes.scss";
 import { withRouter } from "react-router-dom";
@@ -14,7 +14,7 @@ class InternalNotes extends React.Component {
     }
 
     appendNote = () => {
-        axios.post("/submissions/addnote/" + this.props.file._id, this.state).then((res) => {
+        axiosInstance.post("/submissions/addnote/" + this.props.file._id, this.state).then((res) => {
             this.props.history.go(0);
         });
     };

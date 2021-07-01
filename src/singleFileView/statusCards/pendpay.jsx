@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import FormattedDate from "../../common/formattedDate";
-import axios from "../../common/axiosConfig";
+import { axiosInstance } from "../../app";
 import { statusText } from "../../common/utils";
 import { withRouter } from "react-router-dom";
 

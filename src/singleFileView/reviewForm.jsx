@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import { parseGcode } from "./res/gcodeAnalyzer";
 import ParseModal from "./gcodeParseModal";
 import UploadModal from "./submitReviewModal";
@@ -105,7 +105,7 @@ class ReviewForm extends React.Component {
         data.append("jsonData", JSON.stringify(jsonObject));
         data.append("files", this.state.gcode);
 
-        axios.post("/submissions/review/" + this.props.file._id, data).then((res) => {
+        axiosInstance.post("/submissions/review/" + this.props.file._id, data).then((res) => {
             console.log("done");
             this.props.history.go(0);
         });

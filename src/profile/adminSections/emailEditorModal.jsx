@@ -4,7 +4,7 @@ import { convertToRaw, EditorState, ContentState } from "draft-js";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import htmlToDraft from "html-to-draftjs";
-import axios from "../../common/axiosConfig";
+import { axiosInstance } from "../../app";
 
 class EditorModal extends React.Component {
     constructor(props) {
@@ -30,7 +30,7 @@ class EditorModal extends React.Component {
     };
 
     showModal(email) {
-        axios.get("/emails/get/" + email).then((res) => {
+        axiosInstance.get("/emails/get/" + email).then((res) => {
             const blocksFromHtml = htmlToDraft(res.data.email.bodyText);
             const { contentBlocks, entityMap } = blocksFromHtml;
             const contentState = ContentState.createFromBlockArray(contentBlocks, entityMap);

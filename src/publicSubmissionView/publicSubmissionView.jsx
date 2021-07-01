@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import FormattedDate from "../common/formattedDate";
 import { statusLabel, statusBG } from "../common/utils";
 
@@ -14,7 +14,7 @@ class SubmissionView extends React.Component {
 
     componentDidMount() {
         var submissionID = window.location.pathname.split("/submission/")[1];
-        axios.get("/submissions/public/" + submissionID).then((res) => {
+        axiosInstance.get("/submissions/public/" + submissionID).then((res) => {
             this.setState({
                 submissionID: submissionID,
                 submission: res.data,

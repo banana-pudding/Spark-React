@@ -1,7 +1,7 @@
 import React from "react";
 import AllUsers from "./adminSections/allUsers";
 import EditEmails from "./adminSections/editEmails";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import fileDownload from "js-file-download";
 
 class ProfilePage extends React.Component {
@@ -13,7 +13,7 @@ class ProfilePage extends React.Component {
     }
 
     handleSetName = () => {
-        axios.post("/users/updatename", { euid: this.props.user.euid, name: this.state.name }).then((res) => {
+        axiosInstance.post("/users/updatename", { euid: this.props.user.euid, name: this.state.name }).then((res) => {
             this.props.updateUserFromDatabase();
         });
     };

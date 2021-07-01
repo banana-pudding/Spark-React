@@ -1,7 +1,7 @@
 import React from "react";
 import FormattedDate from "../common/formattedDate";
 import { statusText } from "../common/utils";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import StatusFlag from "./flags/statusFlag";
 import { withRouter } from "react-router-dom";
 import PickupModal from "../singleFileView/pickupModal";

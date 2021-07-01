@@ -5,7 +5,7 @@ import StlImage from "./res/block.svg";
 // import GcodeImage from "./res/sd.svg";
 import GcodeImage from "./res/block.svg";
 import FormattedDate from "../common/formattedDate";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import fileDownload from "js-file-download";
 
 class RequestAndReview extends React.Component {

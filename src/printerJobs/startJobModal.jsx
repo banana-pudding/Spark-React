@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import { Modal } from "bootstrap";
 import "./scss/modal.scss";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import ModelDisplay from "./modelFileViewer";
 import RequestAndReview from "./requestAndReview";
 import InternalNotes from "./internalNotes";
@@ -19,7 +19,7 @@ class FilePreview extends React.Component {
 
     componentDidMount() {
         var fileID = window.location.pathname.split("/files/")[1];
-        axios.get("/submissions/onefile/" + fileID).then((res) => {
+        axiosInstance.get("/submissions/onefile/" + fileID).then((res) => {
             this.setState({
                 fileID: fileID,
                 file: res.data.file,

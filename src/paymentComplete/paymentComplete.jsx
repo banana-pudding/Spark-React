@@ -1,6 +1,6 @@
 import React from "react";
 import FormattedDate from "../common/formattedDate";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import { withRouter } from "react-router-dom";
 
 class PaymentComplete extends React.Component {
@@ -16,7 +16,7 @@ class PaymentComplete extends React.Component {
     }
 
     verifyPayment = () => {
-        axios.post("/payment/complete" + this.props.location.search).then((res) => {
+        axiosInstance.post("/payment/complete" + this.props.location.search).then((res) => {
             if (res.data.isValid) {
                 this.setState({
                     isChecked: true,

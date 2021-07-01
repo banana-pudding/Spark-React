@@ -1,7 +1,7 @@
 import React from "react";
 import { Link, withRouter } from "react-router-dom";
 import FormattedDate from "../../common/formattedDate";
-import axios from "../../common/axiosConfig";
+import { axiosInstance } from "../../app";
 
 class TransitCard extends React.Component {
     constructor(props) {
@@ -11,7 +11,7 @@ class TransitCard extends React.Component {
     markFileArrived = () => {
         let fileIDs = [];
         fileIDs.push(this.props.file._id);
-        axios.post("/submissions/arrived", { fileIDs: fileIDs }).then((res) => {
+        axiosInstance.post("/submissions/arrived", { fileIDs: fileIDs }).then((res) => {
             this.props.history.go(0);
         });
     };

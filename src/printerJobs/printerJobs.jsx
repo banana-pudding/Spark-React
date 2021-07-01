@@ -1,5 +1,5 @@
 import React from "react";
-import axios from "../common/axiosConfig";
+import { axiosInstance } from "../app";
 import FormattedDate from "../common/formattedDate";
 import StartModal from "./startJobModal";
 import EditModal from "./editPrinterModal";

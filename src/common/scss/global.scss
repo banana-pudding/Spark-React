@@ -49,6 +49,10 @@
     fill: currentColor !important;
 }
 
+.bg-shaded {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
 .Toastify__toast--error {
     @extend .alert, .alert-danger;
     padding: 0.375rem 0.75rem;
@@ -107,8 +111,16 @@
     border-bottom-width: 2px;
 }
 
-.table .first-row td {
+.table .first-row > td {
     border-top-width: 2px;
+}
+
+.first-row > td > table > tr :first-child {
+    padding: 0px 0.1rem 0px 0px !important;
+}
+
+.first-row > td > table > tr :not(:first-child) {
+    padding: 0px !important;
 }
 
 .tgl {

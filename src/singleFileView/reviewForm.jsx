@@ -6,6 +6,7 @@ import UploadModal from "./submitReviewModal";
 import "./scss/review.scss";
 import { Modal } from "bootstrap";
 import { withRouter } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 
 class ReviewForm extends React.Component {
     constructor(props) {
@@ -50,37 +51,49 @@ class ReviewForm extends React.Component {
 
     handleGcodeUpload(e) {
         var file = e.target.files[0];
+        if (file.name.slice(-5).toLowerCase() === "gcode") {
+            if (file.size < 10000000) {
+                //10MB
+                if (this.state.autoParse) {
+                    let inst = Modal.getInstance(this.parseModal.current);
+                    this.parseModal.current.addEventListener("shown.bs.modal", (e) => {
+                        var fileReader = new FileReader();
+                        fileReader.onloadend = () => {
+                            var content = fileReader.result;
+                            parseGcode(content).then((output) => {
+                                inst.hide();
+                                var results = output;
+                                var printSeconds = results.printTime;
+                                var hours = Math.floor(printSeconds / 3600);
+                                printSeconds %= 3600;
+                                var minutes = Math.floor(printSeconds / 60);
+
+                                this.setState({
+                                    parseResults: results,
+                                    slicedGrams: Math.round(results.plaWeight),
+                                    slicedHours: hours,
+                                    slicedMinutes: minutes,
+                                    slicedPrinter: results.extractedPrinter,
+                                    slicedMaterial: results.extractedFilament,
+                                });
+                            });
+                        };
+                        fileReader.readAsText(file);
+                    });
+                    inst.show();
+                }
+            } else {
+                toast.warn("GCODE file too big to parse automatically!", { position: "bottom-right" });
+            }
+        } else {
+            toast.info("This isn't a GCODE file, are you sure this is correct?", {
+                position: "bottom-right",
+            });
+        }
+
         this.setState({
             gcode: file,
         });
-        if (this.state.autoParse) {
-            let inst = Modal.getInstance(this.parseModal.current);
-            this.parseModal.current.addEventListener("shown.bs.modal", (e) => {
-                var fileReader = new FileReader();
-                fileReader.onloadend = () => {
-                    var content = fileReader.result;
-                    parseGcode(content).then((output) => {
-                        inst.hide();
-                        var results = output;
-                        var printSeconds = results.printTime;
-                        var hours = Math.floor(printSeconds / 3600);
-                        printSeconds %= 3600;
-                        var minutes = Math.floor(printSeconds / 60);
-
-                        this.setState({
-                            parseResults: results,
-                            slicedGrams: Math.round(results.plaWeight),
-                            slicedHours: hours,
-                            slicedMinutes: minutes,
-                            slicedPrinter: results.extractedPrinter,
-                            slicedMaterial: results.extractedFilament,
-                        });
-                    });
-                };
-                fileReader.readAsText(file);
-            });
-            inst.show();
-        }
     }
 
     handleSubmit() {
@@ -124,9 +137,10 @@ class ReviewForm extends React.Component {
                         <div className="mb-3">
                             <div className="input-group">
                                 <input
-                                    className="form-control"
+                                    className={"form-control " + (this.state.gcode ? "is-valid" : "is-invalid")}
                                     type="file"
                                     id="gcodeFile"
+                                    accept=".gcode"
                                     required
                                     onInput={(e) => {
                                         this.handleGcodeUpload(e);
@@ -160,7 +174,12 @@ class ReviewForm extends React.Component {
                                                 slicedHours: e.target.value,
                                             });
                                         }}
-                                        className="form-control"
+                                        className={
+                                            "form-control " +
+                                            (this.state.slicedHours + this.state.slicedMinutes
+                                                ? "is-valid"
+                                                : "is-invalid")
+                                        }
                                         placeholder="0"
                                     />
                                     <label>Hours</label>
@@ -177,7 +196,12 @@ class ReviewForm extends React.Component {
                                                 slicedMinutes: e.target.value,
                                             });
                                         }}
-                                        className="form-control"
+                                        className={
+                                            "form-control " +
+                                            (this.state.slicedHours + this.state.slicedMinutes
+                                                ? "is-valid"
+                                                : "is-invalid")
+                                        }
                                         placeholder="0"
                                     />
                                     <label>Minutes</label>
@@ -194,7 +218,9 @@ class ReviewForm extends React.Component {
                                                 slicedGrams: e.target.value,
                                             });
                                         }}
-                                        className="form-control"
+                                        className={
+                                            "form-control " + (this.state.slicedGrams ? "is-valid" : "is-invalid")
+                                        }
                                         placeholder="0"
                                     />
                                     <label>Weight</label>
@@ -213,7 +239,9 @@ class ReviewForm extends React.Component {
                                                 slicedPrinter: e.target.value,
                                             });
                                         }}
-                                        className="form-control"
+                                        className={
+                                            "form-control " + (this.state.slicedPrinter ? "is-valid" : "is-invalid")
+                                        }
                                     />
                                     <label>Printer</label>
                                 </div>
@@ -229,7 +257,9 @@ class ReviewForm extends React.Component {
                                                 slicedMaterial: e.target.value,
                                             });
                                         }}
-                                        className="form-control"
+                                        className={
+                                            "form-control " + (this.state.slicedPrinter ? "is-valid" : "is-invalid")
+                                        }
                                     />
                                     <label>Material</label>
                                 </div>
@@ -266,7 +296,10 @@ class ReviewForm extends React.Component {
 
                         <div className="form-floating mb-3">
                             <textarea
-                                className="form-control floating-textarea"
+                                className={
+                                    "form-control floating-textarea " +
+                                    (this.state.patronNotes ? "is-valid" : "is-invalid")
+                                }
                                 value={this.state.patronNotes}
                                 required
                                 onChange={(e) => {
@@ -279,7 +312,10 @@ class ReviewForm extends React.Component {
 
                         <div className="form-floating mb-3">
                             <textarea
-                                className="form-control floating-textarea"
+                                className={
+                                    "form-control floating-textarea " +
+                                    (this.state.internalNotes ? "is-valid" : "border-bsyellow")
+                                }
                                 value={this.state.internalNotes}
                                 required
                                 onChange={(e) => {
@@ -293,6 +329,16 @@ class ReviewForm extends React.Component {
                         <button
                             className="btn btn-primary float-end"
                             type="submit"
+                            disabled={
+                                !(
+                                    this.state.gcode &&
+                                    this.state.slicedGrams &&
+                                    this.state.slicedHours + this.state.slicedMinutes &&
+                                    this.state.slicedMaterial &&
+                                    this.state.slicedPrinter &&
+                                    this.state.patronNotes
+                                )
+                            }
                             onClick={(e) => {
                                 e.preventDefault();
                                 this.handleSubmit();

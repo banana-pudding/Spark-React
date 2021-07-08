@@ -1,5 +1,6 @@
 import React from "react";
 import FormattedDate from "../common/formattedDate";
+import FormattedShortDate from "../common/formattedShortDate";
 import { statusText } from "../common/utils";
 import { axiosInstance } from "../app";
 import StatusFlag from "./flags/statusFlag";
@@ -93,6 +94,23 @@ class SingleSubmission extends React.Component {
         let totalMinutes = submission.sums.totalHours * 60 + submission.sums.totalMinutes;
         let finalHours = Math.floor(totalMinutes / 60);
         let finalMintes = totalMinutes % 60;
+
+        const emailTitle = (templateName) => {
+            switch (templateName) {
+                case "submissionRecieved":
+                    return "Submitted";
+                case "submissionReviewed":
+                    return "Payment Request";
+                case "paymentRecieved":
+                    return "Payment Reciept";
+                case "paymentWaived":
+                    return "Payment Waived";
+                case "readyForPickup":
+                    return "Pickup Notice";
+                default:
+                    return templateName;
+            }
+        };
 
         const requestInfo = (file) => {
             if (file.request.material == "Any Material" && file.request.color == "Any Color") {
@@ -273,7 +291,7 @@ class SingleSubmission extends React.Component {
                     <div className="row">
                         <div className="col-12  col-xxl-custom-left">
                             <div className="row">
-                                <div className="col-12 col-md-4 col-xxl-12">
+                                <div className="col-12 col-sm-6 col-md-3 col-xxl-12">
                                     <h5 className="card-title mb-2">
                                         {submission.patron.fname + " " + submission.patron.lname}
                                     </h5>
@@ -281,7 +299,7 @@ class SingleSubmission extends React.Component {
                                         {submission.submissionDetails.submissionType.toLowerCase() + " submission"}
                                     </h6>
                                 </div>
-                                <div className="col-12 col-sm-6 col-md-4 col-xxl-12">
+                                <div className="col-12 col-sm-6 col-md-3 col-xxl-12">
                                     {submission.submissionDetails.submissionType == "CLASS" && (
                                         <table className="table mb-0 table-sm table-borderless text-nowrap text-capitalize border-top border-bottom top-table">
                                             <tbody>
@@ -321,14 +339,14 @@ class SingleSubmission extends React.Component {
                                         <tbody>
                                             <tr>
                                                 <td className="ps-0 text-muted">Submitted</td>
-                                                <td>
+                                                <td className="text-end">
                                                     <FormattedDate date={submittedDate} />
                                                 </td>
                                             </tr>
                                             {reviewDate > new Date("1980") && (
                                                 <tr>
                                                     <td className="ps-0 text-muted">Reviewed</td>
-                                                    <td>
+                                                    <td className="text-end">
                                                         <FormattedDate date={reviewDate} />
                                                     </td>
                                                 </tr>
@@ -336,7 +354,7 @@ class SingleSubmission extends React.Component {
                                             {paidDate > new Date("1980") && (
                                                 <tr>
                                                     <td className="ps-0 text-muted">Paid</td>
-                                                    <td>
+                                                    <td className="text-end">
                                                         <FormattedDate date={paidDate} />
                                                     </td>
                                                 </tr>
@@ -344,7 +362,7 @@ class SingleSubmission extends React.Component {
                                         </tbody>
                                     </table>
                                 </div>
-                                <div className="col-12 col-sm-6 col-md-4 col-xxl-12">
+                                <div className="col-12 col-sm-6 col-md-3 col-xxl-12">
                                     <div className="d-grid gap-1 mt-2">
                                         {/* ------------------------- Request Payment Button ------------------------- */}
                                         {reviewDate < new Date("1980") && (
@@ -404,6 +422,33 @@ class SingleSubmission extends React.Component {
                                         {/* ------------------------- Pickup Full Submission ------------------------- */}
                                         {pickupButton()}
                                     </div>
+                                </div>
+                                <div className="col-12 col-sm-6 col-md-3 col-xxl-12">
+                                    {submission.emails.length > 0 && (
+                                        <table className="table table-sm mt-2">
+                                            <thead>
+                                                <tr>
+                                                    <th colSpan="2" className="ps-0">
+                                                        Email Records
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {submission.emails.map((email, index) => {
+                                                    return (
+                                                        <tr>
+                                                            <td className="ps-0 text-muted">
+                                                                {emailTitle(email.templateName)}
+                                                            </td>
+                                                            <td className="text-end">
+                                                                <FormattedShortDate date={email.timestampSent} />
+                                                            </td>
+                                                        </tr>
+                                                    );
+                                                })}
+                                            </tbody>
+                                        </table>
+                                    )}
                                 </div>
                             </div>
                         </div>

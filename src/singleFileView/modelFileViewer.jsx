@@ -4,7 +4,7 @@ import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import { STLLoader } from "three/examples/jsm/loaders/STLLoader.js";
 import { GCodeLoader } from "./res/customGcodeLoader";
 import { RgbaColorPicker } from "react-colorful";
-
+import { ToastContainer, toast } from "react-toastify";
 import "./scss/modelPreview.scss";
 import { Vector3 } from "three";
 
@@ -278,21 +278,29 @@ class ModelDisplay extends React.Component {
         const stlPromise = loadSTLFile();
         const gcodePromise = loadGCODEFile();
 
-        stlPromise.then((stlModel) => {
-            this.setState({
-                hasSTL: true,
+        stlPromise
+            .then((stlModel) => {
+                this.setState({
+                    hasSTL: true,
+                });
+                this.stlModel = stlModel;
+            })
+            .catch(() => {
+                toast.error("STL File Not Found", { position: "bottom-right" });
             });
-            this.stlModel = stlModel;
-        });
 
-        gcodePromise.then((gcodeModel) => {
-            this.setState({
-                hasGCODE: true,
+        gcodePromise
+            .then((gcodeModel) => {
+                this.setState({
+                    hasGCODE: true,
+                });
+                this.gcodeModel = gcodeModel;
+                gcodeModel.children[0].visible = false;
+                gcodeModel.children[1].visible = false;
+            })
+            .catch(() => {
+                toast.warn("GCODE File Not Found", { position: "bottom-right" });
             });
-            this.gcodeModel = gcodeModel;
-            gcodeModel.children[0].visible = false;
-            gcodeModel.children[1].visible = false;
-        });
     }
 
     componentDidUpdate() {

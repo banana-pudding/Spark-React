@@ -146,8 +146,6 @@ class SingleFile extends React.Component {
                         />
                     </div>
                 </div>
-
-                <ToastContainer />
                 {addSeparator(this.props.index, this.props.lastIndex)}
             </div>
         );

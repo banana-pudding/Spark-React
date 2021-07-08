@@ -78,8 +78,6 @@ class SubmissionPage extends React.Component {
             delete checkStuff.project;
         }
 
-        console.log(checkStuff);
-
         return (
             Object.values(checkStuff).every(Boolean) &&
             checkFiles.every((file) => {
@@ -158,19 +156,16 @@ class SubmissionPage extends React.Component {
             return (
                 <React.Fragment>
                     <h3>Pickup Information</h3>
-                    <div class="form-floating">
+                    <div className="form-floating">
                         <select
-                            class="form-select"
+                            className="form-select"
                             onChange={(e) => {
                                 this.setState({ pickupLocation: e.target.value });
                             }}
+                            value={this.state.pickupLocation}
                             id="pickupLocation">
-                            <option value="Willis Library" selected={this.state.pickupLocation == "Willis Library"}>
-                                Willis Library
-                            </option>
-                            <option value="Discovery Park" selected={this.state.pickupLocation == "Discovery Park"}>
-                                Discovery Park
-                            </option>
+                            <option value="Willis Library">Willis Library</option>
+                            <option value="Discovery Park">Discovery Park</option>
                         </select>
                         <label htmlFor="pickupLocation">Pickup Location</label>
                     </div>
@@ -187,8 +182,8 @@ class SubmissionPage extends React.Component {
                         internal library project, or for personal use. More details for each of these can be found
                         below.
                     </p>
-                    <ul className="nav nav-tabs nav-justified mb-3" id="myTab" role="tablist">
-                        <li className="nav-item" role="presentation">
+                    <div className="nav nav-tabs nav-justified mb-3" id="myTab" role="tablist">
+                        <div className="nav-item" role="presentation" key="personal">
                             <button
                                 className={(this.state.submissionType === "PERSONAL" ? "active " : "") + "nav-link"}
                                 id="personal-tab"
@@ -210,8 +205,8 @@ class SubmissionPage extends React.Component {
                                 }}>
                                 Personal
                             </button>
-                        </li>
-                        <li className="nav-item" role="presentation">
+                        </div>
+                        <div className="nav-item" role="presentation" key="class">
                             <button
                                 className={(this.state.submissionType === "CLASS" ? "active " : "") + "nav-link"}
                                 id="class-tab"
@@ -230,8 +225,8 @@ class SubmissionPage extends React.Component {
                                 }}>
                                 Class
                             </button>
-                        </li>
-                        <li className="nav-item" role="presentation">
+                        </div>
+                        <div className="nav-item" role="presentation" key="internal">
                             <button
                                 className={(this.state.submissionType === "INTERNAL" ? "active " : "") + "nav-link"}
                                 id="internal-tab"
@@ -251,8 +246,8 @@ class SubmissionPage extends React.Component {
                                 }}>
                                 Internal
                             </button>
-                        </li>
-                    </ul>
+                        </div>
+                    </div>
                     <div className="tab-content" id="myTabContent">
                         <div
                             className={this.state.submissionType === "PERSONAL" ? "show active " : "" + "tab-pane fade"}
@@ -422,6 +417,7 @@ class SubmissionPage extends React.Component {
                                 lastIndex={this.state.files.length - 1}
                                 updateSubFile={this.updateSubFile.bind(this)}
                                 deleteFile={this.deleteFile.bind(this)}
+                                key={index}
                             />
                         );
                     })}
@@ -558,7 +554,7 @@ class SubmissionPage extends React.Component {
                                     id="submission-form"
                                     action="/submitprint"
                                     method="POST"
-                                    enctype="multipart/form-data">
+                                    encType="multipart/form-data">
                                     {patronInfo()}
                                     <hr />
                                     {pickupInfo()}

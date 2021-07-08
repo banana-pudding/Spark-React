@@ -23,6 +23,7 @@ class Aggregation extends React.Component {
 
     updateAttempts = () => {
         axiosInstance.post("/attempts/filter", this.state.filters).then((res) => {
+            console.log(res.data);
             this.setState({
                 attempts: res.data.attempts,
                 paidTotals: res.data.paidTotals,
@@ -177,9 +178,9 @@ class Aggregation extends React.Component {
                                             <td>${this.state.waivedTotals.price.toFixed(2)}</td>
                                             <td>
                                                 $
-                                                {(
-                                                    this.state.waivedTotals.price + this.state.waivedTotals.price
-                                                ).toFixed(2)}
+                                                {(this.state.waivedTotals.price + this.state.paidTotals.price).toFixed(
+                                                    2
+                                                )}
                                             </td>
                                         </tr>
                                         <tr>
@@ -188,7 +189,7 @@ class Aggregation extends React.Component {
                                             <td>{this.state.paidTotals.filament}g</td>
                                             <td>{this.state.waivedTotals.filament}g</td>
                                             <td>
-                                                {this.state.waivedTotals.filament + this.state.waivedTotals.filament}g
+                                                {this.state.waivedTotals.filament + this.state.paidTotals.filament}g
                                             </td>
                                         </tr>
 
@@ -306,7 +307,7 @@ class Aggregation extends React.Component {
                                                                                             </tr>
                                                                                         )}
                                                                                         <tr>
-                                                                                            <td>Started</td>
+                                                                                            <td>Started:</td>
                                                                                             <td className="text-end">
                                                                                                 <FormattedDate
                                                                                                     date={

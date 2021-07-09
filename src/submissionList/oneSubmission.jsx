@@ -11,6 +11,7 @@ import { ReactComponent as Archive } from "../common/images/archive.svg";
 import { ReactComponent as Delete } from "../common/images/delete.svg";
 import ReactTooltip from "react-tooltip";
 import fileDownload from "js-file-download";
+import PatronModal from "./editPatronModal";
 
 class SingleSubmission extends React.Component {
     constructor(props) {
@@ -20,6 +21,11 @@ class SingleSubmission extends React.Component {
             printPage: props.printPage,
         };
         this.pickupModal = React.createRef();
+        this.patronModal = React.createRef();
+    }
+
+    updatePage() {
+        this.props.history.go(0);
     }
 
     handleRequestPayment() {
@@ -292,9 +298,20 @@ class SingleSubmission extends React.Component {
                         <div className="col-12  col-xxl-custom-left">
                             <div className="row">
                                 <div className="col-12 col-sm-6 col-md-3 col-xxl-12">
-                                    <h5 className="card-title mb-2">
-                                        {submission.patron.fname + " " + submission.patron.lname}
-                                    </h5>
+                                    <div className="d-flex flex-nowrap w-100 align-items-baseline">
+                                        <span className="h5 card-title mb-2 flex-grow-1">
+                                            {submission.patron.fname + " " + submission.patron.lname}{" "}
+                                        </span>
+                                        <button
+                                            className="btn btn-light bg-transparent p-1 rounded-circle"
+                                            style={{ lineHeight: "1rem" }}
+                                            onClick={() => {
+                                                this.patronModal.current.openModal(submission);
+                                            }}>
+                                            <i className="bi-pen"></i>
+                                        </button>
+                                    </div>
+
                                     <h6 className="card-subtitle mb-3 text-muted text-capitalize">
                                         {submission.submissionDetails.submissionType.toLowerCase() + " submission"}
                                     </h6>
@@ -621,6 +638,7 @@ class SingleSubmission extends React.Component {
                     </div>
                 </div>
                 <PickupModal ref={this.pickupModal} />
+                <PatronModal ref={this.patronModal} updatePage={this.updatePage.bind(this)} />
             </div>
         );
     }
